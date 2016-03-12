@@ -1,0 +1,596 @@
+<!-- model -->
+<div id="modal" class="">
+    <div class="modal-window city-modal">
+        <div class="big-title">Выберите город</div>
+        <div class="cities">
+            <div class="city-row">
+            <?foreach(Bootstrap::city() as $item){?>
+                <div class="city-section"><div class="city-letter">К</div><a href="http://<?=$item->url?>.svadnik.ru" class="city"><?=htmlspecialchars($item->name)?></a></div>
+            <?}?>
+            </div>
+            <div class="city-row">
+                
+            </div>
+            <div class="city-row">
+                
+            </div>
+            <div class="city-row">
+                
+            </div>
+        </div>
+        <a class="close-modal" href="#"></a>
+    </div>
+    <div class="modal-window message-modal">
+        <div class="message">
+            <div class="big-title">
+                Спасибо, заявка будет<br>
+                опубликована после<br>
+                модерации
+            </div>
+        </div>
+        <a href="#" class="close-modal"></a>
+    </div>
+
+
+
+    <div class="modal-window register">
+        <div id="register-form">
+            <div class="big-title">Регистрация</div>
+            <form action="/signup" id="register" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="mode" value="1">
+                <div class="reg-row">
+                    <div class="grey-input">
+                        <input type="text" id="regname" name="firstname" onblur="if(this.value==''){this.value='Имя*';}" onfocus="if(this.value=='Имя*'){this.value='';}" value="Имя*">
+                        <div class="input-error">Необходимо заполнить поле</div>
+                    </div>
+
+                    <div class="grey-input">
+                        <input type="text" id="regcity" name="city" onblur="if(this.value==''){this.value='Выберите город*:';}" onfocus="if(this.value=='Выберите город*:'){this.value='';}" value="Выберите город*:" placeholder="Введите местоположение" autocomplete="off">
+                        <div class="input-error">Необходимо заполнить поле</div>
+                    </div>
+                    <div class="grey-input">
+                        <input type="text" id="regmail" name="email" onblur="if(this.value==''){this.value='E-mail:';}" onfocus="if(this.value=='E-mail:'){this.value='';}" value="E-mail:">
+                        <div class="input-error">Неправильно введен E-mail</div>
+                    </div>
+                    <div class="grey-area">
+                        <textarea name="info" id="reginfo" onblur="if(this.value==''){this.value='О вас:';}" onfocus="if(this.value=='О вас:'){this.value='';}">О вас:</textarea>
+                    </div>
+                    <div class="rules">
+                        <div class="chb-block">
+                            <div class="chb"><div class="check"></div></div>
+                            <label><a href="#">Условия регистрации принимаю</a></label>
+                        </div>
+                        <input type="hidden" id="confirmrules" name="confirmrules" value="">
+                    </div>
+
+                </div>
+                <div class="reg-row right">
+                    <div class="grey-input">
+                        <input type="text" id="reglname" name="lastname" onblur="if(this.value==''){this.value='Фамилия';}" onfocus="if(this.value=='Фамилия'){this.value='';}" value="Фамилия">
+                    </div>
+                    <div class="modal-line">
+                        <div class="chb-block">
+                            <div class="chb radio"><div class="check"></div></div>
+                            <label>Вы заказчик</label>
+                        </div>
+                        <div class="chb-block">
+                            <div class="chb radio active"><div class="check"></div></div>
+                            <label>Вы исполнитель</label>
+                        </div>
+                        <input type="hidden" id="regstatus" name="role" value="Вы исполнитель">
+                    </div>
+                    <div class="grey-input">
+                        <input type="text" id="regpass" name="password" onblur="if(this.value==''){this.value='Пароль*:',this.type='text'}" onfocus="if(this.value=='Пароль*:'){this.value='',this.type='password';}" value="Пароль*:">
+                        <div class="input-error">Необходимо не менее 6 символов</div>
+                    </div>
+                    <div class="grey-input">
+                        <input type="text" id="regpassconf" name="passconf" onblur="if(this.value==''){this.value='Повторите пароль*:',this.type='text';}" onfocus="if(this.value=='Повторите пароль*:'){this.value='',this.type='password';}" value="Повторите пароль*:">
+                    </div>
+                    <div class="reg-file">
+                        <div class="input-file">
+                            <div class="input-file-button reg">Выберите файлы</div>
+                            <label>Добавить фото</label>
+                        </div>
+                        <input type="file" id="regfile" name="userfiles" class="uploadfile" style="display: none">
+                    </div>
+                    <div class="newsletter">
+                        <div class="chb-block">
+                            <div class="chb active"><div class="check"></div></div>
+                            <label>Подписаться на новости</label>
+                        </div>
+                        <input type="hidden" id="newsletter-input" name="newsletter" value="1">
+                    </div>
+                </div>
+                <div class="bottom-block-modal">
+                    <div class="reg-required">* Обязательные поля</div>
+                    <button type="submit" class="blue-button">Зарегистрироваться</button>
+                </div>
+            </form>
+        </div>
+
+        <a href="#" class="close-modal"></a>
+    </div>
+
+
+
+    <div class="modal-window order-modal">
+        <div id="about-order">
+            <div class="big-title">
+                Создам великолепную
+                фотоисторию Вашего праздника.
+            </div>
+            <div class="public-date">
+                19.07.2011 16:26:29
+            </div>
+            <div class="order-modal-text">
+                <p>Нужны хорошие фотографии? Я сделаю Вам великолепные фотографии. Звоните мне и мы подберем для Вас оптимальное и оригинальное решение... Сделаю съёмку Вашего праздника лёгкой и ненавязчивой.</p>
+                <p>Индивидуальный творческий подход - гарантия того, что в Вашем архиве окажется настоящий шедевр, смотреть который будет интересно не только Вам, но и Вашим родным и друзьям.</p>
+            </div>
+            <div class="bottom-block-modal">
+                <div class="order-modal-contacts">
+                    <div class="order-modal-mail"><a href="mailto:fora@mail.ru">fora@mail.ru</a></div>
+                    <div class="order-modal-phone">+7 (916) 543-76-45</div>
+                </div>
+                <a class="blue-button" href="#">Откликнуться</a>
+            </div>
+
+        </div>
+        <a href="#" class="close-modal"></a>
+    </div>
+
+    <div class="modal-window reserve-confirm">
+        <div class="message">
+            <div class="big-title">
+                Ваша бронь<br>
+                подтверждена:<br>
+                20 июля 2014 года
+            </div>
+        </div>
+        <a href="#" class="close-modal"></a>
+    </div>
+    <div class="modal-window reserve-wait">
+        <div class="message">
+            <div class="big-title">
+                Спасибо, ждите<br>
+                подтверждения<br>
+                брони
+            </div>
+        </div>
+        <a href="#" class="close-modal"></a>
+    </div>
+    <div class="modal-window reserve">
+        <div id="reserve">
+            <div class="big-title">
+                Бронирование исполнителя
+            </div>
+            <form id="reserve-form" name="reserve-form" action="" method="post">
+                <div class="calendar-block">
+                    <input type="hidden" id="calendar-reserve">
+                    <div class="reserve-check">
+                        <div class="chb-block">
+                            <div class="chb"><div class="check"></div></div>
+                            <label>Забронировать</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="reserve-form-wrap">
+                    <div class="modal-line">
+                        <div class="grey-input">
+                            <input type="text" id="eventname" name="eventname" onblur="if(this.value==''){this.value='Название события*';}" onfocus="if(this.value=='Название события*'){this.value='';}" value="Название события*">
+                        </div>
+                    </div>
+                    <div class="modal-line">
+                        <div class="grey-area">
+                            <textarea name="eventdescr" id="eventdescr" onblur="if(this.value==''){this.value='Описание события*';}" onfocus="if(this.value=='Описание события*'){this.value='';}">Описание события*</textarea>
+                        </div>
+                    </div>
+                    <div class="modal-line">
+                        <div class="grey-input">
+                            <input type="text" id="budget" name="budget" onblur="if(this.value==''){this.value='Примерный бюджет (руб.)';}" onfocus="if(this.value=='Примерный бюджет (руб.)'){this.value='';}" value="Примерный бюджет (руб.)">
+                        </div>
+                    </div>
+                    <input type="hidden" id="performer-reserve" name="performer-reserve">
+                    <input type="hidden" id="performer-new-reserve" name="performer-new-reserve">
+                </div>
+                <div class="bottom-block-modal">
+                    <div class="reg-required">* Обязательные поля</div>
+                    <button type="submit" class="blue-button">Отправить заявку</button>
+                </div>
+            </form>
+        </div>
+        <a href="#" class="close-modal"></a>
+    </div>
+    <div class="modal-window comment-modal">
+        <div class="big-title">Отзывы</div>
+        <div class="modal-comments">
+            <div class="comments-head">
+                <div class="comment-rate">Рейтинг</div>
+                <div class="comment-text">Отзыв</div>
+            </div>
+            <div class="comments-all-data">
+                <div class="comments-items">
+                    <div class="comments-item">
+                        <div class="comment-rate">
+                            <div class="star active"></div>
+                            <div class="star active"></div>
+                            <div class="star active"></div>
+                            <div class="star"></div>
+                        </div>
+                        <div class="comment-text">
+                            <div class="comment-public-date">19.07.2011 16:26:29</div>
+                            text
+                        </div>
+                    </div>
+                </div>
+                <div id="comment-form">
+                    <form action="">
+                        <div class="comment-row">
+                            <div class="grey-input">
+                                <input type="text" id="comment-name" name="comment-name" onblur="if(this.value==''){this.value='Имя:';}" onfocus="if(this.value=='Имя:'){this.value='';}" value="Имя:">
+                            </div>
+                            <div class="grey-input">
+                                <input type="text" id="comment-mail" name="comment-mail" onblur="if(this.value==''){this.value='E-mail:';}" onfocus="if(this.value=='E-mail:'){this.value='';}" value="E-mail:">
+                            </div>
+                        </div>
+                        <div class="comment-row second">
+                            <div class="grey-area">
+                                <textarea name="comment-text" id="comment-text" onblur="if(this.value==''){this.value='Текст комментария:';}" onfocus="if(this.value=='Текст комментария:'){this.value='';}">Текст комментария:</textarea>
+                            </div>
+                        </div>
+                        <div class="bottom-block-modal">
+                            <input type="hidden" id="comment-rating" name="comment-rating" value="0">
+                            <div id="performer-rate">
+                                <div id="performer-rate-label">Оценить исполнителя</div>
+                                <div class="stars">
+                                    <a class="star" href="#"></a>
+                                    <a class="star" href="#"></a>
+                                    <a class="star" href="#"></a>
+                                    <a class="star" href="#"></a>
+                                </div>
+                            </div>
+                            <button type="submit" class="blue-button">Отправить</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+        <a href="#" class="close-modal"></a>
+    </div>
+
+
+
+
+
+    <div class="modal-window item-chat-modal">
+        <div class="big-title">Чат</div>
+        <div class="modal-comments">
+            <div class="comments-head">
+                <div class="comment-rate"><!-- Текст --></div>
+            </div>
+            <div class="comments-all-data-d">
+                <div class="comments-items chatItems">
+
+                </div>
+                <div id="comment-form">
+                    <div style="width:100%;margin-bottom: 10px;">
+                        <div class="grey-area" style="width:100%;">
+                            <textarea name="comment-text" id="comment-text" onblur="if(this.value==''){this.value='Текст :';}" onfocus="if(this.value=='Текст :'){this.value='';}"></textarea>
+                        </div>
+                    </div>
+                    <div class="bottom-block-modal">
+                        <button type="submit" class="blue-button">Отправить</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <a href="#" class="close-modal"></a>
+    </div>
+
+
+<style type="text/css">
+    .modal-chat {position: relative; width: 625px; padding: 0 30px 30px;}
+    .chatUserlist {display: inline-block; margin-right: 10px; margin-top: 8px; border: 1px solid #ccc; padding: 3px;}
+    .itemUserChat {color: #737373; font-size: 11px; font-style: italic; }
+</style>
+    <div class="modal-window chat-modal">
+        <div class="modal-chat">
+
+            <?foreach(Bootstrap::listChatUser() as $item){?>
+            <div class="chatUserlist">
+                <div class="itemUserChat">
+                    <label for="itemuser<?=$item['id']?>"><?=htmlspecialchars($item['firstname']).' '.htmlspecialchars($item['lastname'])?></label>
+                    <input type="radio" name="itemuser" id="itemuser<?=$item['id']?>" data-userId="<?=$item['id']?>">
+                </div>
+            </div>
+            <?}?>
+            <div class="chat-head">
+                <div class="comment-rate"><!-- Текст --></div>
+            </div>
+            <div class="chat-all-data-d">
+                <div class="chat-items chatItemss">
+
+                </div>
+                <div id="comment-form">
+                    <div style="width:100%;margin-bottom: 10px;">
+                        <div class="grey-area" style="width:100%;">
+                            <textarea name="comment-text" id="comment-text" onblur="if(this.value==''){this.value='Текст :';}" onfocus="if(this.value=='Текст :'){this.value='';}"></textarea>
+                        </div>
+                    </div>
+                    <div class="bottom-block-modal">
+                        <button type="submit" class="blue-button">Отправить</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <a href="#" class="close-modal"></a>
+    </div>
+
+
+
+
+
+    <div class="modal-window photos">
+        <div class="photo-slider">
+            <img src="" alt="">
+        </div>
+        <div class="image-share">
+            <div class="share-icon vk"></div>
+            <div class="share-icon fb"></div>
+        </div>
+        <a href="#" class="close-modal"></a>
+        <div class="photo-prev"></div>
+        <div class="photo-next"></div>
+    </div>
+    <div class="modal-window login">
+        <div id="login-form">
+            <div class="big-title">личный кабинет</div>
+            <form action="/login" id="loginform" method="post">
+    <input type="hidden" name="action" value="login">
+                <div class="modal-line">
+                    <div class="grey-input">
+                        <input type="text" id="login" name="login" onblur="if(this.value==''){this.value='E-mail:'}" onfocus="if(this.value=='E-mail:'){this.value=''}" value="E-mail:">
+                    </div>
+                </div>
+                <div class="modal-line">
+                    <div class="grey-input">
+                        <input type="text" id="pass" name="pass" onblur="if(this.value==''){this.value='Пароль:',this.type='text'}" onfocus="if(this.value=='Пароль:'){this.value='',this.type='password';}" value="Пароль:">
+                    </div>
+                </div>
+                <div class="bottom-block-modal">
+                    <a href="#" class="forget">Забыли пароль?</a>
+                    <button type="submit" class="blue-button">Войти</button>
+                </div>
+            </form>
+        </div>
+        <a href="#" class="close-modal"></a>
+    </div>
+    <div class="modal-window forgot-pass">
+        <div id="remember-form">
+            <div class="big-title">Восстановление пароля</div>
+            <form action="/sendpass" id="remember">
+                <input type="hidden" name="mode" value="1">
+                <div class="grey-input">
+                    <input type="text" id="forgot-mail" name="forgot-mail" onblur="if(this.value==''){this.value='Ваш E-mail:';}" onfocus="if(this.value=='Ваш E-mail:'){this.value='';}" value="Ваш E-mail:">
+                </div>
+                <button type="submit" class="blue-button">Отправить</button>
+            </form>
+        </div>
+        <a href="#" class="close-modal"></a>
+    </div>
+
+
+    <div class="modal-window services">
+        <div id="modal-services">
+            <div class="big-title">Выбрать услугу</div>
+            <div id="modal-service-items">
+                <div class="chb-block all">
+                    <div class="chb"><div class="check"></div></div>
+                    <label class="all-services">Выбрать все</label>
+                </div>
+ 
+            <?foreach($this->catalog as $item){ ?>
+                
+                <div class="chb-block">
+                    <div class="chb 
+                    <?  
+                    if(isset($this->servicesUser[0]))
+                        foreach($this->servicesUser as $value)
+                            if($item->id == $value['tagid'])
+                                echo 'active';
+
+                    if(isset($this->catalog_index[0]))
+                        foreach($this->catalog_index as $value)
+                            if($item->id == $value->id)
+                                echo 'active';
+                    ?>"> <!-- active -->
+                    <div class="check"></div>
+                    </div>
+                    <label class="<?=$item->url?>" data-cat-id="<?=$item->id?>" data-min-price="1" data-max-price="5000" data-min-hour-price="1" data-max-hour-price="1000" data-hour-users="<?=$this->serviceUserCount[$item->id] ?>" data-link-users="/freelancers/<?=$item->url?>?price_start=1&amp;price_end=1000&amp;hour=1" data-icon="/public/upload/projects_info/<?=$item->image?>" data-id="<?=$item->url?>">
+                    <?=htmlspecialchars($item->name)?>
+                    </label>
+                </div>
+
+            <?}?>
+
+            </div>
+            <div class="bottom-block-modal">
+                <button type="submit" class="blue-button">Принять</button>
+            </div>
+        </div>
+        <div class="close-modal"></div>
+    </div>
+
+    
+
+    <div class="modal-window addnew">
+        <div id="add-new-block">
+            <div class="big-title">Добавить сообщение</div>
+            <form action="/news/add" method="post" name="addnew-form" id="addnew-form" target="add-new-frame">
+                <div class="grey-input">
+                    <input type="text" id="addnew-title" name="addnew-title" onblur="if(this.value==''){this.value='Название:';}" onfocus="if(this.value=='Название:'){this.value='';}" value="Название:">
+                </div>
+                <div class="grey-area">
+                    <textarea name="addnew-text" id="addnew-text" onblur="if(this.value==''){this.value='Текст:';}" onfocus="if(this.value=='Текст:'){this.value='';}">Текст:</textarea>
+                </div>
+                <button type="submit" class="green-button">Сохранить</button>
+                <a href="#" class="close-modal"></a>
+            </form>
+        </div>
+    </div>
+    <div class="modal-window addnewconfirm">
+        <div class="message">
+            <div class="big-title">
+                Спасибо<br>
+                Сообщение успешно отправлено
+            </div>
+        </div>
+        <a href="#" class="close-modal"></a>
+    </div>
+    <div class="modal-window site-rules">
+            <div class="big-title">
+                Условия регистрации
+            </div>
+            <div class="modal-text">
+<p>Данные правила действуют на все настоящие и будущие разделы сайта. В отдельных разделах и форумах конференции возможно наличие собственных правил, которые уточняют и детализирует правила поведения в них. При этом данные правила остаются обязательными в любом случае.</p>
+
+            <p>Правила вводятся для создания комфортной и конструктивной атмосферы общения. Если Вас не устраивают или не подходят принятые здесь порядки, воздержитесь от регистрации на нашем сайте.</p>
+            <p>I. Регистрация пользователей</p>
+            <p>1. Регистрируясь на сайте пользователь соглашается выполнять данные Правила.</p>
+
+            <p>2. Для регистрации на сайте пользователь должен предоставить действующий адрес электронной почты – именно на него робот пришлет вам ссылку на подтверждение регистрации. Мы гарантируем конфиденциальность указанной информации.</p>
+            <p>3. А также на ваш адрес электронной почты будет высылаться информация касающаяся жизни сайта.</p>
+            <p>3.1 Пользователи с не подтвержденым Еmail-адресом в течении 5 месяцев будут удаляться.</p>
+
+            <p>4. Выбор имени пользователя (nickname) является вашим исключительным правом. Администрация оставляет за собой право принять меры к прекращению использования nickname, если его использование нарушает общепринятые моральные и этические нормы, или является оскорбительным для других пользователей сайта/форума. Запрещается регистрировать бессмысленные никнеймы (вроде 56y39ge45), запрещается использовать в никнейме нецензурные слова, адреса вебсайтов, адреса email и т.п. Запрещена регистрация nickname, схожих с уже существующими до степени, которые могут ввести в заблуждение других пользователей сайта.</p>
+
+            <p>5. Запрещена неоднократная регистрация одним пользователем, вне зависимости от целей, с которыми такая регистрация проводится. Данное нарушение является крайне серьезным и ведет к блокированию всех учетных записей этого пользователя.</p>
+
+            <p>6. Если вы не проявляете активность на форуме или на самом сайте в течение 2-х месяцев, ваша учетная запись будет блокирована а по истечение примерно 1 года удалена безвозвратна. Чтоб вновь активировать вашу регистрацию, пишите на обратную связь.</p>
+
+            <p>II. Отношение между пользователями и администрацией.</p>
+            <p>В своих действиях администрация сайта руководствуется здравым смыслом и внутренними правилами управления сайтом.
+                III.Все ссылки на музыку (видео, программы) и прочий контент, размещенные на интернет-проекте, представлены исключительно для ознакомительного прослушивания и расположены не на нашем сервере. Все файлы лежат на сторонних серверах, к которым сайт не имеет никакого отношения. Наш сайт является лишь информационно-развлекательным порталом, на котором Пользователи выкладывают ссылки на эти файлы, которые доступны публично. После прослушивания Пользователь обязан удалить скачанные файлы и приобрести легальную копию. Регистрируясь Вы подтверждаете то, что ознакомились с правилами.</p>
+
+            <p>Обсуждение действий администрации (администраторов и модераторов сайта) категорически запрещается в любых форумах и темах за исключением специализированного форума предназначенного для обсуждения всех аспектов работы сайта</p>
+
+            <p>Администрация оставляет за собой право изменять правила с последующим уведомлением об этом на сайте,форуме.
+                Все изменения и новации на сайте администрация старается делать с учетом мнений и интересов пользователей.</p>
+        </div>
+        <a href="#" class="close-modal"></a>
+    </div>
+    <div class="modal-window user-rules">
+        <div class="big-title">
+            Пользовательское соглашение
+        </div>
+        <div class="modal-text">
+<p>Данные правила действуют на все настоящие и будущие разделы сайта. В отдельных разделах и форумах конференции возможно наличие собственных правил, которые уточняют и детализирует правила поведения в них. При этом данные правила остаются обязательными в любом случае.</p>
+
+                <p>Правила вводятся для создания комфортной и конструктивной атмосферы общения. Если Вас не устраивают или не подходят принятые здесь порядки, воздержитесь от регистрации на нашем сайте.</p>
+                <p>I. Регистрация пользователей</p>
+                <p>1. Регистрируясь на сайте пользователь соглашается выполнять данные Правила.</p>
+
+                <p>2. Для регистрации на сайте пользователь должен предоставить действующий адрес электронной почты – именно на него робот пришлет вам ссылку на подтверждение регистрации. Мы гарантируем конфиденциальность указанной информации.</p>
+                <p>3. А также на ваш адрес электронной почты будет высылаться информация касающаяся жизни сайта.</p>
+                <p>3.1 Пользователи с не подтвержденым Еmail-адресом в течении 5 месяцев будут удаляться.</p>
+
+                <p>4. Выбор имени пользователя (nickname) является вашим исключительным правом. Администрация оставляет за собой право принять меры к прекращению использования nickname, если его использование нарушает общепринятые моральные и этические нормы, или является оскорбительным для других пользователей сайта/форума. Запрещается регистрировать бессмысленные никнеймы (вроде 56y39ge45), запрещается использовать в никнейме нецензурные слова, адреса вебсайтов, адреса email и т.п. Запрещена регистрация nickname, схожих с уже существующими до степени, которые могут ввести в заблуждение других пользователей сайта.</p>
+
+                <p>5. Запрещена неоднократная регистрация одним пользователем, вне зависимости от целей, с которыми такая регистрация проводится. Данное нарушение является крайне серьезным и ведет к блокированию всех учетных записей этого пользователя.</p>
+
+                <p>6. Если вы не проявляете активность на форуме или на самом сайте в течение 2-х месяцев, ваша учетная запись будет блокирована а по истечение примерно 1 года удалена безвозвратна. Чтоб вновь активировать вашу регистрацию, пишите на обратную связь.</p>
+
+                <p>II. Отношение между пользователями и администрацией.</p>
+                <p>В своих действиях администрация сайта руководствуется здравым смыслом и внутренними правилами управления сайтом.
+                III.Все ссылки на музыку (видео, программы) и прочий контент, размещенные на интернет-проекте, представлены исключительно для ознакомительного прослушивания и расположены не на нашем сервере. Все файлы лежат на сторонних серверах, к которым сайт не имеет никакого отношения. Наш сайт является лишь информационно-развлекательным порталом, на котором Пользователи выкладывают ссылки на эти файлы, которые доступны публично. После прослушивания Пользователь обязан удалить скачанные файлы и приобрести легальную копию. Регистрируясь Вы подтверждаете то, что ознакомились с правилами.</p>
+
+                <p>Обсуждение действий администрации (администраторов и модераторов сайта) категорически запрещается в любых форумах и темах за исключением специализированного форума предназначенного для обсуждения всех аспектов работы сайта</p>
+
+                <p>Администрация оставляет за собой право изменять правила с последующим уведомлением об этом на сайте,форуме.
+                Все изменения и новации на сайте администрация старается делать с учетом мнений и интересов пользователей.</p>
+        </div>
+        <a href="#" class="close-modal"></a>
+    </div>
+
+    <div class="modal-window addvideo">
+        <div class="modal-wrap">
+            <div class="big-title">Добавить видео</div>
+            <div class="modal-text">
+                Для того чтобы добавить новое видео, просто скопируйте html-код с сайта youtube в поле "Код видео".
+                <div style="font-size:12px;">Пример: <span style="color: rgb(152, 152, 152);">www.youtube.com/watch?</span><span style="color:green">v=2vjPBrBU-TM</span></div>
+            </div>
+            <form id="addvideo upload_video" action="/edit/uploadfile" enctype="multipart/form-data" method="post">
+                <div class="grey-area">
+                    <textarea name="newvideo" id="newvideo" onblur="if(this.value==''){this.value='Код видео:';}" onfocus="if(this.value=='Код видео:'){this.value='';}">Код видео:</textarea>
+                    <input type="hidden" name="type" value="video">
+                    <input id="video-upload" type="file" name="userfiles" accept="image" style="display:none;">
+
+                </div>
+                <div class="modal-text">
+                    Загрузить обложку для видео.
+                </div>
+                <div class="add-screenshot">
+                    <div class="input-file">
+                        <div class="input-file-button video">Выберите файл</div>
+                        <label>Загрузить скриншот</label>
+                    </div>
+                    <input type="file" id="add-screenshot" name="add-screenshot" class="uploadfile" style="display: none">
+                </div>
+                <div class="bottom-block-modal">
+                    <button type="submit" class="blue-button">Добавить</button>
+                </div>
+            </form>
+        </div>
+        <a class="close-modal" href="#"></a>
+    </div>
+
+    <div class="modal-window addpresent">
+        <div class="modal-wrap">
+            <div class="big-title">Добавить презентацию</div>
+            <div class="modal-text">
+                Загрузите вашу презентацию в формате (doc, ppt, pptx, docx, xls)
+            </div>
+            <form id="addpresent" name="addpresent" action="/edit/uploadfile" method="post" enctype="multipart/form-data">
+                <div class="form-line">
+                    <div class="input-file">
+                        <div class="input-file-button present_one">Выберите файл</div>
+                        <label>Загрузить файл</label>
+                    </div>
+                    <input type="hidden" name="type" value="present">
+                    <input type="file" id="add-present" name="userfiles[]" class="uploadfile" style="display: none">
+                    <input type="file" id="add-cover" name="userfiles[]" class="uploadfile" style="display: none" accept="image">
+                </div>
+                <div class="modal-text">
+                    Загрузить обложку для презентации(формат: jpeg, png)
+                </div>
+                <div class="form-line">
+                    <div class="input-file">
+                        <div class="input-file-button present_two">Выберите файл</div>
+                        <label>Загрузить скриншот</label>
+                    </div>
+
+                </div>
+                <div class="bottom-block-modal">
+                    <button type="submit" class="blue-button">Добавить</button>
+                </div>
+            </form>
+        </div>
+        <a class="close-modal" href="#"></a>
+    </div>
+
+    <div class="modal-window video-show">
+        <div class="modal-wrap">
+            <div class="big-title">Видео</div>
+            <div class="modal-video-iframe"></div>
+        </div>
+        <div class="close-modal"></div>
+    </div>
+
+
+
+    <!-- <iframe name="iframe_loadfile" id="iframe_loadfile" src="#" style="display:none"></iframe> -->
+
+</div>
+<!-- model end -->

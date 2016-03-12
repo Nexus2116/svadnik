@@ -1,0 +1,99 @@
+<div class="bm-page-header">
+    <h1>Пользователи</h1>
+    <div class="bm-changes-message">Изменения сохранены</div>
+    <div class="bm-changes-block">
+        <div class="bm-changes-block-title">Были внесены изменения</div>
+        <div class="bm-buttons">
+            <button class="bm-button cancel" data-ctrl="Page" href="<?=HTML::url('/user')?>">
+            	Отменить
+            </button>
+            <button type="submit" class="bm-button">Сохранить</button>
+
+        </div>
+    </div>
+</div>
+<div id="bm-systemactive">
+    <div id="bm-top-menu">
+        <div class="bm-create-button" data-ctrl="User" data-act="modal" href="<?=HTML::url('/user/create')?>">
+            Создать
+            <div class="bm-create-button-ico"></div>
+        </div>
+        <div class="bm-circle-button del" data-ctrl="User" data-act="remove"></div>
+    </div>
+</div>
+<div class="bm-page-table users">
+    <div class="bm-page-row header">
+        <div class="bm-page-cell checkbox">
+            <div class="bm-cell-elem">
+                <div class="bm-checkbox" data-ctrl="Checkbox" data-act="all">
+                    <div class="bm-checkbox-choice"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="bm-page-cell name">
+            <div class="bm-cell-elem"><a class="bm-sort-link" href="#">Имя</a></div>
+        </div>
+        <div class="bm-page-cell mail">
+            <div class="bm-cell-elem"><a class="bm-sort-link" href="#">E-mail</a></div>
+        </div>
+        <div class="bm-page-cell activity">
+            <div class="bm-cell-elem"><a class="bm-sort-link" href="#">Активен</a></div>
+        </div>
+        <div class="bm-page-cell create">
+            <div class="bm-cell-elem"><a class="bm-sort-link" href="#">Создан</a></div>
+        </div>
+        <div class="bm-page-cell admin">
+            <div class="bm-cell-elem"><a class="bm-sort-link" href="#">Admin</a></div>
+        </div>
+    </div>
+
+    <?foreach ($this->admins as $admin) {?>
+	    <div class="bm-page-row systemuser" data-itemid="<?=$admin->id?>">
+	        <div class="bm-page-cell checkbox">
+	            <div class="bm-cell-elem">
+	                <div class="bm-checkbox" data-ctrl="Checkbox" data-itemid="<?=$admin->id?>">
+	                    <div class="bm-checkbox-choice"></div>
+	                </div>
+	            </div>
+	        </div>
+	        <div class="bm-page-cell name">
+	            <div class="bm-cell-elem">
+	            	<a href="<?=HTML::url('/user/edit/id/' . $admin->id)?>" data-ctrl="Page">
+	                	<?=$admin->name?>
+	                </a>
+	            </div>
+	        </div>
+	        <div class="bm-page-cell mail">
+	            <div class="bm-cell-elem">
+	                <a href="mailto:<?=$admin->email;?>"><?=$admin->email;?></a>
+	            </div>
+	        </div>
+	        <div class="bm-page-cell activity">
+	            <div class="bm-cell-elem">
+	            	<?if($admin->active)
+	            		echo date_format($admin->active, 'd/m/Y');
+	            	else
+	            		echo "-";?>
+	            </div>
+	        </div>
+	        <div class="bm-page-cell create">
+	            <div class="bm-cell-elem">
+	            	<?=date_format($admin->created_at, 'd/m/Y');?>
+	            </div>
+	        </div>
+	        <div class="bm-page-cell admin">
+	            <div class="bm-cell-elem">
+	            	<?$str = 'off';
+	            	if($admin->role == 1)
+	            		$str = 'on';?>
+	                <div class="bm-radio main <?=$str?>" data-ctrl="Radio" data-act="doroot"   data-itemid="<?=$admin->id?>">
+	                    <div class="bm-radio-off"></div>
+	                    <div class="bm-radio-on"></div>
+	                    <div class="bm-radio-switcher"></div>
+	                </div>
+	            </div>
+	        </div>
+		</div>
+	<?}?>
+</div>

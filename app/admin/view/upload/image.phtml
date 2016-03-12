@@ -1,0 +1,17 @@
+
+	<?$multi = '';
+	$arr = '';
+	if($this->multi == true) {
+		$multi = 'multiple="miltiple"';
+		$arr = '[]';
+	}?>
+	<form enctype="multipart/form-data" action="<?=HTML::url('/upload/image')?>" method="POST" id="fileUpload" target="target">
+		<input type="hidden" name="scale" value="<?=$this->scale?>">
+		<input type="hidden" name="article" value="<?=$this->article->id?>">
+		<input type="hidden" name="field" value="" class="image-field">
+		<?if(isset($this->errors)) {?>
+			<span style="color:red;"><?=$this->error?></span>
+		<?}?>
+		<input name="userfiles<?=$arr?>" type="file" style="visibility:hidden;" class="fileUploadButton" <?=$multi?>/>
+	</form>
+	<iframe name="target"></iframe>

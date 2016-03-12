@@ -1,0 +1,141 @@
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('.date-form').Zebra_DatePicker({
+		        'days': ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
+		        'months': ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
+		        'lang_clear_date': 'Очистить дату',
+		        'show_icon': false,
+		        'offset': [-308,260],
+		        header_captions: {
+		            'days':     'F Y',
+		            'months':   'Y',
+		            'years':    'Y1 - Y2'
+		        },
+		        header_navigation:['','']
+		    });
+
+		    $('.bm-input.date').click(function(){
+		        $('.bm-input.date input').show();
+		    });
+
+		    $('#name').keyup(function() {
+		    	var result = Controller.Articles.translit($(this).val());
+		    	$('#bm-page-url').attr({'value' : result});
+		    });
+		});
+	</script>
+
+    <div class="bm-modal-title">
+        <div class="bm-modal-title-ico"></div>
+        Параметры страницы
+    </div>
+    <form action="<?=HTML::url('/news/save')?>" method="POST" id="createArticle" data-ctrl="Articles">
+    	<?if($this->article != null) {?>
+    		<input type="hidden" name="id" value="<?=$this->article->id?>">
+    	<?}?>
+        <input type="hidden" name="parent_id" value="11>">
+        <div id="form-content">
+            <label>
+                Название в системе
+                <div class="bm-form-error" id="bm-name-error"></div>
+            </label>
+            <div class="bm-input-wrap">
+                <input type="text" name="name" id="name" value="<?=@$this->article->name?>"/>
+            </div>
+            <label>
+                URL страницы
+                <div class="bm-form-error" id="bm-url-error"></div>
+            </label>
+            <div class="bm-input-wrap">
+                <input type="text" name="url" id="bm-page-url" value="<?=@$this->article->url?>"/>
+            </div>
+
+            <div class="bm-control">
+	            <label>
+	                Тип страницы
+	                <div class="bm-form-error" id="bm-type-error"></div>
+	            </label>
+	            <?$current = $this->article != null ? $this->article->type : 'articles';
+	            echo HTML::select(\App::config('pages'), $current, 'black');?>
+	        </div>
+
+            <?if($this->article != null) {?>
+            	<div class="bm-control">
+	                <label>ID#</label>
+	                <div class="bm-id-block"><?=$this->article->id?></div>
+	                <div class="bm-circle-button del" data-ctrl="Articles" data-act="delete" url="/admin/articles/delete/id/<?=$this->article->id?>"></div>
+                </div>
+                <div style="clear:both;"></div><br>
+
+                <div class="bm-control">
+	                <label>Дата публикации</label>
+	                <div class="bm-input date">
+	                    <input type="text" name="date" class="date-form" readonly="readonly" style="color:white;" value="<?=$this->article->date?>">
+	                </div>
+	            </div>
+
+                <div class="bm-control" style="margin-left:-18px;">
+	                <label>
+		                Порядок сортировки
+		                <div class="bm-form-error" id="bm-sort-error"></div>
+		            </label>
+	                <div class="bm-input-wrap" style="width:100px;">
+		                <input type="number" value="<?=@$this->article->sort?>" name="sort" id="bm-page-sort" value="<?=@$this->article->sort?>"/>
+		            </div>
+		        </div>
+
+		        <?if($this->article->type == 'products') {?>
+		            <button type="button" class="bm-button" data-ctrl="Articles" data-act="copy" data-id="<?=$this->article->id?>">
+		            	Создать копию
+		            </button>
+		        <?}?>
+
+				<div id="bm-language-list">
+	                <?foreach (\App::config()->langs as $key => $value) {
+	                	if(isset($this->content[$key])) {?>
+		                    <div class="bm-language-item">
+		                        <div class="bm-language-page">
+		                        	<?=$value?>
+		                        </div>
+		                        <div class="bm-language-status">
+		                            Online
+		                            <div class="contentLang" data-lang="<?=$key?>" style="display:none;"></div>
+		                            <?HTML::radio($this->content[$key], 'content_publish', null, false)?>
+		                        </div>
+		                    </div>
+		                <?}?>
+		            <?}?>
+		        </div>
+            <?}?>
+
+        </div>
+
+        <!--<br><label style="float:left; margin-left:25px;">Отобразить в главном меню</label>
+        <?$str = '';
+        if($this->article->menu == 1)
+        	$str = 'active';?>
+        <div class="bm-checkbox <?=$str?>" data-ctrl="Checkbox">
+        	<input type="hidden" value="<?=$this->article->menu?>" name="menu" class="checkValue">
+            <div class="bm-checkbox-choice"></div>
+        </div>
+
+        <div style="clear:both;"></div>
+
+        <?$str = '';
+        if($this->article->footer == 1)
+        	$str = 'active';?>
+        <label style="float:left; margin-left:25px;">Отметить как особая статья</label>
+        <div class="bm-checkbox <?=$str?>" data-ctrl="Checkbox">
+        	<input type="hidden" value="<?=$this->article->footer?>" name="footer" class="checkValue">
+            <div class="bm-checkbox-choice"></div>
+        </div><br>-->
+
+        <div class="bm-buttons">
+            <button type="submit" class="bm-button">Сохранить</button>
+            <button class="bm-button cancel">Отмена</button>
+        </div>
+        <div class="bm-buttons del hide">
+            <button type="submit" class="bm-button">Удалить</button>
+            <button class="bm-button cancel">Нет, спасибо</button>
+        </div>
+    </form>

@@ -1,0 +1,20 @@
+<div class="content-items help" style="display: none;">
+    <div class="content-items-scroll-layer" style="height: 306px;">
+        <div class="content-items-list" style="width: 286px;">
+        	<?$str = '';
+        	if($this->selected == 2)
+        		$str = 'active';?>
+            <a class="content-item all <?=$str?>" href="<?=HTML::url('/help');?>" data-ctrl="Page">
+            	<span>Начало работы</span>
+            </a>
+
+        	<?$str = '';
+        	if($this->selected == 1)
+        		$str = 'active';?>
+            <a class="content-item all <?=$str?>" href="<?=HTML::url('/help/faq');?>" data-ctrl="Page">
+            	<span>Вопросы и ответы</span>
+            </a>
+        </div>
+    </div>
+    <div class="scroller-line"></div>
+</div>

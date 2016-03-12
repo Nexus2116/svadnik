@@ -1,0 +1,34 @@
+@font-face {
+    font-family: 'Futuris';
+    src: url('futuris-bold.eot');
+    src: url('futuris-bold.eot?#iefix') format('embedded-opentype'),
+         url('futuris-bold.woff') format('woff'),
+         url('futuris-bold.ttf') format('truetype'),
+         url('futuris-bold.svg#futurisxcregular') format('svg');
+    font-weight: 700;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Futuris';
+    src: url('futuris-cyrillic.eot');
+    src: url('futuris-cyrillic.eot') format('embedded-opentype'),
+    url('futuris-cyrillic.woff') format('woff'),
+    url('futuris-cyrillic.ttf') format('truetype'),
+    url('futuris-cyrillic.svg#FuturisCyrillic') format('svg');
+    font-weight: 400;
+    font-style: normal;
+}
+@media all and (-webkit-min-device-pixel-ratio:0) {
+    @font-face {
+        font-family: 'Futuris';
+        src: url('futuris-bold.svg#futurisxcregular') format('svg');
+        font-weight: 700;
+        font-style: normal;
+    }
+    @font-face {
+        font-family: 'Futuris';
+        src: url('futuris-cyrillic.svg#FuturisCyrillic') format('svg');
+        font-weight: 400;
+        font-style: normal;
+    }
+}

@@ -1,0 +1,88 @@
+    <div id="performer-profile-page">
+        <div class="container">
+            <div class="big-title blue">
+                <div id="user-photo" style="background: url(/public/upload/big/<?=$this->user->avatar?>) 50% 50%; background-size: cover"></div>
+                <span class="user-name"><?=htmlspecialchars($this->user->firstname).' '.htmlspecialchars($this->user->lastname)?></span>
+            </div>
+        </div>
+    </div>
+    <div id="performer-profile">
+        <div class="container">
+            <div class="performer-line">
+                <label>Номер телефона:</label>
+                <div class="performer-data"><?=htmlspecialchars($this->user->phone)?></div>
+            </div>
+            <div class="performer-line">
+                <label>Опыт работы:</label>
+                <div class="performer-data"><?=htmlspecialchars($this->user->experience)?></div>
+            </div>
+            <div class="performer-line">
+                <label>E-mail:</label>
+                <div class="performer-data"><?=htmlspecialchars($this->user->email)?></div>
+            </div>
+            <div class="performer-line">
+                <label>Skype:</label>
+                <div class="performer-data"><?=htmlspecialchars($this->user->skype)?></div>
+            </div>
+            <div class="performer-line">
+                <label>О себе:</label>
+                <div class="performer-data"><?=htmlspecialchars($this->user->info)?></div>
+            </div>
+            <div class="performer-line">
+                <label>Услуги:</label>
+                <div class="performer-data">
+                <?foreach($this->servicesUser as $i => $item){?>
+                    <div class="top-service"><?=htmlspecialchars($this->articleServAll[$item['tagid']]['name'])?></div>
+                <?}?>
+    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="container">
+    <div class="big-title">Портфолио</div>
+    <div id="performer-portfolio">
+        <div class="performer-line">
+            <label>Фото:</label>
+            <div class="performer-portfolio-items">
+            <?foreach($this->servicesUserPhoto as $item){?>
+                <div id="7c0904495f997db182dfe4a514a80c4e" class="photo-block-wrap">
+                    <a href="#" class="photo-block" style="background: url(/public/upload/big/<?=$item->file_img?>) 50% 50%; background-size: cover" big="/public/upload/blur/<?=$item->file_img?>"></a>
+                </div>
+            <?}?>
+
+
+
+            </div>
+        </div>
+        <div class="performer-line">
+            <label>Видео:</label>
+            <div class="performer-portfolio-items">
+                <!-- video items start -->
+
+            <?foreach($this->servicesUserVideo as $item){?>
+                <div id="<?=$item->id?>" class="portfolio-block-wrap video-item">
+                    <a href="#" class="portfolio-block" style="background: url(/public/upload/big/<?=$item->file_img?>) 50% 50%; background-size: cover" big="" video_link="http://www.youtube.com/watch?<?=$item->text?>"></a>
+                </div>
+            <?}?>
+                <!-- video items end -->
+            </div>
+        </div>
+        <div class="performer-line">
+            <label>Презентации:</label>
+            <div class="performer-portfolio-items">
+                <!-- presentation items start -->
+            <?foreach($this->servicesUserPresent as $item){?>
+                <div id="<?=$item->id?>" class="portfolio-block-wrap present-item">
+                    <a href="/public/media/files/<?=$item->file?>" target="_blank" class="portfolio-block" style="background: url(/public/upload/big/<?=$item->file_img?>) 50% 50%; background-size: cover" big=""></a>
+                </div>
+            <?}?>    
+
+                <!-- presentation items end -->
+            </div>
+        </div>
+    </div>
+</div>

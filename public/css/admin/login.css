@@ -1,0 +1,142 @@
+html{
+    padding:0;
+    margin: 0;
+    max-height: 999999px;
+    -webkit-text-size-adjust: none;
+    text-size-adjust: none;
+    min-height: 100%;
+    font-family: 'Open Sans', sans-serif;
+    min-width: 1000px;
+}
+body {
+    padding:0;
+    margin: 0;
+    color:#4c4c4c;
+    min-width: 1000px;
+    min-height: 100%;
+    background: #272727;
+}
+
+body {
+  color: #404040;
+}
+
+a {
+  color: #00a1d2;
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+
+
+
+
+
+#loginForm{
+    position: absolute;
+    width: 240px;
+    padding: 20px;
+    height: 195px;
+    left:50%;
+    margin-left: -140px;
+    top:50%;
+    margin-top: -120px;
+    background: #313131;
+    box-shadow: 0 0 4px rgba(0,0,0,0.6);
+}
+#loginForm label{
+    position: relative;
+    display: block;
+    color: #747474;
+    font-size: 13px;
+    font-weight: 600;
+    font-style: italic;
+    margin-bottom: 10px;
+}
+.bm-input-wrap {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 38px;
+    margin-bottom: 10px;
+    background: #fff;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+    overflow: hidden;
+}
+.bm-input-wrap input {
+    position: absolute;
+    top: 10px;
+    left: 13px;
+    width: 88%;
+    color: #272727;
+    font-size: 13px;
+    line-height: 13px;
+    font-weight: 600;
+    font-family: 'Open Sans', sans-serif;
+    border: none;
+    outline: none;
+    margin: 0;
+    padding: 0;
+}
+
+#login-logo{
+    position: relative;
+    left:0px;
+    top:0px;
+    font-size: 20px;
+    line-height: 30px;
+    color:#fff;
+    margin-bottom: 20px;
+    font-weight: 400;
+    text-align: center;
+}
+#login-logo span{
+    color: #676767;
+}
+/*#login-logo:before{*/
+    /*content: "";*/
+    /*display: inline-block;*/
+    /*position: relative;*/
+    /*width: 19px;*/
+    /*height: 25px;*/
+    /*background: url(/public/images/admin/sprite.png);*/
+    /*vertical-align: middle;*/
+    /*margin-top: -2px;*/
+    /*margin-right: 3px;*/
+/*}*/
+
+
+.login-button {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 34px;
+    border: none;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+    background: #0086e3;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    font-family: 'Open Sans', sans-serif;
+    cursor: pointer;
+    outline: none;
+    padding: 0;
+    margin: 0;
+    margin-top: 20px;
+}
+
+#error{
+    position: absolute;
+    left:0px;
+    width: 100%;
+    text-align: center;
+    top:105%;
+    margin:0 !important;
+    font-family: 'Open Sans', sans-serif;
+    color: #e14328 !important;
+}

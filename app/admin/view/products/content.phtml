@@ -1,0 +1,147 @@
+<script type="text/javascript">
+	Controller.Articles.content<?=$this->tabLanguage?> = {
+		id : 'content_<?=$this->tabLanguage?>',
+		type: 'json',
+		fails : function(errors) {
+			Controller.Articles.content<?=$this->tabLanguage?>.show(error);
+		},
+		success : function (data) {
+			Controller.Articles.content<?=$this->tabLanguage?>.show(data.message);
+			$('.bm-changes-block').hide();
+		},
+
+		show: function(text) {
+			$('.bm-changes-message').text(text);
+			$('.bm-changes-message').show();
+			setInterval(function() {
+				$('.bm-changes-message').hide();
+			}, 5000);
+		}
+	};
+	
+	$(document).ready(function() {
+		if($('.redactor_box').length > 0) {
+			$('#bm-redactor-<?=$this->tabLanguage?>').redactor('destroy');
+			$('#bm-redactor-include').redactor('destroy');
+		}
+
+		$('#bm-redactor-<?=$this->tabLanguage?>').redactor({
+		    lang: 'ru',
+		    minHeight: 264,
+		    imageUpload: '/admin/upload/redactor',
+		    imageGetJson: '/admin/image/media'
+		});
+
+		$('#bm-redactor-include').redactor({
+		    lang: 'ru',
+		    minHeight: 264,
+		    imageUpload: '/admin/upload/redactor',
+		    imageGetJson: '/admin/image/media'
+		});
+
+		formHandler = new Form(Controller.Articles.content<?=$this->tabLanguage?>);
+
+		$('.bm-dragndrop').click(function() {
+			val = $(this).find('input').val();
+			$('#fileUpload .image-field').attr({'value' : val});
+			$('.fileUploadButton').click();
+		});
+
+		$('.fileUploadButton').change(function() {
+			$('#fileUpload').submit();
+		});
+
+		$('input, textarea, .redactor_editor').on('input', function () {
+			$('.bm-changes-block').show();
+		})
+
+	});
+</script>
+<?$content = $this->content;?>
+
+<form action="<?=HTML::url("/" . $this->article->type . "/edit/id/" . $this->article->id)?>" method="POST" id="content_<?=$this->tabLanguage?>" class="articleEditForm" data-form="main">
+	<input type="submit" class="sendForm" style="position:absolute; visibility:hidden;">
+	<input type="hidden" name="id" value="<?=$this->article->id?>">
+	<input type="hidden" name="lang" value="<?=$this->tabLanguage?>">
+	<div class="bm-page-content-editor">
+	    <div class="bm-page-content-title">
+	    	<?=\App::config()->langVariables[$this->tabLanguage]?> версия
+	    </div>
+	    <div class="bm-page-content-editor-top">
+	        <label>Название</label>
+	        <div class="bm-input fullwidth">
+	            <input type="text" id="caption" name="caption" value="<?=@$content->caption?>">
+	        </div>
+	        <label>Заголовок</label>
+	        <div class="bm-input fullwidth">
+	            <input type="text" id="ttle" name="title" value="<?=@$content->title?>">
+	        </div>
+	        <div class="bm-page-editor-left">
+	            <label>Краткое описание</label>
+	            <div class="bm-textarea">
+	                <textarea name="annotation" id="annotation"><?=@$content->annotation?></textarea>
+	            </div>
+	        </div>
+	        <div class="bm-page-editor-right">
+	            <label>Превью</label>
+				<?HTML::image($this->article);?>
+	        </div>
+	        <div style="clear:both;"></div><br><br>
+
+	        <label>Тип строения</label>
+	        <?$current = $content != null ? $content->from : 0;
+	        HTML::select(\App::config('types'), $current, '', "width:230px;", null, 'from');?>
+
+	        <label>Цвет щита</label>
+	        <?HTML::select(array('Белый','Черный'),$content->shield,'',"width:230px;",null,'shield');?>
+	        <br><br>
+
+	        <label>Площадь (кв.м)</label>
+	        <div class="bm-input">
+	            <input type="text" id="square" name="square" value="<?=@$content->square?>">
+	        </div>
+
+	        <label>Размеры</label>
+	        <div class="bm-input">
+	            <input type="text" id="scale" name="scale" value="<?=@$content->scale?>">
+	        </div>
+
+	        <label>Цена (млн.руб, через точку, например 10.7)</label>
+	        <div class="bm-input">
+	            <input type="text" id="price" name="price" value="<?=@$content->price?>">
+	        </div>
+
+
+	        <label>Описание</label>
+            <div class="bm-editor">
+                <textarea name="text" id="bm-redactor-<?=$this->tabLanguage?>"><?=@$content->text?></textarea>
+            </div><br>
+
+            <label>Что входит в стоимость</label>
+            <div class="bm-editor">
+                <textarea name="include" id="bm-redactor-include"><?=@$content->include?></textarea>
+            </div><br>
+
+            <label>Заголовок браузера(title)</label>
+	        <div class="bm-input fullwidth">
+	            <input type="text" id="meta_title" name="meta_title" value="<?=@$content->meta_title?>">
+	        </div>
+
+            <label>SEO-описание(description)</label>
+	        <div class="bm-input fullwidth">
+	            <input type="text" id="description" name="description" value="<?=@$content->description?>">
+	        </div>
+
+	        <label>Ключевые слова(keywords)</label>
+	        <div class="bm-input fullwidth">
+	            <input type="text" id="keywords" name="keywords" value="<?=@$content->keywords?>">
+	        </div>
+	    </div>
+	</div>
+</form>
+
+<div style="display:none;">
+	<?$this->multi = false;
+	$this->scale = 'products';
+	$this->renderFile('/upload/image');?>
+</div>

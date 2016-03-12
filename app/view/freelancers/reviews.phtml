@@ -1,0 +1,58 @@
+<div class="comments-items">
+    <?foreach($this->review as $item){?>
+    <div class="comments-item">
+        <div class="comment-rate" data-rating="<?=$item->rating?>">
+            <? for($i=1; $i<=$item->rating; $i++){?>
+                <div class="star active"></div>
+            <? }
+            for($i=1; $i<=5-$item->rating; $i++){?>
+            <div class="star"></div>
+            <?}?>
+        </div>
+        <div class="comment-text">
+            <div class="comment-public-date"><?=$item->created_at?></div>
+            <?=$item->text?>
+        </div>
+    </div>
+    <?}?>
+
+
+</div>
+
+<?if(isset(\App::session('user')->id)){?>
+<div id="comment-form">
+    <form action="/reviews/add" method="post">
+    <input type="hidden" name="id" value="<?=$this->userid?>">
+	<input type="hidden" name="url" value="<?=$this->url?>">
+        <div class="comment-row">
+            <div class="grey-input">
+                <input type="text" id="user_name" name="user_name" onblur="if(this.value==''){this.value='Имя:';}" onfocus="if(this.value=='Имя:'){this.value='';}" readonly="readonly" value="<?=$this->user->firstname?>">
+            </div>
+            <div class="grey-input">
+                <input type="text" id="user_email" name="user_email" onblur="if(this.value==''){this.value='E-mail:';}" onfocus="if(this.value=='E-mail:'){this.value='';}" readonly="readonly" value="<?=$this->user->email?>">
+            </div>
+        </div>
+        <div class="comment-row second">
+            <div class="grey-area">
+                <textarea name="content" id="content" onblur="if(this.value==''){this.value='Текст комментария:';}" onfocus="if(this.value=='Текст комментария:'){this.value='';}">Текст комментария:</textarea>
+            </div>
+        </div>
+        <div class="bottom-block-modal">
+            <input type="hidden" id="comment-rating" name="comment-rating" value="0">
+            <div id="performer-rate">
+                <div id="performer-rate-label">Оценить исполнителя</div>
+                <div class="stars">
+                    <a class="star" href="#"></a>
+                    <a class="star" href="#"></a>
+                    <a class="star" href="#"></a>
+                    <a class="star" href="#"></a>
+                    <a class="star" href="#"></a>
+                </div>
+            </div>
+            <button type="submit" class="blue-button">Отправить</button>
+        </div>
+    </form>
+</div>
+<?}else{?>
+    Зарегистрируйтесь
+<?}?>

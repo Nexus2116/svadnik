@@ -1,0 +1,87 @@
+<script type="text/javascript">
+	$(document).ready(function() {
+		$('input, textarea, .redactor_editor').on('input', function () {
+			$('.bm-changes-block').show();
+		});
+
+		$('.bm-button.send').click(function() {
+			$('form#' + Controller.User.change.id).submit();
+		});
+		$(".js-example-basic-multiple").select2();
+
+	});
+</script>
+<br>
+<form action="<?=HTML::url('/users/save/id/'.$this->currentUser->id)?>" method="POST" id="params">
+	<div class="bm-page-content-editor">
+	    <div class="bm-page-content-editor-top">
+	    
+	        <label>
+	        	Имя пользователя
+	        	<div class="bm-form-error" style="position:relative; float:right;" id="error-name"></div>
+	        </label>
+	        <div class="bm-input fullwidth">
+	            <input type="text" id="firstname" name="firstname" value="<?=$this->currentUser->firstname?>">
+	        </div>	       
+
+	        <label>
+	        	Фамилия
+	        	<div class="bm-form-error" style="position:relative; float:right;" id="error-name"></div>
+	        </label>
+	        <div class="bm-input fullwidth">
+	            <input type="text" id="lastname" name="lastname" value="<?=$this->currentUser->lastname?>">
+	        </div>
+
+	        <label>
+	        	Email пользователя
+	        	<div class="bm-form-error" style="position:relative; float:right;" id="error-email"></div>
+	        </label>
+	        <div class="bm-input fullwidth">
+	            <input type="text" id="email" name="email" value="<?=$this->currentUser->email?>">
+	        </div>
+			
+			<div class="bm-page-editor-left">
+				<label style="margin-bottom: 0;">Про аккаунт</label>
+	            <?HTML::radioUsers($this->currentUser, 'pro')?>
+			</div>
+			<div class="bm-page-editor-right">
+			<label style="margin-bottom: 0;">Подписать на новости</label>
+            <?HTML::radioUsers($this->currentUser, 'newsletter')?>
+			</div>
+			<br><br><br><br><br>
+
+			<div class="bm-page-editor-left">
+	            <label>Информация о <?=$this->currentUser->firstname?></label>
+	            <div class="bm-textarea">
+	                <textarea name="annotation" id="annotation"><?=$this->currentUser->info?></textarea>
+	            </div>
+	        </div>
+
+	        <div class="bm-page-editor-right">
+	            <label>Аватарка</label>
+				<div>
+					<div class="bm-dragndrop" <?if(isset($this->currentUser->avatar)){?> style="background:#ddd url(/public/upload/admin/<?=$this->currentUser->avatar?>) 50% 50%; background-size:cover"<?}?>>
+						<input type="hidden" name="avatar" value="null">
+					    <div class="bm-uploaded" id="image-field-image"></div>
+					</div>
+					<a data-ctrl="Image" data-act="remove" data-id="<?=$this->currentUser->id?>" data-key="avatar" href="/admin/users/removeimage">Удалить</a>
+				</div>
+	        </div>
+
+			<label> Услуги </label>
+			<select data-tags="true" name="services[]" class="js-example-basic-multiple" multiple="multiple" style="width:100%;">
+			<?foreach($this->services as $key => $item){?>
+			  <option <?=@$this->NameServices[$key]->id == $item['id']?'selected="selected"':''?>  value="<?=$item['id']?>"><?=$item['name']?></option>
+			<?}?>
+			</select>
+
+	    </div>
+	</div>
+	<input type="submit" style="visibility:hidden;">
+</form>
+
+
+
+
+
+<!-- +portfolio -->

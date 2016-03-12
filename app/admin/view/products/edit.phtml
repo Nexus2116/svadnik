@@ -1,0 +1,41 @@
+	<div class="bm-page-header new">
+	    <h1>
+	        <?=$this->article->name?>
+	    </h1>
+	    <div class="bm-changes-message">
+	    	Изменения сохранены
+	    </div>
+	    <div class="bm-changes-block">
+	        <div class="bm-changes-block-title">Были внесены изменения</div>
+	        <div class="bm-buttons">
+	            <button class="bm-button cancel">Отменить</button>
+	            <button type="submit" class="bm-button" data-ctrl="Articles" data-act="saveform">Сохранить</button>
+	        </div>
+	    </div>
+	    <div id="bm-header-buttons">
+	        <div class="bm-circle-button config" data-ctrl="Articles" data-act="options" url="<?=HTML::url('/articles/options/id/' . $this->article->id);?>"></div>
+	        <div class="bm-circle-button view"></div>
+	    </div>
+	</div>
+	<div id="bm-tab-menu">
+		<?foreach (\App::config()->langs as $key => $value) {
+			$clazz = '';
+			if($this->tabLanguage == $key)
+				$clazz = 'active';?>
+			<a href="<?=HTML::url('/products/edit/id/'.$this->article->id.'/lng/'.$key);?>" class="<?=$clazz;?>" data-ctrl="Page"><?=$value?></a>
+		<?}
+
+		$clazz = '';
+		if($this->showGallery == true)
+			$clazz = 'active';?>
+
+	    <a href="<?=HTML::url('/products/edit/id/'.$this->article->id.'/gallery');?>" class="galleryLink <?=$clazz?>" data-ctrl="Page">
+	    	Фотогалерея
+	    </a>
+	</div>
+
+	<div id="bm-page-tabs">
+	    <div class="bm-page-tab <?=$clazz?>">
+	    	<?=$this->renderFile('products/' . $this->file);?>
+	    </div>
+	</div>

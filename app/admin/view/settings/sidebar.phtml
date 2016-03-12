@@ -1,0 +1,21 @@
+<div class="content-items settings" style="display: none;">
+    <div class="content-items-scroll-layer" style="height: 306px;">
+        <div class="content-items-list" style="width: 286px;">
+            <a class="content-item all" href="<?=HTML::url('/settings');?>" data-ctrl="Page">
+            	<span>Параметры сайта</span>
+            </a>
+
+            <?if($this->admin->role == 1) {?>
+                <a class="content-item all" data-type="users" href="<?=HTML::url('/user/index');?>" data-ctrl="Page">
+                    <span>Пользователи</span>
+                </a>
+            <?}?>
+            <?if($this->admin->role == 1) {?>
+	            <a class="content-item all" data-type="users" href="<?=HTML::url('/users/index');?>" data-ctrl="Page">
+	            	<span>Клиенты</span>
+	            </a>
+            <?}?>
+        </div>
+    </div>
+    <div class="scroller-line"></div>
+</div>

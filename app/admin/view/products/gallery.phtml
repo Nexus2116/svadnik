@@ -1,0 +1,127 @@
+	<script type="text/javascript">
+		var articleType = '<?=$this->article->type;?>'
+		var articleId = <?=$this->article->id?>;
+
+		$(document).ready(function () {
+			$("#preloaderText, .bm-dragndrop-caption").dropzone({
+		    	url: "/admin/upload/gallery/id/" + articleId + '/scale/' + articleType,
+		    	createImageThumbnails: false,
+		    	previewsContainer: false,
+		    	totaluploadprogress: function(status, qwe, asd) {
+		    		if(status == 100)
+		    			$('.galleryLink').trigger('click');
+		    	},
+		    	sending: function(file, formData) {
+		    		$('#preloaderText').hide();
+		    		$('#preloaderForDropzone').show();
+		    	}
+		    });
+
+		    $( "#bm-photogallery" ).sortable({
+		    	stop: function(event, ui) {
+		    		Controller.Image.sort();
+		    	}
+		    });
+		    $( "#bm-photogallery" ).disableSelection();
+		});
+	</script>
+	<?if(!$this->gallery->isEmpty()) {?>
+	    <div id="bm-photogallery">
+	    	<?foreach ($this->gallery as $image) {?>
+	    		<script>
+	    			$(document).ready(function() {
+	    				var form = new Form({
+							id : 'comment_<?=$image->id?>',
+							type: 'json',
+							success : function (data) {
+								$('.commentSaved').show();
+								setTimeout(function() {
+									$('.commentSaved').hide();
+								}, 3000);
+							}
+						});
+	    			});
+	    		</script>
+		        <div class="bm-photo-preview-wrap" data-id="<?=$image->id?>">
+		            <div class="bm-photo-preview" style="background:#fff url(/public/upload/admin/<?=$image->path?>) 50% 50%; background-size:cover">
+		                <div class="bm-photo-tools">
+		                	<?HTML::radio($image, 'image_publish', null, false);?>
+		                    <div class="bm-comment-button"></div>
+		                    <div class="bm-del-button" data-ctrl="Image" data-act="delete" data-image="<?=$image->id?>" data-scale="<?=$this->article->type?>"></div>
+		                </div>
+		            </div>
+		            <div class="bm-comment-photo-block">
+		                <div class="bm-comment-photo-block-close"></div>
+		                <div class="bm-comment-photo-title">Комментарий <span style="font-size:10px; display:none;" class="commentSaved">cохранен</span></div>
+		                <form action="<?=HTML::url('/image/comment')?>	" METHOD="POST" id="comment_<?=$image->id?>">
+		                	<input type="hidden" name="id" value="<?=$image->id?>">
+
+		                    <div class="bm-select-list-wrap" style="width:130px; float:left; margin-right:10px;">
+		                        <div class="bm-select-title" data-ctrl="Selector">Русский</div>
+		                        <div class="bm-select-list">
+		                        	<?foreach (\App::config('langs') as $key => $value) {?>
+			                            <div class="bm-select-list-item" data-lang="<?=$key?>" style="text-indent:7px;" data-ctrl="Selector" data-act="lang" data-image="<?=$image->id?>">
+			                            	<?=$value?>
+			                            </div>
+		                            <?}?>
+		                        </div>
+		                    </div>
+
+		                    <div style="float:left;">
+			                    <?$str = '';
+						        if($image->center == 1)
+						        	$str = 'active';?>
+						        <label style="color:white;">Центрировать</label>
+						        <div class="bm-checkbox <?=$str?>" data-ctrl="Checkbox">
+						        	<input type="hidden" value="<?=$image->center?>" name="center" class="checkValue">
+						            <div class="bm-checkbox-choice"></div>
+						        </div>
+					        </div>
+
+		                    <div class="bm-textarea">
+		                    	<?foreach (\App::config('langs') as $key => $value) {
+		                    		$str = 'display:none;';
+		                    		if($key == 'ru')
+		                    			$str = '';?>
+		                    		<textarea id="comment_<?=$image->id?>_<?=$key?>" name="comment[<?=$key?>]" style="<?=$str?>"><?=@$image->alt->$key;?></textarea>
+		                    	<?}?>
+		                    </div>
+		                    <div class="bm-buttons">
+		                        <button type="submit" class="bm-button">Сохранить</button>
+		                        <button type="button" class="bm-button cancel">Отменить</button>
+		                    </div>
+		                </form>
+		            </div>
+		        </div>
+	        <?}?>
+	    </div>
+	<?}?>
+
+    <div id="bm-photogallery-footer">
+    	<a class="bm-add-photo" href="#">Добавить фото</a>
+        <!--
+        <div id="bm-del-photogallery"></div>
+        <div class="bm-radio-button">
+            <label>Online</label>
+            <div class="bm-radio main on">
+                <div class="bm-radio-off"></div>
+                <div class="bm-radio-on"></div>
+                <div class="bm-radio-switcher"></div>
+            </div>
+        </div>
+        -->
+
+        <div class="bm-dragndrop big" style="cursor:pointer;">
+        	<div id="preloaderText">
+		        <div class="bm-dragndrop-img"></div>
+		        <div class="bm-dragndrop-caption">
+		        	Для загрузки изображений<br>переместите их в эту область
+		        	<input name="userfiles" type="file" multiple style="display:none;"/>
+		        </div>
+		    </div>
+
+	        <div id="preloaderForDropzone" style="background: url('/public/images/preloader.gif') no-repeat 50% 50%; width: 100%; height:100%; display:none;"></div>
+	    </div>
+
+
+    </div>

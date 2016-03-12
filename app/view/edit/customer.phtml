@@ -1,0 +1,228 @@
+<div id="tab-pages">
+        <div class="tab-page active">
+            <div id="user-page">
+                <div class="container">
+	            <div id="user-photo" style="background: url(public/upload/big/<?=$this->user->avatar?>) 50% 50%;background-size: cover;">
+                        <a href="#" class="change avatar"><span>Изменить фото</span></a>
+                        <form action="/edit/uploadfile" method="post" id="upload-preview" enctype="multipart/form-data">
+                            <input type="file" name="userfiles" id="avatar-upload">
+                            <input type="hidden" name="type" value="avatar">
+                        </form>
+                    </div>
+
+                    <script type="text/javascript">
+
+                        $("#avatar-upload").submit(function() { return false; });
+
+                        $("#avatar-upload").on("change", function(){
+                            $("#upload-preview").submit();
+                        });
+                    </script>
+
+	                <form action="/edit" method="post">
+	                    <input type="hidden" name="mode" value="2">
+                        <div class="big-title blue">
+                            <span>
+                                <span class="user-name"><?=$this->user->firstname?></span>
+                                <div class="change-name-block">
+                                    <div class="top-input name">
+                                        <input id="new-name" name="new-name" type="text" onblur="if(this.value==''){this.value='Введите имя';}" onfocus="if(this.value=='Введите имя'){this.value='';}" value="Введите имя">
+                                    </div>
+                                    <button type="submit" class="green-button">Изменить</button>
+                                </div>
+                                <a href="#" class="change name"><span>Редактировать имя</span></a>
+                            </span>
+                        </div>
+                    </form>
+
+                    <form action="/edit" method="post" id="user-data" class="user-password">
+                        <input type="hidden" name="mode" value="3">
+                        <div class="change-password">
+                            <div class="change-password-block">
+                                <div class="top-input">
+                                    <input id="new-pass" name="new-pass" type="text" onblur="if(this.value==''){this.value='Введите пароль';}" onfocus="if(this.value=='Введите пароль'){this.value='';}" value="Введите пароль">
+                                </div>
+                                <div class="top-input">
+                                    <input id="repeat-pass" name="repeat-pass" type="text" onblur="if(this.value==''){this.value='Повторите пароль';}" onfocus="if(this.value=='Повторите пароль'){this.value='';}" value="Повторите пароль">
+                                </div>
+                                <button type="submit" class="green-button">Изменить</button>
+                            </div>
+                            <a class="change-pass" href="#"><span>Изменить пароль</span></a>
+                        </div>
+                    </form>
+
+                    <form action="/edit" method="post">
+                        <input type="hidden" name="mode" value="1">
+                        <div class="top-input">
+                            <input id="user-phone" name="user-phone" type="text" onblur="if(this.value==''){this.value='Телефон';}" onfocus="if(this.value=='Телефон'){this.value='';}" value="<?=$this->user->phone?>">
+                        </div>
+                        <div class="top-input">
+                            <input id="user-mail" name="user-mail" type="text" onblur="if(this.value==''){this.value='zxczxc@zxc.zx';}" onfocus="if(this.value=='zxczxc@zxc.zx'){this.value='';}" value="<?=$this->user->email?>">
+                        </div>
+
+                        <div class="top-label">Аккаунт:</div>
+                        <div class="top-value">Стандарт</div>
+                        <a href="#" class="top-link-change">Купить PRO</a>
+                        <br><br>
+                        <button type="submit" class="green-button">Сохранить</button>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+        <div class="tab-page">
+            <div class="big-title blue">рассчитайте бюджет мероприятия</div>
+            <div class="min-title"><span>экспресс калькулятор (до 3 услуг)</span><a href="#">Полная версия калькулятора</a></div>
+            <div class="container">
+                <div class="calc-services">
+                    <div class="calc-service" data-id="photo">
+                        <a href="#" class="cat-item photo">
+                            <div class="cat-img"></div><span>Фото</span>
+                        </a>
+                        <div class="price-slider-wrap">
+                            <div class="price-slider-chb">
+                                <div class="chb">
+                                    <div class="check"></div>
+                                </div>
+                                <label>Стоимость в час</label>
+                            </div>
+                            <div class="price-slider-chb">
+                                <div class="chb">
+                                    <div class="check"></div>
+                                </div>
+                                <label>Стоимость за мероприятие / услугу</label>
+                            </div>
+
+                            <div class="price-slider-line" data-minprice="1000" data-maxprice="10000">
+                                <div class="price-slider-fill"></div>
+                                <div class="price-slide left"><span>1000</span></div>
+                                <div class="price-slide right"><span>10000</span></div>
+                            </div>
+                        </div>
+                        <div class="calc-count">
+                            <div class="calc-count-title">Найдено исполнителей</div>
+                            <a href="#">36</a>
+                        </div>
+                    </div>
+                    <div class="calc-service" data-id="agency">
+                        <a href="#" class="cat-item agency">
+                            <div class="cat-img"></div><span>Свадебные агентства</span>
+                        </a>
+                        <div class="price-slider-wrap">
+                            <div class="price-slider-chb">
+                                <div class="chb">
+                                    <div class="check"></div>
+                                </div>
+                                <label>Стоимость в час</label>
+                            </div>
+                            <div class="price-slider-chb">
+                                <div class="chb">
+                                    <div class="check"></div>
+                                </div>
+                                <label>Стоимость за мероприятие / услугу</label>
+                            </div>
+
+                            <div class="price-slider-line" data-minprice="1000" data-maxprice="15000">
+                                <div class="price-slider-fill"></div>
+                                <div class="price-slide left"><span>1000</span></div>
+                                <div class="price-slide right"><span>15000</span></div>
+                            </div>
+                        </div>
+                        <div class="calc-count">
+                            <div class="calc-count-title">Найдено исполнителей</div>
+                            <a href="#">36</a>
+                        </div>
+                    </div>
+                </div>
+                <div id="add-service-block">
+                    <a href="#" class="add-service"><span>Добавить услугу</span></a>
+                </div>
+                <div id="budget-block">
+                    <div class="min-title">
+                        Примерный бюджет вашего мероприятия
+                        <a href="#">Сохранить бюджет</a>
+                    </div>
+                    <div id="budget-price">13500</div>
+                    <div class="price-slider-line" data-minprice="2000" data-maxprice="25000">
+                        <div class="price-slider-fill" style="width: 198.391304347826px;"></div>
+                        <div class="price-slide right" style="left: 198.391304347826px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-page">
+            <div id="request">
+                <div class="container">
+                    <div class="big-title blue">
+                        Закажите услуги на свадьбу или праздник
+                    </div>
+                    <div class="min-title">Вам ответят в течение 15 минут</div>
+                    <form action="/edit" id="request-form" method="post">
+                        <div class="top-line">
+                            <div class="top-input">
+                                <input id="req-title" name="req-title" type="text" onblur="if(this.value==''){this.value='Краткий заголовок заявки';}" onfocus="if(this.value=='Краткий заголовок заявки'){this.value='';}" value="Краткий заголовок заявки">
+                            </div>
+                            <div class="top-input date">
+                                <div class="calendar-ico"></div>
+                                <input id="req-date-since" name="req-date-since" type="text" onblur="if(this.value==''){this.value='Дата начала';}" onfocus="if(this.value=='Дата начала'){this.value='';}" value="Дата начала" readonly="readonly">
+                            </div>
+                            <div class="top-input date">
+                                <div class="calendar-ico"></div>
+                                <input id="req-date-to" name="req-date-to" type="text" onblur="if(this.value==''){this.value='Дата завершения';}" onfocus="if(this.value=='Дата завершения'){this.value='';}" value="Дата завершения" readonly="readonly">
+                            </div>
+                        </div>
+                        <div class="top-line">
+                            <div class="top-area">
+                                <textarea name="req-text" id="req-text" onblur="if(this.value==''){this.value='Максимально подробное описание заявки';}" onfocus="if(this.value=='Максимально подробное описание заявки'){this.value='';}">Максимально подробное описание заявки</textarea>
+                            </div>
+                            <div class="top-area min contacts">
+                                <div class="top-input">
+                                    <input id="req-title" name="req-phone" type="text" onblur="if(this.value==''){this.value='Телефон';}" onfocus="if(this.value=='Телефон'){this.value='';}" value="Телефон">
+                                </div>
+                                <div class="top-input">
+                                    <input id="req-title" name="req-mail" type="text" onblur="if(this.value==''){this.value='E-mail';}" onfocus="if(this.value=='E-mail'){this.value='';}" value="E-mail">
+                                </div>
+                            </div>
+                            <div class="top-check">
+                                <div class="top-line">
+                                    <div class="chb">
+                                        <div class="check"></div>
+                                    </div>
+                                    <label>Видно только специалистам</label>
+                                </div>
+                                <div class="top-line">
+                                    <div class="chb">
+                                        <div class="check"></div>
+                                    </div>
+                                    <label>Видно всем (платно)</label>
+                                </div>
+                                <div class="top-line">
+                                    <div class="chb">
+                                        <div class="check"></div>
+                                    </div>
+                                    <label>Скрыто, жду писем в личку</label>
+                                </div>
+                                <a href="#" class="reg">Регистрация на сайте</a>
+                            </div>
+                        </div>
+                        <div class="top-services-wrap">
+                            <div class="top-services">
+                                <div class="top-service" data-id="photo">
+                                    <span>Фото</span>
+                                    <div class="remove"></div>
+                                </div>
+                                <div class="top-service" data-id="beauty">
+                                    <span>Мастера красоты</span>
+                                    <div class="remove"></div>
+                                </div>
+                                <a href="#" class="add-service">Добавить услугу</a>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="green-button">Отправить заявку</button>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>

@@ -1,0 +1,7 @@
+<?foreach($this->news as $item){?>
+    <a href="/news/<?=$item['url']?>" class="news-item">
+        <div class="public-date"><?=$item['date']?></div>
+        <div class="news-title"><?=$item['title']?></div>
+			<?=$item['annotation']?>
+    </a>
+<?}?>

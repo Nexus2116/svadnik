@@ -1,0 +1,17 @@
+body {-webkit-print-color-adjust: exact;}
+#header{display: none}
+#tab-menu{display: none}
+#orders-block{display: none}
+#catalog-block{display: none}
+#lastnews-block{display: none}
+#footer{display: none}
+#top-block{display: none}
+#add-service-block{display: none}
+#budget-block{margin-left: -30%}
+.price-slider-wrap{margin-left: -10%}
+.add-service-ico{display: none}
+.performer-block{width: 65%}
+.performer-line{display: none}
+.lightblue-button{display: none}
+.morephoto{display: none}
+.performer-busy{display: none}

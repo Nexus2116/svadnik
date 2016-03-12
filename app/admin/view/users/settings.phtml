@@ -1,0 +1,41 @@
+<script>
+	$(document).ready(function() {
+		$('#showpasswordcheckbox').click(function() {
+			if($('.showpass').hasClass('active')) {
+				$('.showpass').removeClass('active');
+				$('.password-hide').attr({'type' : 'password'});
+			} else {
+				$('.showpass').addClass('active');
+				$('.password-hide').attr({'type' : 'text'});
+			}
+		});
+	});
+</script>
+<div class="bm-modal-title">
+    <div class="bm-modal-title-ico"></div>
+    Мои параметры
+</div>
+<form action="<?=HTML::url('/users/settings')?>" id="user_settings_form" method="POST">
+	<input type="hidden" name="id" value="<?=$_SESSION['admin']->id;?>">
+    <label>Введите новый пароль</label>
+    <div class="bm-input-wrap">
+        <input type="password" name="password" id="password" class="password-hide"/>
+    </div>
+    <label>Повторите пароль</label>
+    <div class="bm-input-wrap">
+        <input type="password" name="passrepeat" id="passrepeat" class="password-hide"/>
+    </div>
+    <div class="bm-checkbox-block">
+        <div class="bm-checkbox modal showpass">
+            <div class="bm-checkbox-choice"></div>
+        </div>
+        <div class="bm-checkbox-label" id="showpasswordcheckbox">Показать пароль</div>
+        <div class="bm-form-error">
+            Пароли не совпадают
+        </div>
+    </div>
+    <div class="bm-buttons">
+        <button type="submit" class="bm-button">Сохранить</button>
+        <button class="bm-button cancel">Отмена</button>
+    </div>
+</form>

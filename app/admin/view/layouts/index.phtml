@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<!--[if IE 7 ]><html lang="en" class="no-js ie7"><![endif]-->
+<!--[if IE 8 ]><html lang="en" class="no-js ie8"><![endif]-->
+<!--[if IE 9]><html lang="en" class="no-js ie9"><![endif]-->
+<!--[if IE 10]><html class="no-js ie10" lang="en"><![endif]-->
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+    <title>Brandmill CMS</title>
+
+    <meta name="viewport" content="width=1000,maximum-scale=1.0,user-scalable=1">
+    <meta name = "format-detection" content = "telephone=no" />
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,300,600,700&subset=latin,cyrillic-ext,cyrillic' rel='stylesheet' type='text/css'>
+
+    <?$this->includeCss();?>
+    <?$this->includeJs();?>
+
+
+</head>
+
+<body>
+    <div id="all-content">
+        <div id="header">
+            <div id="header-title">
+                Svadnik
+            </div>
+            <div id="header-profile">
+                <div id="header-profile-icon"></div>
+                <div id="header-profile-control">
+                    <span id="admins_login" href="<?=HTML::url('/user/options')?>" data-ctrl="User" data-act="modal" data-form="options"><?=$_SESSION['admin']->name;?></span>
+                    <div id="header-profile-settings" href="<?=HTML::url('/user/settings')?>" data-ctrl="User" data-act="modal" data-form="passwords">
+                        <div id="header-profile-settings-icon"></div>
+                    </div>
+                    <a href="<?=\HTML::url('/logout');?>" id="header-profile-exit">
+                        <div id="header-profile-exit-icon"></div>
+                    </a>
+                </div>
+            </div>
+
+            <div id="header-search">
+                    <input id="search_input" type="text" name="search-text"/>
+                <div id="header-search-icon"></div>
+                <div id="header-search-close">
+                    <div id="header-search-close-icon"></div>
+                </div>
+            </div>
+            <script type="text/javascript">
+            $(function(){
+                $('#search_input').keydown(function(e){
+                    if (e.keyCode == 13) {
+                        Controller.Articles.search($(this), e);
+                    }
+                });
+            });
+            </script>
+
+            <?if($this->admin->role == 1) {?>
+	            <div id="header-users">
+	                <span href="<?=HTML::url('/user/index')?>" data-ctrl="User" data-act="all">
+	                	<?=count($this->admins)?> человек
+	                </span>
+	                <ul>
+	                	<?foreach ($this->admins as $admin) {?>
+	                    	<li>
+								<a href="<?=HTML::url('/user/edit/id/' . $admin->id)?>" data-ctrl="Page"><?=$admin->name?></a>
+	                    	</li>
+	                    <?}?>
+	                </ul>
+	            </div>
+	        <?}?>
+        </div>
+        <div id="content-bookmarks">
+            <!--<a href="<?=HTML::url('/index')?>" class="content-bookmark statictics <?HTML::activeTab('statictics')?>"></a>-->
+            <a class="content-bookmark file <?HTML::activeTab('file')?>"></a>
+            <a class="content-bookmark settings <?HTML::activeTab('settings')?>"></a>
+            <a class="content-bookmark help <?HTML::activeTab('help')?>"></a>
+
+            <a href="http://brandmill.ru" target="_blank" id="brandmill"></a>
+        </div>
+
+        <div id="main-content">
+        	<?$this->render();?>
+        </div>
+
+        <div id="content-items">
+        	<?foreach (\App::config('sidebar') as $sidebar)
+        		$this->renderFile($sidebar . '/sidebar');?>
+            <div id="content-items-resize"></div>
+        </div>
+    </div>
+
+    <div class="bm-modal">
+    	<div class="bm-modal-content">
+	    	<div class="bm-modal-bg"></div>
+	    	<div class="bm-modal-empty"></div>
+	    	<div class="bm-modal-window"></div>
+	    	<div class="bm-modal-empty"></div>
+	    </div>
+    </div>
+</body>
+</html>

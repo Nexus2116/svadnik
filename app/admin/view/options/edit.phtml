@@ -1,0 +1,21 @@
+	<div class="bm-page-header new">
+	    <h1>
+	        Планировка <?=$this->article->name?>
+	    </h1>
+	    <div class="bm-changes-message">
+	    	Изменения сохранены
+	    </div>
+	    <div class="bm-changes-block">
+	        <div class="bm-changes-block-title">Были внесены изменения</div>
+	        <div class="bm-buttons">
+	            <button class="bm-button cancel">Отменить</button>
+	            <button type="submit" class="bm-button" data-ctrl="Articles" data-act="saveform">Сохранить</button>
+	        </div>
+	    </div>
+	</div>
+	<br>
+	<div id="bm-page-tabs">
+	    <div class="bm-page-tab active">
+	    	<?=$this->renderFile('options/content');?>
+	    </div>
+	</div>

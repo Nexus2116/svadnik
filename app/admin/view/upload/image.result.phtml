@@ -1,0 +1,7 @@
+<script src="/public/js/admin/jquery.min.js"></script>
+
+<script type="text/javascript">
+	var image = '/public/upload/admin/<?=$this->image["newname"];?>';
+
+	$('#image-field-<?=$this->field?>', window.parent.document).css({'background':'#fff url('+image+') 50% 50%', 'background-size':'cover'});
+</script>

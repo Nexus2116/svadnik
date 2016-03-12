@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]> <html class="lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]> <html class="lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]> <html class="lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html lang="en"> <!--<![endif]-->
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<title>Brandmill CMS | Login</title>
+		<?$this->includeCss();?>
+		<?$this->includeJs();?>
+
+		<script type="text/javascript">
+			$(document).ready(function() {
+				var form = new Form({
+					id : 'loginForm',
+					type: 'json',
+					rules: {
+						login: {
+							required: {error: 'Обязательно для заполнения'}
+						},
+						password: {
+							required: {error: 'Обязательно для заполнения'}
+						}
+					},
+					before: function () {
+						$('input').css({'border': 'none'});
+					},
+					fails : function(errors) {
+						$('#error').text('');
+						for (var key in errors.fields)
+							$('input#'+key).css({'border': '1px solid red'});
+					},
+					success : function (data) {
+						if(data.valid == false) {
+							if(data.errors != undefined)
+								for (var key in data.error)
+									$('#error').append(data.error[key]+"<br>");
+							else if(data.error != undefined)
+								$('#error').text(data.error);
+
+						}
+						else if(data.url != undefined)
+							window.location.href = data.url;
+					}
+				});
+			});
+		</script>
+	</head>
+
+	<body>
+    <form method="post" action="<?=HTML::url('/auth')?>" class="login" id="loginForm">
+        <div id="login-logo">
+            Svadnik
+        </div>
+            <div class="bm-input-wrap">
+                <input type="text" name="login" id="login" value="" onblur="if (this.value==''){this.value='логин';this.style.fontStyle = 'italic';this.style.color = '#999';}" onclick="if (this.value=='логин'){this.value='';this.style.fontStyle = 'normal';this.style.color = '#000';}">
+            </div>
+            <div class="bm-input-wrap">
+                <input type="password" name="password" id="password" value="" onblur="if (this.value=='') {this.value='пароль'; this.type = 'text';this.style.fontStyle = 'italic';this.style.color = '#999';}" onclick="if (this.value=='пароль'){this.value=''; this.type = 'password';this.style.fontStyle = 'normal';this.style.color = '#000';}">
+            </div>
+
+		    <button type="submit" class="login-button">Войти</button>
+			<div style="color:red; font-size:13px; margin-left:100px;" id="error"></div>
+		</form>
+	</body>
+
+</html>

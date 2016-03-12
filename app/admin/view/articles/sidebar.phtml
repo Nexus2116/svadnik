@@ -1,0 +1,23 @@
+<div class="content-items file">
+    <div class="content-items-scroll-layer">
+        <div class="content-items-list">
+            <a class="content-item all" href="<?=HTML::url('/articles')?>" data-ctrl="Page" style="font-weight: bold;" id="allpageslink">
+                <span>Все страницы</span>
+            </a>            
+            <a class="content-item all" href="<?=HTML::url('/news')?>" data-ctrl="Page" style="font-weight: normal;" id="allpageslink">
+            	<span>Новости</span>
+            </a>
+            <?if($this->tree != null)
+            		echo HTML::menu(0);
+            	else
+            		echo '<ul class="sidebarArticlesMenu"></ul>'?>
+        	<a href="<?=HTML::url('/articles/options');?>" class="content-main-item-add" data-ctrl="Articles" data-act="create"></a>
+        </div>
+    </div>
+    <div class="scroller-line"></div>
+    <!--<div id="remove-content-items">
+        <a href="#">
+            Удаленные
+        </a>
+    </div>-->
+</div>

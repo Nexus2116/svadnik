@@ -1,0 +1,82 @@
+<script type="text/javascript">
+	Controller.Articles.content<?=$this->tabLanguage?> = {
+		id : 'content_<?=$this->tabLanguage?>',
+		type: 'json',
+		fails : function(errors) {
+			Controller.Articles.content<?=$this->tabLanguage?>.show(error);
+		},
+		success : function (data) {
+			Controller.Articles.content<?=$this->tabLanguage?>.show(data.message);
+			$('.bm-changes-block').hide();
+		},
+
+		show: function(text) {
+			$('.bm-changes-message').text(text);
+			$('.bm-changes-message').show();
+			setInterval(function() {
+				$('.bm-changes-message').hide();
+			}, 5000);
+		}
+	};
+	
+	$(document).ready(function() {
+		formHandler = new Form(Controller.Articles.content<?=$this->tabLanguage?>);
+
+		$('.bm-dragndrop').click(function() {
+			val = $(this).find('input').val();
+			$('#fileUpload .image-field').attr({'value' : val});
+			$('.fileUploadButton').click();
+		});
+
+		$('.fileUploadButton').change(function() {
+			$('#fileUpload').submit();
+		});
+
+		$('input, textarea, .redactor_editor').on('input', function () {
+			$('.bm-changes-block').show();
+		})
+	});
+</script>
+
+<form action="<?=HTML::url("/" . $this->article->type . "/edit/id/" . $this->article->id)?>" method="POST" id="content_<?=$this->tabLanguage?>" class="articleEditForm" data-form="main">
+	<input type="submit" class="sendForm" style="position:absolute; visibility:hidden;">
+	<input type="hidden" name="id" value="<?=$this->article->id?>">
+	<input type="hidden" name="parent_id" value="<?=$this->article->parent_id?>">
+	<div class="bm-page-content-editor">
+	    <div class="bm-page-content-editor-top">
+	    	<label>Заголовок</label>
+	        <div class="bm-input" style="float:left; margin-right:20px;">
+	            <input type="text" name="caption" value="<?=@$this->option->caption?>">
+	        </div>
+
+	        <div class="bm-page-editor-right" style="margin-top:-30px; margin-bottom:20px;">
+	            <label>Превью</label>
+				<?HTML::image($this->article);?>
+	        </div>
+
+	    	<table style="width:100%;">
+	    	<?$i = 0;
+	    	foreach (\App::config('plan') as $key => $value) {
+	    		if($i == 0) {echo "<tr>";}?>
+		        	<td>
+			        <label><?=$value?> (кв.м)</label>
+			        <div class="bm-input">
+			        	<?$value = '';
+			        	if($this->option != null)
+			        		$value = $this->option->get($key);?>
+			            <input type="text" name="options[<?=$key?>]" value="<?=$value?>">
+			        </div>
+			        </td>
+			    <?if($i == 2) {echo "</tr>"; $i = 0; continue;}
+		    	$i++;
+		    }?>
+		    </table>
+	    </div>
+	</div>
+</form>
+
+<div style="display:none;">
+	<?$this->multi = false;
+	$this->scale = 'options';
+	$this->renderFile('/upload/image');?>
+</div>
