@@ -1,123 +1,133 @@
-<!--[if IE 7 ]><html lang="en" class="no-js ie7"><![endif]-->
-<!--[if IE 8 ]><html lang="en" class="no-js ie8"><![endif]-->
-<!--[if IE 9]><html lang="en" class="no-js ie9"><![endif]-->
+<!--[if IE 7 ]>
+<html lang="en" class="no-js ie7"><![endif]-->
+<!--[if IE 8 ]>
+<html lang="en" class="no-js ie8"><![endif]-->
+<!--[if IE 9]>
+<html lang="en" class="no-js ie9"><![endif]-->
 <html>
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-        <meta content="IE=Edge" http-equiv="X-UA-Compatible">
-        <meta name="SKYPE_TOOLBAR" content="SKYPE_TOOLBAR_PARSER_COMPATIBLE" />
-        <meta name = "format-detection" content = "telephone=no" />
-        <meta name="viewport" content="width=1084,maximum-scale=1.0,user-scalable=1" />
-        <title>Свадьба и праздник в один клик</title>
-        <link rel="stylesheet" type="text/css" href="/public/fonts/fonts.css">
-        <?$this->includeCss();?>
-        <?$this->includeJs();?>
-        <script src="http://maps.googleapis.com/maps/api/js?sensor=false&amp;libraries=places"></script>
-    </head>
-    <body>
-        <div id="all-content">
-            <div id="top-block">
-                <div id="header">
-                    <div class="container">
-                        <a  href="/" class="header-logo">
-                            <img src="/public/images/interface/logo.png" alt=""/>
-                        </a>
-                        <div id="header-city">
-                            Выберите город: <a href="#" class="select-city">Москва</a>
-                        </div>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+    <meta name="SKYPE_TOOLBAR" content="SKYPE_TOOLBAR_PARSER_COMPATIBLE"/>
+    <meta name="format-detection" content="telephone=no"/>
+    <meta name="viewport" content="width=1084,maximum-scale=1.0,user-scalable=1"/>
+    <title>Свадьба и праздник в один клик</title>
+    <link rel="stylesheet" type="text/css" href="/public/fonts/fonts.css">
+    <? $this->includeCss(); ?>
+    <? $this->includeJs(); ?>
+    <script src="http://maps.googleapis.com/maps/api/js?sensor=false&amp;libraries=places"></script>
+</head>
+<body>
+<div id="all-content">
+    <div id="top-block">
+        <div id="header">
+            <div class="container">
+                <a href="/" class="header-logo">
+                    <img src="/public/images/interface/logo.png" alt=""/>
+                </a>
+                <div id="header-city">
+                    Выберите город: <a href="#" class="select-city">Москва</a>
+                </div>
 
-                        <? if(\Bootstrap::userSession()){?>
-                            <div id="header-login">
-                                <a href="/edit"><?=htmlspecialchars(\Bootstrap::userSession()->firstname)?></a>
-                                &nbsp;
-                                <a href="/logout">Выйти</a>
-                                &nbsp;
-                                <a href="#" class="open-chat">Чат</a>
-                            </div>
-                        <?}else{?>
-                            <div id="header-login">
-                                <a href="#" class="login-link">Войти</a>
-                                <a href="#" class="reg-link reg">Регистрация</a>
-                            </div>
-                        <?}?>
+                <? if(\Bootstrap::userSession()){ ?>
+                    <div id="header-login">
+                        <a href="/edit"><?= htmlspecialchars(\Bootstrap::userSession()->firstname) ?></a>
+                        &nbsp;
+                        <a href="/logout">Выйти</a>
+                        &nbsp;
+                        <a href="#" class="open-chat">Чат</a>
+                    </div>
+                <? } else{ ?>
+                    <div id="header-login">
+                        <a href="#" class="login-link">Войти</a>
+                        <a href="#" class="reg-link reg">Регистрация</a>
+                    </div>
+                <? } ?>
 
-                        <div id="header-menu">
-							<?=\Bootstrap::Menu('top-menu');?>
-                       </div>
-                        <div id="header-phone">
-                            <?=\App::config('phone');?>
-                        </div>
-                        <div id="header-search">
-                            <div class="input-search">
-                                <form action="/search">
-                                    <input id="search-top" name="search" type="text" onblur="if(this.value==''){this.value='Поиск';}" onfocus="if(this.value=='Поиск'){this.value='';}" value="Поиск">
-                                </form>
-                            </div>
-                        </div>
+                <div id="header-menu">
+                    <?= \Bootstrap::Menu('top-menu'); ?>
+                </div>
+                <div id="header-phone">
+                    <?= \App::config('phone'); ?>
+                </div>
+                <div id="header-search">
+                    <div class="input-search">
+                        <form action="/search">
+                            <input id="search-top" name="search" type="text" onblur="if(this.value==''){this.value='Поиск';}" onfocus="if(this.value=='Поиск'){this.value='';}" value="Поиск">
+                        </form>
                     </div>
                 </div>
-                <?=$this->render();?>
             </div>
-                <?=$this->indexPage?$this->getContent('layouts/orders'):null?>
-                <?=!$this->hideServices?$this->getContent('layouts/services'):null?>
+        </div>
+        <?= $this->render(); ?>
+    </div>
+    <?= $this->indexPage ? $this->getContent('layouts/orders') : null ?>
+    <?= !$this->hideServices ? $this->getContent('layouts/services') : null ?>
 
-        <div id="footer">
+    <div id="footer">
         <div class="container">
             <div id="footer-menu">
-                <?=\Bootstrap::Menu('bottom-menu');?>
+                <?= \Bootstrap::Menu('bottom-menu'); ?>
             </div>
             <div id="footer-search">
                 <div class="input-search">
-                        <form action="/search">
-                    <input id="search-bottom" name="search" type="text" onblur="if(this.value==''){this.value='Поиск';}" onfocus="if(this.value=='Поиск'){this.value='';}" value="Поиск">
-                        </form>
+                    <form action="/search">
+                        <input id="search-bottom" name="search" type="text" onblur="if(this.value==''){this.value='Поиск';}" onfocus="if(this.value=='Поиск'){this.value='';}" value="Поиск">
+                    </form>
                 </div>
             </div>
             <div id="footer-social">
-                <a href="<?=\App::config('vk');?>" class="social vk"></a>
-                <a href="<?=\App::config('tw');?>" class="social tt"></a>
-                <a href="<?=\App::config('fb');?>" class="social fb"></a>
-                <a href="<?=\App::config('ok');?>" class="social ok"></a>
-                <a href="<?=\App::config('instagram');?>" class="social ig"></a>
+                <a href="<?= \App::config('vk'); ?>" class="social vk"></a>
+                <a href="<?= \App::config('tw'); ?>" class="social tt"></a>
+                <a href="<?= \App::config('fb'); ?>" class="social fb"></a>
+                <a href="<?= \App::config('ok'); ?>" class="social ok"></a>
+                <a href="<?= \App::config('instagram'); ?>" class="social ig"></a>
             </div>
             <div id="copyright">
-                <?=\App::config('fields');?>
+                <?= \App::config('fields'); ?>
             </div>
         </div>
     </div>
 </div>
 
-<?include('model.phtml');?>
+<? include('model.phtml'); ?>
 
-        <!-- Yandex.Metrika counter -->
-        <script type="text/javascript">
-            (function (d, w, c) {
-                (w[c] = w[c] || []).push(function() {
-                    try {
-                        w.yaCounter36010180 = new Ya.Metrika({
-                            id:36010180,
-                            clickmap:true,
-                            trackLinks:true,
-                            accurateTrackBounce:true
-                        });
-                    } catch(e) { }
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+    (function (d, w, c){
+        (w[c] = w[c] || []).push(function (){
+            try{
+                w.yaCounter36010180 = new Ya.Metrika({
+                    id: 36010180,
+                    clickmap: true,
+                    trackLinks: true,
+                    accurateTrackBounce: true
                 });
+            } catch (e){
+            }
+        });
 
-                var n = d.getElementsByTagName("script")[0],
-                      s = d.createElement("script"),
-                      f = function () { n.parentNode.insertBefore(s, n); };
-                s.type = "text/javascript";
-                s.async = true;
-                s.src = "https://mc.yandex.ru/metrika/watch.js";
+        var n = d.getElementsByTagName("script")[0],
+            s = d.createElement("script"),
+            f = function (){
+                n.parentNode.insertBefore(s, n);
+            };
+        s.type = "text/javascript";
+        s.async = true;
+        s.src = "https://mc.yandex.ru/metrika/watch.js";
 
-                if (w.opera == "[object Opera]") {
-                    d.addEventListener("DOMContentLoaded", f, false);
-                } else { f(); }
-            })(document, window, "yandex_metrika_callbacks");
-        </script>
-        <noscript><div><img src="https://mc.yandex.ru/watch/36010180" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
-        <!-- /Yandex.Metrika counter -->
+        if(w.opera == "[object Opera]"){
+            d.addEventListener("DOMContentLoaded", f, false);
+        } else{
+            f();
+        }
+    })(document, window, "yandex_metrika_callbacks");
+</script>
+<noscript>
+    <div><img src="https://mc.yandex.ru/watch/36010180" style="position:absolute; left:-9999px;" alt=""/></div>
+</noscript>
+<!-- /Yandex.Metrika counter -->
 
-    </body>
+</body>
 </html>

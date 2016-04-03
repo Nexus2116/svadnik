@@ -1,195 +1,199 @@
 <div id="performer-page">
-        <div class="container">
-            <div id="user-photo" style="background: url('/public/upload/big/<?=$this->user->avatar?>') 50% 50%; background-size: cover;">
-                <a href="#" class="change avatar"><span>Изменить фото</span></a>
+    <div class="container">
+        <div id="user-photo" style="background: url('/public/upload/big/<?= $this->user->avatar ?>') 50% 50%; background-size: cover;">
+            <a href="#" class="change avatar"><span>Изменить фото</span></a>
 
-                <form action="/edit/uploadfile" method="post" id="upload-preview" enctype="multipart/form-data">
-                    <input type="file" name="userfiles" id="avatar-upload">
-                    <input type="hidden" name="type" value="avatar">
-                </form>
-            </div>
-
-            <script type="text/javascript">
-                $("#avatar-upload").submit(function() { return false; });
-                $("#avatar-upload").on("change", function(){
-                    $("#upload-preview").submit();
-                });
-            </script>
-
-            <form action="/edit" method="post" id="performer-data" class="preformer-name">
-                <input type="hidden" name="mode" value="2">
-                <div class="big-title blue">
-                    <span>
-                        <span class="user-name"><?=$this->user->firstname?></span>
-                        <div class="change-name-block">
-                            <div class="top-input name">
-                                <input id="new-name" name="firstname" type="text" onblur="if(this.value==''){this.value='Введите имя';}" onfocus="if(this.value=='Введите имя'){this.value='';}" value="Введите имя">
-                            </div>
-                            <button type="submit" class="green-button">Изменить</button>
-                            <button class="green-button">Отменить</button>
-                        </div>
-                        <a href="#" class="change name"><span>Редактировать имя</span></a>
-                    </span>
-                </div>
+            <form action="/edit/uploadfile" method="post" id="upload-preview" enctype="multipart/form-data">
+                <input type="file" name="userfiles" id="avatar-upload">
+                <input type="hidden" name="type" value="avatar">
             </form>
+        </div>
 
-            <form action="/edit" method="post" id="performer-data" class="performer-password">
-                <input type="hidden" name="mode" value="3">
-                <div class="change-password">
-                    <div class="change-password-block">
-                        <div class="top-input">
-                            <input id="new-pass" name="new-password" type="text" onblur="if(this.value==''){this.value='Введите пароль';}" onfocus="if(this.value=='Введите пароль'){this.value='';}" value="Введите пароль">
-                        </div>
-                        <div class="top-input">
-                            <input id="repeat-pass" name="repeat-password" type="text" onblur="if(this.value==''){this.value='Повторите пароль';}" onfocus="if(this.value=='Повторите пароль'){this.value='';}" value="Повторите пароль">
+        <script type="text/javascript">
+            $("#avatar-upload").submit(function (){
+                return false;
+            });
+            $("#avatar-upload").on("change", function (){
+                $("#upload-preview").submit();
+            });
+        </script>
+
+        <form action="/edit" method="post" id="performer-data" class="preformer-name">
+            <input type="hidden" name="mode" value="2">
+            <div class="big-title blue">
+                <span>
+                    <span class="user-name"><?= $this->user->firstname ?></span>
+                    <div class="change-name-block">
+                        <div class="top-input name">
+                            <input id="new-name" name="firstname" type="text" onblur="if(this.value==''){this.value='Введите имя';}" onfocus="if(this.value=='Введите имя'){this.value='';}" value="Введите имя">
                         </div>
                         <button type="submit" class="green-button">Изменить</button>
                         <button class="green-button">Отменить</button>
                     </div>
-                    <a class="change-pass" href="#"><span>Изменить пароль</span></a>
+                    <a href="#" class="change name"><span>Редактировать имя</span></a>
+                </span>
+            </div>
+        </form>
+
+        <form action="/edit" method="post" id="performer-data" class="performer-password">
+            <input type="hidden" name="mode" value="3">
+            <div class="change-password">
+                <div class="change-password-block">
+                    <div class="top-input">
+                        <input id="new-pass" name="new-password" type="text" onblur="if(this.value==''){this.value='Введите пароль';}" onfocus="if(this.value=='Введите пароль'){this.value='';}" value="Введите пароль">
+                    </div>
+                    <div class="top-input">
+                        <input id="repeat-pass" name="repeat-password" type="text" onblur="if(this.value==''){this.value='Повторите пароль';}" onfocus="if(this.value=='Повторите пароль'){this.value='';}" value="Повторите пароль">
+                    </div>
+                    <button type="submit" class="green-button">Изменить</button>
+                    <button class="green-button">Отменить</button>
                 </div>
-            </form>
+                <a class="change-pass" href="#"><span>Изменить пароль</span></a>
+            </div>
+        </form>
 
 
-            <form action="/edit" method="post" id="performer-data">
-                <input type="hidden" name="mode" value="1">
-                <div class="performer-form">
-                    <div class="performer-top">
-                        <div class="top-line">
-                            <div class="top-input">
-                                <input id="performer-phone" name="phone" type="text" onblur="if(this.value==''){this.value='Телефон';}" onfocus="if(this.value=='Телефон'){this.value='';}" value="<?=$this->user->phone?>">
-                            </div>
-                            <div class="top-input">
-                                <input id="performer-exp" name="experience" type="text" onblur="if(this.value==''){this.value='Опыт работы (полных лет)';}" onfocus="if(this.value=='Опыт работы (полных лет)'){this.value='';}" value="<?=$this->user->experience?>">
-                            </div>
+        <form action="/edit" method="post" id="performer-data">
+            <input type="hidden" name="mode" value="1">
+            <div class="performer-form">
+                <div class="performer-top">
+                    <div class="top-line">
+                        <div class="top-input">
+                            <input id="performer-phone" name="phone" type="text" onblur="if(this.value==''){this.value='Телефон';}" onfocus="if(this.value=='Телефон'){this.value='';}" value="<?= $this->user->phone ?>">
                         </div>
-                        <div class="top-line">
-                            <div class="top-input">
-                                <input id="performer-mail" name="email" type="text" onblur="if(this.value==''){this.value='Email';}" onfocus="if(this.value=='Email'){this.value='';}" value="<?=$this->user->email?>">
-                            </div>
-                            <div class="top-input">
-                                <input id="performer-skype" name="skype" type="text" onblur="if(this.value==''){this.value='Skype';}" onfocus="if(this.value=='Skype'){this.value='';}" value="<?=$this->user->skype?>">
-                            </div>
+                        <div class="top-input">
+                            <input id="performer-exp" name="experience" type="text" onblur="if(this.value==''){this.value='Опыт работы (полных лет)';}" onfocus="if(this.value=='Опыт работы (полных лет)'){this.value='';}" value="<?= $this->user->experience ?>">
                         </div>
                     </div>
-                    <div class="performer-top">
-                        <div class="top-area">
-                            <textarea name="info" id="req-text" onblur="if(this.value==''){this.value='';}" onfocus="if(this.value==''){this.value='';}"><?=$this->user->info?></textarea>
+                    <div class="top-line">
+                        <div class="top-input">
+                            <input id="performer-mail" name="email" type="text" onblur="if(this.value==''){this.value='Email';}" onfocus="if(this.value=='Email'){this.value='';}" value="<?= $this->user->email ?>">
                         </div>
-                        <div class="top-info">
-                            <div class="top-label">Аккаунт:</div>
-                            <div class="top-value">Стандарт</div>
-                            <a href="#" class="top-link-change">Купить PRO</a>
+                        <div class="top-input">
+                            <input id="performer-skype" name="skype" type="text" onblur="if(this.value==''){this.value='Skype';}" onfocus="if(this.value=='Skype'){this.value='';}" value="<?= $this->user->skype ?>">
+                        </div>
+                    </div>
+                </div>
+                <div class="performer-top">
+                    <div class="top-area">
+                        <textarea name="info" id="req-text" onblur="if(this.value==''){this.value='';}" onfocus="if(this.value==''){this.value='';}"><?= $this->user->info ?></textarea>
+                    </div>
+                    <div class="top-info">
+                        <div class="top-label">Аккаунт:</div>
+                        <div class="top-value">Стандарт</div>
+                        <a href="#" class="top-link-change">Купить PRO</a>
 
-                            <div class="top-label">Статус:</div>
-                            <div class="top-value">
-                                <span class="user-status">Свободен</span>
-                                <div class="change-status-block">
-                                    <div class="top-chb">
-                                        <div class="chb">
-                                            <div class="check"></div>
-                                        </div>
-                                        <label>Свободен</label>
+                        <div class="top-label">Статус:</div>
+                        <div class="top-value">
+                            <span class="user-status">Свободен</span>
+                            <div class="change-status-block">
+                                <div class="top-chb">
+                                    <div class="chb">
+                                        <div class="check"></div>
                                     </div>
-                                    <div class="top-chb">
-                                        <div class="chb">
-                                            <div class="check"></div>
-                                        </div>
-                                        <label>Занят</label>
+                                    <label>Свободен</label>
+                                </div>
+                                <div class="top-chb">
+                                    <div class="chb">
+                                        <div class="check"></div>
                                     </div>
+                                    <label>Занят</label>
                                 </div>
                             </div>
-                            <a href="#" class="top-link-change status">Изменить</a>
                         </div>
-                    </div>
-                    <div class="top-services">
-
-<!-- services -->
-                    <? 
-                    if(isset($this->servicesUser[0])){
-                    foreach($this->servicesUser as $item){?>
-                    <div class="top-performer-service">
-                        <div class="top-service" data-id="photo" data-cat-id="<?=$item['id']?>">
-                            <span> <?=$item['name']?> </span>
-                            <div class="remove"></div>
-                        </div>
-                        <div class="top-input">
-                            <input id="performer-price-<?=$item['id']?>" name="performer-price-<?=$item['id']?>" type="text" onblur="if(this.value==''){this.value='Цена за час (рублей)';}" onfocus="if(this.value=='Цена за час (рублей)'){this.value='';}" value="<?=$item['price']?>">
-                        </div>
-                        <div class="top-input">
-                            <input id="performer-projprice-<?=$item['id']?>" name="performer-projprice-<?=$item['id']?>" type="text" onblur="if(this.value==''){this.value='Цена за проект (рублей)';}" onfocus="if(this.value=='Цена за проект (рублей)'){this.value='';}" value="<?=$item['projprice']?>">
-                        </div>
-                        <input type="hidden" id="performer-id-<?=$item['id']?>" name="performer-id-<?=$item['id']?>" value="<?=$item['id']?>">
-                    </div>
-                    <? }} ?>
-<!-- servicesEnd -->
-
-                        <a href="#" class="add-service performer-service">Добавить услугу</a>
+                        <a href="#" class="top-link-change status">Изменить</a>
                     </div>
                 </div>
-                <button type="submit" class="green-button">Сохранить изменения</button>
-            </form>
+                <div class="top-services">
 
-        </div>
-        <div class="performer-portfolio-top">
-            <div class="container">
-                <div class="top-label portfolio">Фото:</div>
-                <div class="performer-portfolio-items">
+                    <!-- services -->
+                    <?
+                    if(isset($this->servicesUser[0])){
+                        foreach($this->servicesUser as $item){
+                            ?>
+                            <div class="top-performer-service">
+                                <div class="top-service" data-id="photo" data-cat-id="<?= $item['id'] ?>">
+                                    <span> <?= $item['name'] ?> </span>
+                                    <div class="remove"></div>
+                                </div>
+                                <div class="top-input">
+                                    <input id="performer-price-<?= $item['id'] ?>" name="performer-price-<?= $item['id'] ?>" type="text" onblur="if(this.value==''){this.value='Цена за час (рублей)';}" onfocus="if(this.value=='Цена за час (рублей)'){this.value='';}" value="<?= $item['price'] ?>">
+                                </div>
+                                <div class="top-input">
+                                    <input id="performer-projprice-<?= $item['id'] ?>" name="performer-projprice-<?= $item['id'] ?>" type="text" onblur="if(this.value==''){this.value='Цена за проект (рублей)';}" onfocus="if(this.value=='Цена за проект (рублей)'){this.value='';}" value="<?= $item['projprice'] ?>">
+                                </div>
+                                <input type="hidden" id="performer-id-<?= $item['id'] ?>" name="performer-id-<?= $item['id'] ?>" value="<?= $item['id'] ?>">
+                            </div>
+                        <? }
+                    } ?>
+                    <!-- servicesEnd -->
 
-                    <?foreach($this->servicesUserPhoto as $item){?>
-                    <div id="<?=$item->id?>" class="photo-block-wrap">
+                    <a href="#" class="add-service performer-service">Добавить услугу</a>
+                </div>
+            </div>
+            <button type="submit" class="green-button">Сохранить изменения</button>
+        </form>
+
+    </div>
+    <div class="performer-portfolio-top">
+        <div class="container">
+            <div class="top-label portfolio">Фото:</div>
+            <div class="performer-portfolio-items">
+
+                <? foreach($this->servicesUserPhoto as $item){ ?>
+                    <div id="<?= $item->id ?>" class="photo-block-wrap">
                         <div class="photo-del">
                             <div class="photo-del-button"></div>
                         </div>
-                        <a href="#" class="photo-block" style="background: url(/public/upload/big/<?=$item->file_img?>) 50% 50%; background-size: cover" big="/public/upload/blur/<?=$item->file_img?>"></a>
+                        <a href="#" class="photo-block" style="background: url(/public/upload/big/<?= $item->file_img ?>) 50% 50%; background-size: cover" big="/public/upload/blur/<?= $item->file_img ?>"></a>
                     </div>
-                    <?}?>
+                <? } ?>
 
-                    <a class="addfile photo" href="#"></a>
-                    <form action="/edit/uploadfile" enctype="multipart/form-data" id="upload-portfolio-form" method="post">
-                        <input id="photo-upload" type="file" multiple="multiple" name="userfiles[]" accept="image">
-                        <input type="hidden" name="type" value="photos">
-                    </form>
-                </div>
-            </div>
-        </div>
-        <div class="performer-portfolio-top">
-            <div class="container">
-                <div class="top-label portfolio">Видео:</div>
-                <div class="performer-portfolio-items">
-                    <!-- video items start -->
-                    <?foreach($this->servicesUserVideo as $item){?>
-                    <div id="<?=$item->id?>" class="portfolio-block-wrap video-item">
-                        <div class="portfolio-del">
-                            <div class="portfolio-del-button"></div>
-                        </div>
-                        <a href="#" class="portfolio-block" style="background: url(/public/upload/big/<?=$item->file_img?>) 50% 50%; background-size: cover" big="" video_link='<?=$item->text?>'></a>
-                    </div>
-                    <?}?>
-                    <!-- video items end -->
-                    <a class="addfile video" href="#"></a>
-                </div>
-            </div>
-        </div>
-        <div class="performer-portfolio-top">
-            <div class="container">
-                <div class="top-label portfolio">Презентации:</div>
-                <div class="performer-portfolio-items">
-                    <!-- presentation items start -->
-                    <?foreach($this->servicesUserPresent as $item){?>
-                    <div id="<?=$item->id?>" class="portfolio-block-wrap present-item">
-                        <div class="portfolio-del">
-                            <div class="portfolio-del-button"></div>
-                        </div>
-                        <a href="/public/media/files/<?=$item->file?>" target="_blank" class="portfolio-block" style="background: url(/public/upload/big/<?=$item->file_img?>) 50% 50%; background-size: cover" big=""></a>
-                    </div>
-                    <?}?>
-                    <!-- presentation items end -->
-                    <a class="addfile present" href="#"></a>
-                </div>
+                <a class="addfile photo" href="#"></a>
+                <form action="/edit/uploadfile" enctype="multipart/form-data" id="upload-portfolio-form" method="post">
+                    <input id="photo-upload" type="file" multiple="multiple" name="userfiles[]" accept="image">
+                    <input type="hidden" name="type" value="photos">
+                </form>
             </div>
         </div>
     </div>
+    <div class="performer-portfolio-top">
+        <div class="container">
+            <div class="top-label portfolio">Видео:</div>
+            <div class="performer-portfolio-items">
+                <!-- video items start -->
+                <? foreach($this->servicesUserVideo as $item){ ?>
+                    <div id="<?= $item->id ?>" class="portfolio-block-wrap video-item">
+                        <div class="portfolio-del">
+                            <div class="portfolio-del-button"></div>
+                        </div>
+                        <a href="#" class="portfolio-block" style="background: url(/public/upload/big/<?= $item->file_img ?>) 50% 50%; background-size: cover" big="" video_link='<?= $item->text ?>'></a>
+                    </div>
+                <? } ?>
+                <!-- video items end -->
+                <a class="addfile video" href="#"></a>
+            </div>
+        </div>
+    </div>
+    <div class="performer-portfolio-top">
+        <div class="container">
+            <div class="top-label portfolio">Презентации:</div>
+            <div class="performer-portfolio-items">
+                <!-- presentation items start -->
+                <? foreach($this->servicesUserPresent as $item){ ?>
+                    <div id="<?= $item->id ?>" class="portfolio-block-wrap present-item">
+                        <div class="portfolio-del">
+                            <div class="portfolio-del-button"></div>
+                        </div>
+                        <a href="/public/media/files/<?= $item->file ?>" target="_blank" class="portfolio-block" style="background: url(/public/upload/big/<?= $item->file_img ?>) 50% 50%; background-size: cover" big=""></a>
+                    </div>
+                <? } ?>
+                <!-- presentation items end -->
+                <a class="addfile present" href="#"></a>
+            </div>
+        </div>
+    </div>
+</div>
 
 </div>
 
@@ -197,29 +201,20 @@
 <div id="performer-orders-block">
     <div class="container">
         <div id="performer-calendar">
-            <input type="hidden" id="performer-busyday" data-busy="<?=$this->calendarStr?>" readonly="readonly">
-        </div>  
-
-
-        
-
-
-
-
-        
-        <div id="performer-orders">
-            <div class="big-title">Ваши заказы</div>
-            <?foreach($this->project as $item){?>
-            <div class="order-item" data-id="<?=$item->id?>">
-                <div class="order-date"><?=$item->created_at?></div>
-                <div class="order-info"><?=$item->title?></div>
-                <a href="mailto:<?=$item->email?>" class="order-mail"><?=$item->email?></a>
-                <div class="order-phone"><?=$item->phone?></div>
-            </div>
-            <?}?>
+            <input type="hidden" id="performer-busyday" data-busy="<?= empty($this->calendarStr) ? 0 : $this->calendarStr ?>" readonly="readonly">
         </div>
 
-
+        <div id="performer-orders">
+            <div class="big-title">Ваши заказы</div>
+            <? foreach($this->project as $item){ ?>
+                <div class="order-item" data-id="<?= $item->id ?>">
+                    <div class="order-date"><?= $item->created_at ?></div>
+                    <div class="order-info"><?= $item->title ?></div>
+                    <a href="mailto:<?= $item->email ?>" class="order-mail"><?= $item->email ?></a>
+                    <div class="order-phone"><?= $item->phone ?></div>
+                </div>
+            <? } ?>
+        </div>
     </div>
 </div>
 

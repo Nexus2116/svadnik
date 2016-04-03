@@ -1,93 +1,102 @@
 <?php
 
-namespace Core {
+namespace Core;
 
-	class View extends Magic {
-		
-		public $viewFolder = '/view/';
+class View extends Magic
+{
 
-		public $layoutFolder = '/layouts';
+    public $viewFolder = '/view/';
 
-		public $layout = 'index'; // main layout file name
+    public $layoutFolder = '/layouts';
 
-		public $css = array(); // array of css files
+    public $layout = 'index'; // main layout file name
 
-		public $js = array(); // array of js files 
+    public $css = array(); // array of css files
 
-		public $partial; // current template
+    public $js = array(); // array of js files
 
-		public $space = ''; // application. if (app == 'app') $space = ''
+    public $partial; // current template
 
-		public $html;
+    public $space = ''; // application. if (app == 'app') $space = ''
 
-		//public $output = true;
+    public $html;
 
-		public function __construct() {
-			$this->space = \App::$state->app;
+    //public $output = true;
 
-			include_once (APPPATH . '/helper.php');
-			$this->html = new \HTML();
+    public function __construct()
+    {
+        $this->space = \App::$state->app;
 
-			$this->viewFolder = APPPATH . $this->viewFolder;
-		}
+        include_once(APPPATH . '/helper.php');
+        $this->html = new \HTML();
 
-		public function includeCss() {
-			foreach ($this->css as $css)
-				echo '<link rel="stylesheet" type="text/css" href="/public/css/'.$css.'.css">' . "\n";
-		}
+        $this->viewFolder = APPPATH . $this->viewFolder;
+    }
 
-		public function includeJs() {
-			foreach ($this->js as $js)
-				echo '<script type="text/javascript" src="/public/js/'.$js.'.js"></script>' . "\n";
-		}
+    public function includeCss()
+    {
+        foreach($this->css as $css)
+            echo '<link rel="stylesheet" type="text/css" href="/public/css/' . $css . '.css">' . "\n";
+    }
 
-		public function renderLayout() {
-			include_once($this->viewFolder.$this->layoutFolder.'/'.$this->layout.'.phtml');
-		}
+    public function includeJs()
+    {
+        foreach($this->js as $js)
+            echo '<script type="text/javascript" src="/public/js/' . $js . '.js"></script>' . "\n";
+    }
 
-		public function renderFile($file) {
-			include ($this->viewFolder . $file . '.phtml');	
-		}
+    public function renderLayout()
+    {
+        include_once($this->viewFolder . $this->layoutFolder . '/' . $this->layout . '.phtml');
+    }
 
-		// render current controllers templates
-		public function render($actionName = '') {
-			if($actionName == '') {
-				$actionName = \App::route('action');
+    public function renderFile($file)
+    {
+        include($this->viewFolder . $file . '.phtml');
+    }
 
-				if($this->partial != '')
-					$actionName = $this->partial;
-			}
+    // render current controllers templates
+    public function render($actionName = '')
+    {
+        if($actionName == ''){
+            $actionName = \App::route('action');
 
-			$controllerName = \App::route('controller');
+            if($this->partial != '')
+                $actionName = $this->partial;
+        }
 
-			$path = $this->viewFolder . strtolower($controllerName.'/'.$actionName).'.phtml';
-			include($path);
-		}
+        $controllerName = \App::route('controller');
 
-		// render other controllers templates
-		public function renderPartial($controller, $action = '') {
-			if($controller == null) 
-				return;
+        $path = $this->viewFolder . strtolower($controllerName . '/' . $actionName) . '.phtml';
+        include($path);
+    }
 
-			if($action == '')
-				$action = 'index';
+    // render other controllers templates
+    public function renderPartial($controller, $action = '')
+    {
+        if($controller == null)
+            return;
 
-			$viewPath = $this->viewFolder . strtolower($controller . '/' . $action);
-			include($viewPath . '.phtml');
-		}
+        if($action == '')
+            $action = 'index';
 
-		// get bufered content of template or file
-		public function getContent($file) {
-			if($file == null)
-				return null;
-			ob_start();
-			$this->renderFile($file);
-			$content = ob_get_contents();
-			ob_end_clean();
-			return $content;
-		}
+        $viewPath = $this->viewFolder . strtolower($controller . '/' . $action);
+        include($viewPath . '.phtml');
+    }
 
-	}
+    // get bufered content of template or file
+    public function getContent($file)
+    {
+        if($file == null)
+            return null;
+        ob_start();
+        $this->renderFile($file);
+        $content = ob_get_contents();
+        ob_end_clean();
+        return $content;
+    }
+
 }
+
 
 ?>

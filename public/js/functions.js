@@ -235,19 +235,19 @@ $(function (){
 
 
          $.post("/projects/add", post_data)
-               .done(function (data){
-                  if(data == "1"){
-                     scroll_pos = $(window).scrollTop();
-                     content_width = $("#all-content").width();
-                     $("#all-content").css({"top": -scroll_pos, "width": content_width});
-                     $('#modal').addClass('active');
-                     $('body').css({'overflow': 'hidden', 'height': '100%'});
-                     $('#modal').css({'overflow-y': 'auto'});
-                     $('.modal-window.message-modal .big-title').html("СПАСИБО, ЗАЯВКА БУДЕТ<br>ОПУБЛИКОВАНА ПОСЛЕ<br>МОДЕРАЦИИ");
-                     $('.modal-window.message-modal').addClass('active');
-                     modalCenter();
-                  }
-               });
+             .done(function (data){
+                if(data == "1"){
+                   scroll_pos = $(window).scrollTop();
+                   content_width = $("#all-content").width();
+                   $("#all-content").css({"top": -scroll_pos, "width": content_width});
+                   $('#modal').addClass('active');
+                   $('body').css({'overflow': 'hidden', 'height': '100%'});
+                   $('#modal').css({'overflow-y': 'auto'});
+                   $('.modal-window.message-modal .big-title').html("СПАСИБО, ЗАЯВКА БУДЕТ<br>ОПУБЛИКОВАНА ПОСЛЕ<br>МОДЕРАЦИИ");
+                   $('.modal-window.message-modal').addClass('active');
+                   modalCenter();
+                }
+             });
       }
    });
 //orders slider---------------------------------------------------------------------------------------------------------
@@ -1360,7 +1360,7 @@ $(function (){
             return false;
          } else{
             $.get('/signup/ckeck_email?regmail=' + $("#regmail").val(), null, function (data){
-               if(!data.status){
+               if(data.status == 0){
                   $("#regmail").parent().css({"border-color": "red"});
                   $("#regmail").parent().find(".input-error").html("Пользователь с таким E-mail уже зарегистрирован");
                   $("#regmail").parent().find(".input-error").show();
