@@ -17,10 +17,9 @@ class Signup extends \Core\Controller
         exit;
     }
 
-
     public function reg_post()
     {
-        $valid = Array(
+        $defaultValue = Array(
             'firstname' => 'Имя*',
             'city' => 'Выберите город*:',
             'email' => 'E-mail:',
@@ -30,7 +29,7 @@ class Signup extends \Core\Controller
             'passconf' => 'Повторите пароль*:'
         );
 
-        foreach($valid as $key => $item){
+        foreach($defaultValue as $key => $item){
             if($_POST[$key] == $item)
                 $_POST[$key] = null;
         }
@@ -108,6 +107,31 @@ class Signup extends \Core\Controller
         }
         echo json_encode(['stats' => 0]);
         exit;
+    }
+
+    public function respassword_post()
+    {
+        $user = \Model\Users::where('email', $_POST['forgot-mail'])->first();
+        if($user !== null){
+            $password = rand(999999, 9999999);
+            $user->password = md5($password);
+            $user->save();
+
+            include_once(MODPATH . '/PHPMailer/class.phpmailer.php');
+            $mail = new \PHPMailer();
+
+            $mail->CharSet = 'utf-8';
+            $mail->From = 'svadnik.ru';
+            $mail->FromName = 'Svadnik';
+            $mail->addAddress($user->email);
+            $mail->isHTML(true);                                  // Set email format to HTML
+            $mail->Subject = 'Востонавление пароля Svadnik';
+            $mail->Body = <<< HTML
+<p>Ваш новый пароль: {$password}</p>
+HTML;
+            $mail->send();
+        }
+        header("Location: {$_SERVER['HTTP_REFERER']}");
     }
 
 

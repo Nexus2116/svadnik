@@ -4,11 +4,8 @@
             <a class="content-item all" href="<?=HTML::url('/articles')?>" data-ctrl="Page" style="font-weight: bold;" id="allpageslink">
                 <span>Все страницы</span>
             </a>            
-            <a class="content-item all" href="<?=HTML::url('/news')?>" data-ctrl="Page" style="font-weight: normal;" id="allpageslink">
-            	<span>Новости</span>
-            </a>
             <a class="content-item all" href="<?=HTML::url('/projects')?>" data-ctrl="Page" style="font-weight: normal;" id="allpageslink">
-            	<span>Заявки</span>
+            	<span>Новости</span>
             </a>
             <?if($this->tree != null)
             		echo HTML::menu(0);

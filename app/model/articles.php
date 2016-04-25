@@ -64,7 +64,7 @@ namespace Model;
             ->where('deleted_at', null)
             ->where('lang', \App::$state->lang)
             ->where('articles_content.published', 1)
-            ->orderBy('date', 'ASC');
+            ->orderBy('date', 'DESC');
 		}
 
 		protected function getPageIn($field, $values, $op = '=') {

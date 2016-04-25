@@ -1,0 +1,77 @@
+<div class="bm-page-row header">
+    <div class="bm-page-cell checkbox">
+        <div class="bm-cell-elem">
+            <div class="bm-checkbox" data-ctrl="Checkbox" data-act="all">
+                <div class="bm-checkbox-choice"></div>
+            </div>
+        </div>
+    </div>
+    <div class="bm-page-cell id">
+        <div class="bm-cell-elem">
+        	<a class="bm-sort-link" href="<?=HTML::url('/articles/index/order/id')?>" data-ctrl="Page" data-act="sort">#</a>
+        </div>
+    </div>
+    <div class="bm-page-cell name">
+        <div class="bm-cell-elem">
+        	<a class="bm-sort-link" href="<?=HTML::url('/articles/index/order/name')?>" data-ctrl="Page" data-act="sort">название/url</a>
+        </div>
+    </div>
+    <div class="bm-page-cell lang">
+        <div class="bm-cell-elem">
+        	<a class="bm-sort-link" href="<?=HTML::url('/articles/index/order/type')?>" data-ctrl="Page" data-act="sort">Тип</a>
+        </div>
+    </div>
+    <div class="bm-page-cell create">
+        <div class="bm-cell-elem">
+        	<a class="bm-sort-link" href="<?=HTML::url('/articles/index/order/created_at')?>" data-ctrl="Page" data-act="sort">Дата создания</a>
+        </div>
+    </div>
+    <div class="bm-page-cell author">
+        <div class="bm-cell-elem">
+        	<a class="bm-sort-link" href="<?=HTML::url('/articles/index/order/author')?>" data-ctrl="Page" data-act="sort">Автор</a>
+        </div>
+    </div>
+    <div class="bm-page-cell online">
+        <div class="bm-cell-elem">
+        	<a class="bm-sort-link" href="<?=HTML::url('/articles/index/order/published')?>" data-ctrl="Page" data-act="sort">online</a>
+        </div>
+    </div>
+</div>
+
+<?
+    if($this->articles != ''){
+foreach ($this->articles as $article) {?>
+    <div class="bm-page-row" data-id="<?=$article->id?>">
+        <div class="bm-page-cell checkbox">
+            <div class="bm-cell-elem">
+                <?HTML::checkbox($article->id);?>
+            </div>
+        </div>
+        <div class="bm-page-cell id">
+            <div class="bm-cell-elem"><?=$article->id?></div>
+        </div>
+        <div class="bm-page-cell name">
+            <div class="bm-cell-elem">
+                <a href="<?=HTML::url('/' . $article->type . '/edit/id/' . $article->id)?>" data-ctrl="Page">
+                	<?=$article->name?> <span class="bm-path-link">/<?=$article->url?></span>
+                </a>
+            </div>
+        </div>
+        <div class="bm-page-cell lang">
+            <div class="bm-cell-elem"><?=\App::config()->pages[$article->type]?></div>
+        </div>
+        <div class="bm-page-cell create">
+            <div class="bm-cell-elem">
+            	<?=date_format($article->created_at, 'd/m/Y');?>
+            </div>
+        </div>
+        <div class="bm-page-cell author">
+            <div class="bm-cell-elem"><?=$this->users[$article->author]->login?></div>
+        </div>
+        <div class="bm-page-cell online">
+        	<div class="bm-cell-elem">
+				<?HTML::radio($this->content[$article->id], 'content_publish', null)?>
+            </div>
+        </div>
+    </div>
+<?}}?>
