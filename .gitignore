@@ -2,3 +2,8 @@
 /svadnik
 .*
 /public/upload
+/cron
+composer.lock
+debug.log
+vendor
+crontab
