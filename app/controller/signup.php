@@ -18,6 +18,12 @@ class Signup extends \Core\Controller
 
     public function reg_post()
     {
+
+        $checkmail = \Model\Users::where('email', $_POST['email'])->first();
+        if(!empty($checkmail)){
+            \Core\Response::navigate('/');
+        }
+
         $defaultValue = Array(
             'firstname' => 'Имя*',
             'city' => 'Выберите город*:',
@@ -53,7 +59,6 @@ class Signup extends \Core\Controller
             $user->avatar = $upload->files[0]['newname'];
         }
         $user->save();
-
 
         $auth = \Model\Users::where('email', $_POST['email'])->first();
         $obj = (object)array();
