@@ -1,0 +1,78 @@
+<div class="bm-page-header">
+    <h1>Пользователи</h1>
+    <div class="bm-changes-message">Изменения сохранены</div>
+    <div class="bm-changes-block">
+        <div class="bm-changes-block-title">Были внесены изменения</div>
+        <div class="bm-buttons">
+            <button class="bm-button cancel" data-ctrl="Page" href="<?= HTML::url('/user') ?>">
+                Отменить
+            </button>
+            <button type="submit" class="bm-button">Сохранить</button>
+
+        </div>
+    </div>
+</div>
+<div id="bm-systemactive">
+    <div id="bm-top-menu">
+        <div class="bm-create-button" href="<?= HTML::url('/mail/edit/id/-1') ?>" data-ctrl="Page">
+            Создать
+            <div class="bm-create-button-ico"></div>
+        </div>
+        <div class="bm-circle-button del" data-ctrl="User" data-act="removeMail"></div>
+    </div>
+</div>
+<div class="bm-page-table users">
+    <div class="bm-page-row header">
+        <div class="bm-page-cell checkbox">
+            <div class="bm-cell-elem">
+                <div class="bm-checkbox" data-ctrl="Checkbox" data-act="all">
+                    <div class="bm-checkbox-choice"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bm-page-cell name">
+            <div class="bm-cell-elem"><a class="bm-sort-link" href="#">ID</a></div>
+        </div>
+        <div class="bm-page-cell name">
+            <div class="bm-cell-elem"><a class="bm-sort-link" href="#">Заголовок</a></div>
+        </div>
+
+        <div class="bm-page-cell create">
+            <div class="bm-cell-elem"><a class="bm-sort-link" href="#">Создан</a></div>
+        </div>
+
+    </div>
+
+    <? foreach($this->mails as $mail){ ?>
+        <div class="bm-page-row systemuser" data-itemid="<?= $mail->id ?>">
+            <div class="bm-page-cell checkbox">
+                <div class="bm-cell-elem">
+                    <div class="bm-checkbox" data-ctrl="Checkbox" data-itemid="<?= $mail->id ?>">
+                        <div class="bm-checkbox-choice"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="bm-page-cell mail">
+                <div class="bm-cell-elem">
+                    <a href="<?= HTML::url('/mail/edit/id/' . $mail->id) ?>" data-ctrl="Page">
+                        <?= $mail->id ?>
+                    </a>
+                </div>
+            </div>
+            <div class="bm-page-cell name">
+                <div class="bm-cell-elem">
+                    <a href="<?= HTML::url('/mail/edit/id/' . $mail->id) ?>" data-ctrl="Page">
+                        <?= $mail->title ?>
+                    </a>
+                </div>
+            </div>
+            <div class="bm-page-cell mail">
+                <div class="bm-cell-elem">
+                    <?= $mail->created_at ?>
+                </div>
+            </div>
+
+        </div>
+    <? } ?>
+</div>

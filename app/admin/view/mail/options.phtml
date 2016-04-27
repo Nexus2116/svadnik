@@ -1,0 +1,34 @@
+<div class="bm-modal-window">
+    <div class="bm-modal-title">
+        <div class="bm-modal-title-ico"></div>
+        Мои параметры
+    </div>
+    <?$url = '/users/options';
+    if($this->options == null)
+    	$url = '/users/create';?>
+    <form action="<?=HTML::url($url)?>" method="POST" id="user_options_form">
+        <label>
+            E-mail пользователя
+            <div class="bm-form-error" id="error_email"></div>
+        </label>
+        <div class="bm-input-wrap">
+            <input type="text" name="email" id="email" value="<?=@$this->options->email?>"/>
+        </div>
+
+        <label>
+            Имя пользователя
+            <div class="bm-form-error" id="error_name"></div>
+        </label>
+        <div class="bm-input-wrap">
+            <input type="text" name="firstname" id="firstname" value="<?=@$this->options->firstname?>"/>
+        </div>
+
+        <div class="bm-pass-button">
+            <div class="bm-pass-img"></div>
+        </div>
+        <div class="bm-buttons">
+            <button type="submit" class="bm-button">Сохранить</button>
+            <button class="bm-button cancel">Отмена</button>
+        </div>
+    </form>
+</div>

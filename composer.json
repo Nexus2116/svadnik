@@ -1,0 +1,5 @@
+{
+    "require": {
+        "hellogerard/jobby": "^3.0"
+    }
+}

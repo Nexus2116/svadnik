@@ -38,7 +38,7 @@ class Index extends \Core\Controller
         \App::view('offers', $offersGet);
 
 
-        $projects = \Model\Projects::get();
+        $projects = \Model\Projects::take(16)->orderBy('id', 'DESC')->get();
         \App::view('projects', $projects);
 
     }

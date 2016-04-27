@@ -1,0 +1,48 @@
+<script type="text/javascript">
+    $(document).ready(function (){
+        $('input, textarea, .redactor_editor').on('input', function (){
+            $('.bm-changes-block').show();
+        });
+
+        $('.bm-button.send').click(function (){
+            $('form#' + Controller.User.change.id).submit();
+        });
+        $(".js-example-basic-multiple").select2();
+
+        $('#bm-redactor').redactor({
+            lang: 'ru',
+            minHeight: 264,
+            imageUpload: '/admin/upload/redactor',
+            imageGetJson: '/admin/image/media'
+        });
+
+
+    });
+</script>
+<br>
+<form action="<?= HTML::url('/mail/save/id/' . $this->currentMail->id) ?>" method="POST" id="params">
+    <input type="hidden" name="id" value="<?= isset($this->currentMail->id) ? $this->currentMail->id : -1 ?>">
+    <div class="bm-page-content-editor">
+        <div class="bm-page-content-editor-top">
+
+            <label>
+                Заголовок
+                <div class="bm-form-error" style="position:relative; float:right;" id="error-name"></div>
+            </label>
+            <div class="bm-input fullwidth">
+                <input type="text" id="title" name="title" value="<?= $this->currentMail->title ?>">
+            </div>
+
+            <label>Текст письма</label>
+            <div class="bm-editor">
+                <textarea name="text" id="bm-redactor"><?= $this->currentMail->text ?></textarea>
+            </div>
+            <br>
+
+        </div>
+    </div>
+    <input type="submit" style="visibility:hidden;">
+</form>
+
+
+<!-- +portfolio -->

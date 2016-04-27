@@ -15,6 +15,11 @@
 	            	<span>Клиенты</span>
 	            </a>
             <?}?>
+            <?if($this->admin->role == 1) {?>
+	            <a class="content-item all" data-type="users" href="<?=HTML::url('/mail/index');?>" data-ctrl="Page">
+	            	<span>Mail</span>
+	            </a>
+            <?}?>
         </div>
     </div>
     <div class="scroller-line"></div>

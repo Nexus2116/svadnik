@@ -12,7 +12,6 @@ class Signup extends \Core\Controller
 
     public function reg()
     {
-
         echo json_encode(['stats' => 1]);
         exit;
     }
@@ -43,6 +42,7 @@ class Signup extends \Core\Controller
         $user->lastname = $_POST['lastname'];
         $user->newsletter = $_POST['newsletter'];
         $user->info = $_POST['info'];
+        $user->date_end_pro = date('Y-m-d', strtotime('+3 months'));
 
         if(!empty($_FILES['userfiles']['size'])){
             $upload = new \Service\Upload;

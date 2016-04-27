@@ -183,60 +183,57 @@ $(function (){
    });
 //submit request--------------------------------------------------------------------------------------------------------
    $(document).on("click", '#request-form .green-button', function (e){
-      e.preventDefault();
-      var num_ok = 0;
+          e.preventDefault();
+          var num_ok = 0;
 
-      if(document.getElementsByName("req-title")[0].value == "Краткий заголовок заявки *" || document.getElementsByName("req-title")[0].value == ""){
-         $("#req-title-important").css({"border-color": "red"});
-         num_ok++;
-      } else{
-         $("#req-title-important").css({"border-color": "white"});
-      }
-      if(document.getElementsByName("req-text")[0].value == "Максимально подробное описание заявки *" || document.getElementsByName("req-title")[0].value == ""){
-         $("#req-text-important").css({"border-color": "red"});
-         num_ok++;
-      } else{
-         $("#req-text-important").css({"border-color": "white"});
-      }
-
-
-      if(num_ok == 0){
-         var user_services = '';
-         for(i = 0, k = service_arr.length; i < k; i++){
-            if(service_arr[i] != undefined){
-               if(i == service_arr.length - 1){
-                  user_services += service_arr[i];
-               } else{
-                  user_services += service_arr[i] + ',';
-               }
-            }
-         }
-         $('#service-arr').val(user_services);
-
-         var req_chb = 1;
-         for(i = 0; i < 3; i++){
-            if($(".top-check .top-line").eq(i).find(".chb").hasClass("active")){
-               req_chb = i + 1;
-            }
-         }
+          if(document.getElementsByName("req-title")[0].value == "Краткий заголовок заявки *" || document.getElementsByName("req-title")[0].value == ""){
+             $("#req-title-important").css({"border-color": "red"});
+             num_ok++;
+          } else{
+             $("#req-title-important").css({"border-color": "white"});
+          }
+          if(document.getElementsByName("req-text")[0].value == "Максимально подробное описание заявки *" || document.getElementsByName("req-title")[0].value == ""){
+             $("#req-text-important").css({"border-color": "red"});
+             num_ok++;
+          } else{
+             $("#req-text-important").css({"border-color": "white"});
+          }
 
 
-         post_data = {
-            "req-title": document.getElementsByName("req-title")[0].value,
-            "req-date-since": document.getElementsByName("req-date-since")[0].value,
-            "req-date-to": document.getElementsByName("req-date-to")[0].value,
-            "req-text": document.getElementsByName("req-text")[0].value,
-            "req-phone": document.getElementsByName("req-phone")[0].value,
-            "req-mail": document.getElementsByName("req-mail")[0].value,
-            "req-budget": document.getElementsByName("req-budget")[0].value,
-            "service-arr": user_services,
-            "req-chb": req_chb
-         };
+          if(num_ok == 0){
+             var user_services = '';
+             for(i = 0, k = service_arr.length; i < k; i++){
+                if(service_arr[i] != undefined){
+                   if(i == service_arr.length - 1){
+                      user_services += service_arr[i];
+                   } else{
+                      user_services += service_arr[i] + ',';
+                   }
+                }
+             }
+             $('#service-arr').val(user_services);
 
+             var req_chb = 1;
+             for(i = 0; i < 3; i++){
+                if($(".top-check .top-line").eq(i).find(".chb").hasClass("active")){
+                   req_chb = i + 1;
+                }
+             }
 
-         $.post("/projects/add", post_data)
-             .done(function (data){
-                if(data == "1"){
+             post_data = {
+                "req-title": document.getElementsByName("req-title")[0].value,
+                "req-date-since": document.getElementsByName("req-date-since")[0].value,
+                "req-date-to": document.getElementsByName("req-date-to")[0].value,
+                "req-text": document.getElementsByName("req-text")[0].value,
+                "req-phone": document.getElementsByName("req-phone")[0].value,
+                "req-mail": document.getElementsByName("req-mail")[0].value,
+                "req-budget": document.getElementsByName("req-budget")[0].value,
+                "service-arr": user_services,
+                "req-chb": req_chb
+             };
+
+             $.post("/projects/add", post_data, function (data){
+                if(data.status == 1){
                    scroll_pos = $(window).scrollTop();
                    content_width = $("#all-content").width();
                    $("#all-content").css({"top": -scroll_pos, "width": content_width});
@@ -247,9 +244,11 @@ $(function (){
                    $('.modal-window.message-modal').addClass('active');
                    modalCenter();
                 }
-             });
-      }
-   });
+             }, 'json');
+
+          }
+       }
+   );
 //orders slider---------------------------------------------------------------------------------------------------------
    $(document).on("click", '#order-nav .dot', function (){
       $('#order-nav .dot').removeClass('active');

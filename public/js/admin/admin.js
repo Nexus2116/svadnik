@@ -322,7 +322,20 @@ Controller.Checkbox = {
          return null;
 
       return ids;
+   },
+
+   filtr: function (object){
+      this.init(object);
+
+      var params = {
+         executor: $('#executor').hasClass('active'),
+         customer: $('#customer').hasClass('active')
+      };
+      return Controller.Users.init(object, params);
+
    }
+
+
 }
 
 Controller.Helper = {
@@ -614,7 +627,52 @@ Controller.User = {
                $('.systemuser[data-itemid="' + ids[i] + '"]').remove();
          });
       }
+   },
+
+   removeMail: function (object){
+      var ids = Controller.Checkbox.checked();
+      if(confirm("Удалить отмеченных пользователей?")){
+         $.get('/admin/mail/remove', ids, function (data){
+            for(var i in ids)
+               $('.systemuser[data-itemid="' + ids[i] + '"]').remove();
+         });
+      }
    }
+
+}
+
+Controller.Users = {
+
+   init: function (object, params){
+      var url = object.attr('href');
+      $('#main-content').css({'overflow-y': 'scroll'});
+      $.get(url, params, function (data){
+         if(!Controller.Page.process(data))
+            return false;
+
+         $('.content-items a').css({'font-weight': 'normal'});
+         $('a[href="' + url + '"]').css({'font-weight': 'bold'});
+
+         $('#main-content').html(data);
+         object.css({'font-weight': 'bold'});
+
+         if(object.parent().find('.sidebarArticlesMenu').length > 0)
+            object.parent().find('.sidebarArticlesMenu').first().show();
+      });
+      return false;
+   },
+
+   send_mail: function (object){
+      var url = object.attr('href');
+      var mail_id = $('#mail_select').val();
+      var ids = Controller.Checkbox.checked();
+
+      $.post(url, {mail_id: mail_id, user_ids: ids}, function (data){
+         alert('Отправлено');
+      });
+   }
+
+
 }
 
 
