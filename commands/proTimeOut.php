@@ -26,7 +26,7 @@ class proTimeOut
     {
         $users = Capsule::table('users')->where('date_end_pro', date('Y-m-d'))->get();
         foreach($users as $user){
-            include_once(__DIR__ . '/../modules/PHPMailer/class.phpmailer.php');
+            include_once(__DIR__ . '/../modules/phpmailer/class.phpmailer.php');
             $mail = new \PHPMailer();
             $mail->CharSet = 'utf-8';
             $mail->From = 'svadnik.ru';

@@ -2,7 +2,7 @@
 
 namespace Service;
 
-class Customer
+class Executor
 {
 
     public $path;

@@ -1,0 +1,7 @@
+<div id="user-photo" style="background: url(public/upload/big/<?= $this->user->avatar ?>) 50% 50%;background-size: cover;">
+    <a href="#" class="change avatar"><span>Изменить фото</span></a>
+    <form action="/customer/avatar_upload" method="post" id="upload-preview" enctype="multipart/form-data" target="upload_avatar">
+        <input type="file" name="userfiles" id="avatar-upload">
+        <input type="hidden" name="type" value="avatar">
+    </form>
+</div>

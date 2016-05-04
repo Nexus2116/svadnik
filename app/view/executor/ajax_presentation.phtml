@@ -1,0 +1,8 @@
+<? foreach($this->userPresentations as $presentation){ ?>
+    <div id="<?= $presentation->id ?>" class="portfolio-block-wrap present-item">
+        <div class="portfolio-del">
+            <div class="portfolio-del-button"></div>
+        </div>
+        <a href="/public/media/files/<?= $presentation->document ?>" target="_blank" class="portfolio-block" style="background: url(/public/upload/big/<?= $presentation->image ?>) 50% 50%; background-size: cover" big=""></a>
+    </div>
+<? } ?>

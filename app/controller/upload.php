@@ -117,7 +117,7 @@ class Upload extends \Core\Controller
 
             }
         }
-        \Core\Response::navigate('/edit');
+        \Core\Response::navigate($_SERVER['HTTP_REFERER']);
 
 
         exit;

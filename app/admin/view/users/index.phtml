@@ -35,17 +35,10 @@
             <? } ?>
         </select>
 
-
         <label for="executor">Исполнители</label>
         <div class="bm-checkbox <?= $this->params['executor'] == 'true' ? 'active' : '' ?> top_menu" id="executor" data-ctrl="Checkbox" data-act="filtr" href="<?= HTML::url('/users/index') ?>">
             <div class="bm-checkbox-choice"></div>
         </div>
-
-        <label for="customer">Заказчики</label>
-        <div class="bm-checkbox <?= $this->params['customer'] == 'true' ? 'active' : '' ?> top_menu" id="customer" data-ctrl="Checkbox" data-act="filtr" href="<?= HTML::url('/users/index') ?>">
-            <div class="bm-checkbox-choice"></div>
-        </div>
-
 
         <div class="bm-create-button" data-ctrl="Users" data-act="send_mail" href="<?= HTML::url('/users/send_mail') ?>">
             Отправить

@@ -27,7 +27,7 @@ $Router->addRoute('/reviews/add', 'Freelancers', 'reviewsAdd');
 $Router->addRoute('/projects/add', 'Index', 'projectAdd');
 $Router->addRoute('/projects/info', 'Index', 'projectsInfo');
 $Router->addRoute('/projects/offer_add', 'Index', 'projectOfferAdd');
-$Router->addRoute('/search', 'Index', 'search');
+$Router->addRoute('/search', 'Search', 'index');
 $Router->addRoute('/chat', 'Chat', 'messages');
 $Router->addRoute('/chat/send', 'Chat', 'sendMessage');
 
@@ -41,8 +41,37 @@ $Router->addRoute('/logout', 'Signup', 'logout');
 $Router->addRoute('/edit', 'Edit', 'index');
 $Router->addRoute('/edit/calendar', 'Edit', 'calendar');
 $Router->addRoute('/edit/deilfile', 'Edit', 'delFile');
-$Router->addRoute('/edit/uploadfile', 'Upload', 'upImage');
+$Router->addRoute('/uploadfile', 'Upload', 'upImage');
+
 $Router->addRoute('/profile/:id', array('userId'), 'Profile', 'index');
+
+
+// new
+$Router->addRoute('/executor/', 'Executor', 'index');
+$Router->addRoute('/executor/:id', ['user_id'], 'Executor', 'user_profile');
+$Router->addRoute('/executor/upload_avatar', 'Executor', 'upload_avatar');
+$Router->addRoute('/executor/change_profile', 'Executor', 'change_profile');
+$Router->addRoute('/executor/change_pswd', 'Executor', 'change_pswd');
+$Router->addRoute('/executor/services_save', 'Executor', 'services_save');
+$Router->addRoute('/executor/service_delete', 'Executor', 'service_delete');
+$Router->addRoute('/executor/photo_upload', 'Executor', 'photo_upload');
+$Router->addRoute('/executor/photo_delete', 'Executor', 'photo_delete');
+$Router->addRoute('/executor/ajax/service_inputs/:id', ['id'], 'Executor', 'service_inputs');
+$Router->addRoute('/executor/upload_video', 'Executor', 'upload_video');
+$Router->addRoute('/executor/delete_video', 'Executor', 'delete_video');
+$Router->addRoute('/executor/upload_presentation', 'Executor', 'upload_presentation');
+$Router->addRoute('/executor/delete_presentation', 'Executor', 'delete_presentation');
+
+$Router->addRoute('/service/list_executors/:url/count', ['service'], 'Service', 'list_executors_count');
+$Router->addRoute('/service/list_executors/:url', ['service'], 'Service', 'list_executors');
+$Router->addRoute('/service/:url', ['service'], 'Service', 'index');
+
+$Router->addRoute('/customer/', 'Customer', 'index');
+$Router->addRoute('/customer/change_pswd', 'Customer', 'change_pswd');
+$Router->addRoute('/customer/change_profile', 'Customer', 'change_profile');
+$Router->addRoute('/customer/avatar_upload', 'Customer', 'avatar_upload');
+
+$Router->addRoute('/projects/subscribe-project', 'Executor', 'subscribe_project');
 
 
 $clazz = \App::$state->app . '\Exception\PageNotFound';

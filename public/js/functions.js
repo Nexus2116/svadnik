@@ -90,12 +90,40 @@ $(function (){
       var service_default = $('.top-service').eq(i).attr('data-cat-id');
       service_arr.push(service_default);
    }
+
+
+   var modelWindow = function (message){
+      scroll_pos = $(window).scrollTop();
+      content_width = $("#all-content").width();
+      $("#all-content").css({"top": -scroll_pos, "width": content_width});
+      $('#modal').addClass('active');
+      $('body').css({'overflow': 'hidden', 'height': '100%'});
+      $('#modal').css({'overflow-y': 'auto'});
+      $('.modal-window.message-modal .big-title').html(message);
+      $('.modal-window.message-modal').addClass('active');
+      modalCenter();
+   };
+
+
+   var sendForm = function (object){
+      var fromData = object.serializeArray();
+      var url = object.attr('action');
+      $.post(url, fromData, function (data){
+         if(data.valid){
+            modelWindow(data.message);
+         }
+      }, 'json');
+      return fromData;
+   };
+
+
 //geocomplete-----------------------------------------------------------------------------------------------------------
    $("#regcity").geocomplete().bind("geocode:result", function (event, result){
       $('#geoCompliteAddress').val(result.formatted_address);
    });
 //chb click-------------------------------------------------------------------------------------------------------------
    $(document).on("click", '.chb', function (){
+      var labelChb = $(this).parent().find('label');
       if($(this).parent().hasClass('all')){
          if(!$(this).hasClass('active')){
             $(this).parents('.modal-window').find('.chb:not(.active):gt(0)').click();
@@ -122,24 +150,25 @@ $(function (){
       if(!$(this).parent().hasClass('all')){
          if($(this).parent().parent().find('input').length > 0){
             if($(this).hasClass('radio')){
-               chb_val = $(this).parent().find('label').html();
+               chb_val = labelChb.html();
             }
             $(this).parent().parent().find('input').val(chb_val);
          }
          if($(this).parents(".modal-window").length > 0){
-            data_id = $(this).parent().find('label').attr('data-id');
-            data_cat_id = $(this).parent().find('label').attr('data-cat-id');
-            add_service = $(this).parent().find('label').html();
-            add_service_img = $(this).parent().find('label').attr('data-icon');
-            add_service_count = $(this).parent().find('label').attr('data-hour-users');
-            add_users_link = $(this).parent().find('label').attr('data-link-users');
-            add_service_min = $(this).parent().find('label').attr('data-min-price');
-            add_service_max = $(this).parent().find('label').attr('data-max-price');
-            add_service_min_hour = $(this).parent().find('label').attr('data-min-hour-price');
-            add_service_max_hour = $(this).parent().find('label').attr('data-max-hour-price');
+            data_id = labelChb.attr('data-id');
+            data_cat_id = labelChb.attr('data-cat-id');
+            add_service = labelChb.html();
+            add_service_img = labelChb.attr('data-icon');
+            add_service_count = labelChb.attr('data-hour-users');
+            add_users_link = labelChb.attr('data-link-users');
+            add_service_min = labelChb.attr('data-min-price');
+            add_service_max = labelChb.attr('data-max-price');
+            add_service_min_hour = labelChb.attr('data-min-hour-price');
+            add_service_max_hour = labelChb.attr('data-max-hour-price');
+            user_ids = labelChb.attr('data-user_ids');
 
-            // add_service_count
-            service_item = '<div class="calc-service" data-id="' + data_id + '" data-cat-id="' + data_cat_id + '"><a href="#" class="cat-item"><div class="cat-img"><div class="cat-icon" style="background:url(' + add_service_img + ') no-repeat 50% 50%;"></div></div><span>' + add_service + '</span></a><div class="price-slider-wrap"><div class="price-slider-chb"><div class="chb active" data-min="' + add_service_min_hour + '" data-max="' + add_service_max_hour + '"><div class="check"></div></div><label>Стоимость в час</label></div><div class="price-slider-chb"><div class="chb" data-min="' + add_service_min + '" data-max="' + add_service_max + '"><div class="check"></div></div><label>Стоимость за мероприятие / услугу</label></div><div class="price-slider-line" data-minprice="' + add_service_min_hour + '" data-maxprice="' + add_service_max_hour + '"><div class="price-slider-fill"></div><div class="price-slide left"><span>' + add_service_min_hour + '</span></div><div class="price-slide right"><span>' + add_service_max_hour + '</span></div></div></div><div class="calc-count"><div class="calc-count-title">Найдено исполнителей</div><a href="' + add_users_link + '">' + add_service_count + '</a></div></div>';
+            // add_service_count in calculator
+            service_item = '<div class="calc-service" data-id="' + data_id + '" data-cat-id="' + data_cat_id + '"><a href="#" class="cat-item"><div class="cat-img"><div class="cat-icon" style="background:url(' + add_service_img + ') no-repeat 50% 50%;"></div></div><span>' + add_service + '</span></a><div class="price-slider-wrap"><div class="price-slider-chb"><div class="chb active" data-min="' + add_service_min_hour + '" data-max="' + add_service_max_hour + '"><div class="check"></div></div><label>Стоимость в час</label></div><div class="price-slider-chb"><div class="chb" data-min="' + add_service_min + '" data-max="' + add_service_max + '"><div class="check"></div></div><label>Стоимость за мероприятие / услугу</label></div><div class="price-slider-line" data-minprice="' + add_service_min_hour + '" data-maxprice="' + add_service_max_hour + '"><div class="price-slider-fill"></div><div class="price-slide left"><span>' + add_service_min_hour + '</span></div><div class="price-slide right"><span>' + add_service_max_hour + '</span></div></div></div><div class="calc-count"><div class="calc-count-title">Найдено исполнителей</div><a data-user_ids="' + user_ids + '" href="' + add_users_link + '">' + add_service_count + '</a></div></div>';
 
             if(service_block == 1){
                if(!$(this).hasClass('active')){
@@ -155,8 +184,10 @@ $(function (){
                   $('.top-services .top-service[data-cat-id="' + data_cat_id + '"]').parent().remove();
                }
                else{
-                  service_item = '<div class="top-performer-service"><div class="top-service" data-id="' + data_id + '" data-cat-id="' + data_cat_id + '"><span>' + add_service + '</span><div class="remove"></div></div><div class="top-input"><input id="performer-price-' + data_cat_id + '" name="performer-price-' + data_cat_id + '" type="text" onblur="if(this.value==\'\'){this.value=\'Цена за час (рублей)\';}" onfocus="if(this.value==\'Цена за час (рублей)\'){this.value=\'\';}" value="Цена за час (рублей)"/></div><div class="top-input"><input id="performer-projprice-' + data_cat_id + '" name="performer-projprice-' + data_cat_id + '"  type="text" onblur="if(this.value==\'\'){this.value=\'Цена за проект (рублей)\';}" onfocus="if(this.value==\'Цена за проект (рублей)\'){this.value=\'\';}" value="Цена за проект (рублей)"/></div></<div><input type="hidden" id="performer-id-' + data_cat_id + '" name="performer-id-' + data_cat_id + '" value="' + data_cat_id + '"/></div>';
-                  $('.top-services').prepend(service_item);
+                  $.get('/executor/ajax/service_inputs/' + data_cat_id, null, function (html){
+                     $('.top-services').prepend(html);
+                  }, 'html');
+
                }
 
             } else if(service_block == 3){
@@ -221,28 +252,20 @@ $(function (){
              }
 
              post_data = {
-                "req-title": document.getElementsByName("req-title")[0].value,
-                "req-date-since": document.getElementsByName("req-date-since")[0].value,
-                "req-date-to": document.getElementsByName("req-date-to")[0].value,
-                "req-text": document.getElementsByName("req-text")[0].value,
-                "req-phone": document.getElementsByName("req-phone")[0].value,
-                "req-mail": document.getElementsByName("req-mail")[0].value,
-                "req-budget": document.getElementsByName("req-budget")[0].value,
-                "service-arr": user_services,
-                "req-chb": req_chb
+                title: document.getElementsByName("req-title")[0].value,
+                date_start: document.getElementsByName("req-date-since")[0].value,
+                date_end: document.getElementsByName("req-date-to")[0].value,
+                text: document.getElementsByName("req-text")[0].value,
+                phone: document.getElementsByName("req-phone")[0].value,
+                email: document.getElementsByName("req-mail")[0].value,
+                budget: document.getElementsByName("req-budget")[0].value,
+                service: user_services,
+                visible: req_chb
              };
 
-             $.post("/projects/add", post_data, function (data){
-                if(data.status == 1){
-                   scroll_pos = $(window).scrollTop();
-                   content_width = $("#all-content").width();
-                   $("#all-content").css({"top": -scroll_pos, "width": content_width});
-                   $('#modal').addClass('active');
-                   $('body').css({'overflow': 'hidden', 'height': '100%'});
-                   $('#modal').css({'overflow-y': 'auto'});
-                   $('.modal-window.message-modal .big-title').html("СПАСИБО, ЗАЯВКА БУДЕТ<br>ОПУБЛИКОВАНА ПОСЛЕ<br>МОДЕРАЦИИ");
-                   $('.modal-window.message-modal').addClass('active');
-                   modalCenter();
+             $.post("/projects/add", post_data, function (response){
+                if(response.valid){
+                   modelWindow("СПАСИБО, ЗАЯВКА БУДЕТ<br>ОПУБЛИКОВАНА ПОСЛЕ<br>МОДЕРАЦИИ");
                 }
              }, 'json');
 
@@ -307,11 +330,20 @@ $(function (){
       $('.text-item:lt(' + slide_ch + ')').removeClass('right').addClass('left');
    });
 //input file------------------------------------------------------------------------------------------------------------
+   var formVideo = $("#addvideo");
    $('.input-file-button.video').click(function (){
       $('#video-upload').click();
-      $('#video-upload').on("change", function (){
-         $("#upload_video").submit();
+      var url = formVideo.attr('action');
+      $("#upload_video").load(function (){
+         $.get(url, null, function (data){
+            $('#executor-video').html(data);
+         }, 'html');
       });
+   });
+
+
+   formVideo.find('.blue-button').click(function (){
+      $('.close-modal').click();
    });
    //presents
    $('.input-file-button.present_one').click(function (){
@@ -554,46 +586,34 @@ $(function (){
       $('.modal-window.city-modal').addClass('active');
       modalCenter();
    });
+
+   var subscribe_project = function (data, attr_id){
+      $('#modal').addClass('active');
+      scroll_pos = $(window).scrollTop();
+      content_width = $("#all-content").width();
+      $("#all-content").css({"top": -scroll_pos, "width": content_width});
+      $('body').css({'overflow': 'hidden', 'height': '100%'});
+      $('#modal').css({'overflow-y': 'auto'});
+      $('.modal-window.order-modal').addClass('active');
+      $('.modal-window.order-modal .big-title').html(data.title);
+      $('.modal-window.order-modal .order-modal-text').html(data.content);
+      $('.modal-window.order-modal .public-date').html(data.date_add_n.date);
+      $('.modal-window.order-modal .order-modal-phone').html(data.user_phone);
+      $('.modal-window.order-modal .order-modal-mail a').html(data.user_email);
+      $('.modal-window.order-modal .order-modal-mail a').attr("href", "mailto:" + data.user_email);
+      $('.modal-window.order-modal .blue-button').attr("href", "/projects/subscribe-project?id=" + attr_id);
+      modalCenter();
+   };
    $('#order-items .order-item').click(function (){
-      attr_id = $(this).attr("data-id");
+      var attr_id = $(this).attr("data-id");
       $.get('/projects/info?id=' + attr_id, null, function (data){
-         console.log(data);
-         $('#modal').addClass('active');
-         scroll_pos = $(window).scrollTop();
-         content_width = $("#all-content").width();
-         $("#all-content").css({"top": -scroll_pos, "width": content_width});
-         $('body').css({'overflow': 'hidden', 'height': '100%'});
-         $('#modal').css({'overflow-y': 'auto'});
-         $('.modal-window.order-modal').addClass('active');
-         $('.modal-window.order-modal .big-title').html(data.title);
-         $('.modal-window.order-modal .order-modal-text').html(data.content);
-         $('.modal-window.order-modal .public-date').html(data.date_add_n.date);
-         $('.modal-window.order-modal .order-modal-phone').html(data.user_phone);
-         $('.modal-window.order-modal .order-modal-mail a').html(data.user_email);
-         $('.modal-window.order-modal .order-modal-mail a').attr("href", "mailto:" + data.user_email);
-         $('.modal-window.order-modal .blue-button').attr("href", "/projects/offer_add?id=" + attr_id);
-         modalCenter();
+         subscribe_project(data, attr_id);
       }, 'json');
    });
    $('#performer-orders .order-item').click(function (){
-      attr_id = $(this).attr("data-id");
+      var attr_id = $(this).attr("data-id");
       $.get('/projects/info?id=' + attr_id, null, function (data){
-         $('#modal').addClass('active');
-         scroll_pos = $(window).scrollTop();
-         content_width = $("#all-content").width();
-         $("#all-content").css({"top": -scroll_pos, "width": content_width});
-         $('body').css({'overflow': 'hidden', 'height': '100%'});
-         $('#modal').css({'overflow-y': 'auto'});
-         $('.modal-window.order-modal').addClass('active');
-         $('.modal-window.order-modal .big-title').html(data.title);
-         $('.modal-window.order-modal .order-modal-text').html(data.content);
-         $('.modal-window.order-modal .public-date').html(data.date_add_n.date);
-         $('.modal-window.order-modal .order-modal-phone').html(data.user_phone);
-         $('.modal-window.order-modal .order-modal-mail a').html(data.user_email);
-         $('.modal-window.order-modal .order-modal-mail a').attr("href", "mailto:" + data.user_email);
-         $('.modal-window.order-modal .blue-button').attr("href", "/projects/offer_add?id=" + attr_id);
-         $('.modal-window.order-modal .blue-button').hide();
-         modalCenter();
+         subscribe_project(data, attr_id);
       }, 'json');
    });
 
@@ -682,17 +702,17 @@ $(function (){
       $('.modal-window.login').addClass('active');
       modalCenter();
    });
-   $("#loginform button").click(function (e){
-      e.preventDefault();
-      $.post('/login', {login: $("#login").val(), password: $("#pass").val()}, function (data){
-         if(data == "0"){
-            $("#loginform .grey-input").css({"border-color": "red"});
-         } else{
-            document.location.href = "/edit";
-         }
-
-      });
-   });
+   //$("#loginform button").click(function (e){
+   //   e.preventDefault();
+   //   $.post('/login', {login: $("#login").val(), password: $("#pass").val()}, function (data){
+   //      if(data == "0"){
+   //         $("#loginform .grey-input").css({"border-color": "red"});
+   //      } else{
+   //         document.location.href = "/edit";
+   //      }
+   //
+   //   });
+   //});
    $('.forget').click(function (){
       $('.modal-window.login').removeClass('active');
       scroll_pos = $(window).scrollTop();
@@ -857,59 +877,53 @@ $(function (){
    $('body').on(up_event, function (){
 
       if(m_down){
-         m_down = false;
-         minp = slide_item.parent().find(".price-slide.left span").html()
-         maxp = slide_item.parent().find(".price-slide.right span").html()
-         sid = slide_item.parents(".calc-service").attr("data-cat-id");
-         dataid = slide_item.parents(".calc-service").attr("data-id");
 
-         hour = 0;
-         if(slide_item.parents(".price-slider-wrap").find(".chb").eq(0).hasClass("active")){
-            hour = 1;
+         var parseUrl = function (){
+            var queryString = {};
+            window.location.search.replace(
+                new RegExp("([^?=&]+)(=([^&]*))?", "g"),
+                function ($0, $1, $2, $3){
+                   queryString[$1] = $3;
+                }
+            );
+            return queryString;
+         };
+
+         m_down = false;
+         var minp = slide_item.parent().find(".price-slide.left span").html();
+         var maxp = slide_item.parent().find(".price-slide.right span").html();
+         var dataid = slide_item.parents(".calc-service").attr("data-id");
+         if(typeof dataid == 'undefined'){
+            dataid = slide_item.parents("#service-top-block").attr("data-url");
          }
 
-         if($("#performers-page").length > 0){
-            var sid = $('.big-title.blue').attr('data-cat-id');
-            var filterFreelance = {
-               price_start: minp * 1,
-               price_end: maxp * 1,
-               hour: hour,
-               id: sid * 1,
-            };
+         var type_price = 'project';
+         if(slide_item.parents(".price-slider-wrap").find(".chb").eq(0).hasClass("active")){
+            type_price = 'hour';
+         }
 
-            $.post('/calc', filterFreelance, function (data){
-               $("#performers .container").html(data);
-               $('#filter-count').html($('#countfreelance').attr('data-countfreelance'));
-               for(i = 0; i < $('.performer-busy input').length; i++){
-                  var perforemer_days_id = $('.performer-busy input').eq(i);
-                  busy_days = perforemer_days_id.attr("data-busy").split(",");
-                  perforemer_days_id.Zebra_DatePicker({
-                     'show_icon': false,
-                     'offset': [-310, 258],
-                     header_captions: {
-                        'days': 'F Y',
-                        'months': 'Y',
-                        'years': 'Y1 - Y2'
-                     },
-                     header_navigation: ['', ''],
-                     disabled_dates: busy_days
-                  });
-               }
+         var filterFreelance = {
+            price_start: minp,
+            price_end: maxp,
+            type_price: type_price
+         };
+         if($("#performers-page").length > 0){
+
+            $.get('/service/list_executors/' + dataid, filterFreelance, function (data){
+               $("#block_executors").html(data);
             }, 'html');
 
          } else{
-
-            var filterFreelance = {
-               price_start: minp * 1,
-               price_end: maxp * 1,
-               hour: hour,
-               id: sid * 1,
-            };
-
-            $.get('/calc', filterFreelance, function (data){
-               slide_item.parents(".calc-service").find(".calc-count a").html(data);
-               slide_item.parents(".calc-service").find(".calc-count a").attr('href', '/freelancers/' + dataid + '?price_start=' + filterFreelance['price_start'] + '&price_end=' + filterFreelance['price_end'] + '&hour=' + filterFreelance['hour']).html(data);
-            }, 'html');
+            $.get('/service/list_executors/' + dataid + '/count', filterFreelance, function (data){
+               var link_calc_count = slide_item.parents(".calc-service").find(".calc-count a");
+               link_calc_count.html(data.user_ids.length);
+               link_calc_count.attr('data-user_ids', data.user_ids.length);
+               link_calc_count.attr('href', '/service/' + dataid + '?' +
+                   'price_start=' + filterFreelance['price_start'] +
+                   '&price_end=' + filterFreelance['price_end'] +
+                   '&type_price=' + filterFreelance['type_price']
+               ).html(data.user_ids.length);
+            }, 'json');
 
          }
 
@@ -1010,7 +1024,12 @@ $(function (){
    $(document).on('click', '.remove', function (e){
       e.stopPropagation();
       if($(this).parent().parent().hasClass('top-performer-service')){
+         var id = $(this).parent().data('cat-id');
          $(this).parent().parent().remove();
+
+         $.post('/executor/service_delete', {id: id}, function (data){
+         }, 'json');
+
       } else{
          data_cat_id = $(this).parent().attr('data-cat-id');
          for(i = 0, k = service_arr.length; i < k; i++){
@@ -1035,6 +1054,18 @@ $(function (){
       });
    });
 
+   $("#upload_photos").load(function (){
+      $.get('/executor/photo_upload', null, function (data){
+         $('#executor-photos').html(data);
+      }, 'html');
+   });
+
+   $('#executor_uplaod_avatar').load(function (){
+      $.get('/executor/photo_upload', null, function (data){
+         $('#executor-photos').html(data);
+      }, 'html');
+   });
+
 //add video-------------------------------------------------------------------------------------------------------------
    $('.addfile.video').click(function (){
       $('#modal').addClass('active');
@@ -1047,31 +1078,53 @@ $(function (){
       $('.modal-window.addpresent').addClass('active');
       modalCenter();
    });
+
+   var formPresent = $('#addpresent');
+   formPresent.find('.blue-button').click(function (){
+      formPresent.submit();
+      $('.close-modal').click();
+   });
+
+   $('#executor_uplaod_avatar').load(function (){
+      $.get('/executor/upload_avatar', null, function (data){
+         $('#user-photo').attr('style', 'background: url(public/upload/big/' + data + ') 50% 50%;background-size: cover;');
+      }, 'json');
+   });
+
+
+//upload avatar
+   $('#upload_avatar').load(function (){
+      $.get('/customer/avatar_upload', null, function (data){
+         $('#user-photo').attr('style', 'background: url(public/upload/big/' + data + ') 50% 50%;background-size: cover;');
+      }, 'json');
+   });
 //remove photo----------------------------------------------------------------------------------------------------------
    $(document).on('click', '.photo-del-button', function (e){
       var id = $(this).parents('.photo-block-wrap').attr('id');
-      $.post('/edit/deilfile', {id: id}, function (data){
+      $.post('/executor/photo_delete', {id: id}, function (data){
       }, 'json');
       $(this).parents('.photo-block-wrap').remove();
    });
 //remove video----------------------------------------------------------------------------------------------------------
    $(document).on('click', '.portfolio-block-wrap.video-item .portfolio-del-button', function (e){
       var id = $(this).parents('.video-item').attr('id');
-      $.post('/edit/deilfile', {id: id}, function (data){
+      $.post('/executor/delete_video', {id: id}, function (data){
       }, 'json');
       $(this).parents('.video-item').remove();
    });
 //remove present----------------------------------------------------------------------------------------------------------
    $(document).on('click', '.portfolio-block-wrap.present-item .portfolio-del-button', function (e){
       var id = $(this).parents('.present-item').attr('id');
-      $.post('/edit/deilfile', {id: id}, function (data){
+      $.post('/executor/delete_presentation', {id: id}, function (data){
       }, 'json');
       $(this).parents('.present-item').remove();
    });
 //otklik----------------------------------------------------------------------------------------------------------
    $(document).on('click', '#about-order .blue-button', function (e){
       e.preventDefault();
-      $.get($(this).attr("href"), null, function (data){
+      $.get($(this).attr("href"), null, function (response){
+
+
          $('.modal-window.order-modal').removeClass('active');
          scroll_pos = $(window).scrollTop();
          content_width = $("#all-content").width();
@@ -1079,14 +1132,10 @@ $(function (){
          $('#modal').addClass('active');
          $('body').css({'overflow': 'hidden', 'height': '100%'});
          $('#modal').css({'overflow-y': 'auto'});
-         if(data == "true"){
-            $('.modal-window.message-modal .big-title').html("Заявка успешно отправлена.");
-         } else{
-            $('.modal-window.message-modal .big-title').html(data);
-         }
+         $('.modal-window.message-modal .big-title').html(response.message);
          $('.modal-window.message-modal').addClass('active');
          modalCenter();
-      });
+      }, 'json');
       return false;
    });
 //change name-----------------------------------------------------------------------------------------------------------
@@ -1101,7 +1150,9 @@ $(function (){
       if(new_name != 'Введите имя'){
          $('span.user-name').html(new_name);
       }
-      $(this).parents('form').submit();
+      var formData = sendForm($(this).parents('form'));
+      $('.user-name').html(formData[0].value);
+
       $('.change-name-block').removeClass('active');
       $('#performer-page .big-title').css({'padding-top': 22});
       $('span.user-name').attr({'style': ''});
@@ -1115,6 +1166,7 @@ $(function (){
       $('.change.name').attr({'style': ''});
       //$(".change-password-block").removeClass('active');
    });
+
 //change password-------------------------------------------------------------------------------------------------------
    $(document).on('click', '.change-pass', function (e){
       e.preventDefault();
@@ -1126,7 +1178,9 @@ $(function (){
       if($("#new-pass").val() == $("#repeat-pass").val()){
          $(".change-password-block .top-input").css({"border-color": "white"});
          $(this).parent().removeClass('active');
-         $(this).parents('form').submit();
+
+         sendForm($(this).parents('form'));
+
          $(this).parent().parent().find('.change-pass').show();
       } else{
          $(".change-password-block .top-input").css({"border-color": "red"});
@@ -1183,10 +1237,28 @@ $(function (){
 //performer services list data------------------------------------------------------------------------------------------
    $(document).on('click', '#performer-data .green-button', function (e){
       e.preventDefault();
-      var performer_data = $(this).parent().serializeArray();
-      $.post('/edit', {data: performer_data}, function (data){
+   });
+//save profile------------------------------------------------------------------------------------------
+   $('.executor-profile .green-button').click(function (){
+      var formProfile = $(this).parents('form');
+      sendForm(formProfile);
 
-      }, 'json');
+      return false;
+   });
+//save services------------------------------------------------------------------------------------------
+   $('.executor-service .green-button').click(function (){
+      var object = $(this).parents('form');
+      var fromData = object.serializeArray();
+      var url = object.attr('action');
+      if(fromData.length != 0){
+         $.post(url, {services: fromData}, function (data){
+            if(data.valid){
+               modelWindow(data.message);
+            }
+         }, 'json');
+      }
+
+      return false;
    });
 //zebra active----------------------------------------------------------------------------------------------------------
    $(document).on('click', '.Zebra_DatePicker td', function (){
@@ -1413,14 +1485,45 @@ $(function (){
    });
 
    $('#btnlistFrilance').click(function (){
-      var calcService = $('.calc-service');
+      var serviceLink = $('.calc-service .calc-count a');
       var ids = [];
-      for(i = 0; i < calcService.length; i++){
-         ids.push(calcService.eq(i).attr('data-cat-id'));
+      for(var i = 0; i < serviceLink.length; i++){
+         var ids_ = serviceLink.eq(i).attr('data-user_ids').split(',');
+         for(var k in ids_){
+            if(ids.indexOf(ids_[k]) == -1 && ids_[k].length)
+               ids.push(ids_[k]);
+         }
       }
-      document.location = '/listfreelancers?productid=' + ids.join(',');
+
+      document.location = '/search?id=' + ids.join(',');
    });
 
+
+   //customer
+
+   $('.customer-user-name .green-button').click(function (e){
+      e.preventDefault();
+   });
+
+   $('.customer-user-profile .green-button').click(function (e){
+      var serialize = $(this).parents('form').serializeArray();
+      var data = {};
+      for(var i in serialize){
+         data[serialize[i].name] = serialize[i].value;
+      }
+      saveData('/customer/change_profile', data);
+      e.preventDefault();
+   });
+
+   $('.customer-user-password .green-button').click(function (e){
+      e.preventDefault();
+   });
+
+   var saveData = function (url, data){
+      $.post(url, data, function (response){
+         modelWindow(response.message);
+      }, 'json');
+   }
 
 });
 

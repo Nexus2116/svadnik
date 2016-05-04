@@ -2,6 +2,8 @@
 
 namespace Controller;
 
+use Symfony\Component\Config\Definition\Exception\Exception;
+
 class Index extends \Core\Controller
 {
 
@@ -15,60 +17,75 @@ class Index extends \Core\Controller
         $this->view->layout = 'index';
         $this->seo('Главная страница', 'Цитадель', 'Цитадель');
         \App::view('indexPage', true);
-        // \App::view('hideServices', true);
 
-        $catalog = \Model\Articles::where('url', 'services-catalog')->first();
+        $catalogService = \Model\Articles::select('id')->where('url', 'services-catalog')->first();
+        $services = \Model\Articles::where('parent_id', $catalogService->id)->where('deleted_at', null)->get();
+        $services_key_id = [];
+        foreach($services as $item){
+            $services_key_id[$item->id] = $item;
+        }
+        \App::view('services', $services_key_id);
 
-        $catalog_parent = \Model\Articles::where('parent_id', $catalog->id)->get();
-        \App::view('catalog', $catalog_parent);
+        $serviceUsers = [];
+        $getServiceUsers = \Model\UserService::select('user_id', 'service_id')->get();
+        foreach($getServiceUsers as $item){
+            if(!isset($serviceUsers[$item->service_id]))
+                $serviceUsers[$item->service_id] = [$item->user_id];
+            if(isset($serviceUsers[$item->service_id]))
+                if(!in_array($item->user_id, $serviceUsers[$item->service_id]))
+                    array_push($serviceUsers[$item->service_id], $item->user_id);
 
-        foreach($catalog_parent as $item)
-            $serviceUserCount[$item['id']] = \Model\Service::where('tagid', $item['id'])->where('deleted', null)->count();
+        }
+        \App::view('serviceUsers', $serviceUsers);
 
-        \App::view('serviceUserCount', $serviceUserCount);
-
-
-        $catalog_parent = \Model\Articles::where('parent_id', $catalog->id)->take(2)->get();
-        \App::view('catalog_index', $catalog_parent);
-
-
-        //Примерный бюджет вашего мероприятия
-        $offers = \Model\Articles::where('url', 'special-offers')->first();
-        $offersGet = \Model\Articles::getPage('parent_id', $offers->id)->get();
-        \App::view('offers', $offersGet);
-
-
-        $projects = \Model\Projects::take(16)->orderBy('id', 'DESC')->get();
+        $projects = \Model\Projects::take(16)->where('published', 1)->orderBy('id', 'DESC')->get();
         \App::view('projects', $projects);
 
+        $offers = \Model\Articles::where('url', 'special-offers')->where('deleted_at', null)->first();
+        $offersGet = \Model\Articles::getPage('parent_id', $offers->id)->get();
+        \App::view('offers', $offersGet);
     }
 
     public function projectAdd_post()
     {
-        foreach($_POST as $key => $item){
-            $_POST[$key] = htmlspecialchars($item);
+        try{
+            $project = new \Model\Projects();
+            $serviceIds = explode(',', $_POST['service']);
+            unset($_POST['service']);
+
+            foreach($_POST as $key => $item)
+                $project->{$key} = strip_tags($item);
+            if($project->save()){
+                if(!empty($serviceIds))
+                    foreach($serviceIds as $id){
+                        $projectService = new \Model\projectsService;
+                        $projectService->service_id = $id;
+                        $projectService->project_id = $project->id;
+                        $projectService->save();
+                    }
+
+                \Core\Response::json(array(
+                    'valid' => true,
+                    'message' => 'Успешно добавлен'
+                ));
+            }
+            throw new Exception();
+
+        } catch (\Exception $e){
+            \Core\Response::json(array(
+                'valid' => false,
+                'message' => 'Не удалось сохранить'
+            ));
         }
-        $project = new \Model\Projects();
-        $project->title = $_POST['req-title'];
-        $project->date_start = $_POST['req-date-since'];
-        $project->date_end = $_POST['req-date-to'];
-        $project->text = $_POST['req-text'];
-        $project->phone = $_POST['req-phone'];
-        $project->email = $_POST['req-mail'];
-        $project->budget = $_POST['req-budget'];
-        $project->services = $_POST['service-arr'];
-        $project->visible = $_POST['req-chb'];
-        if($project->save()){
-            echo json_encode(['status' => 1]);
-            exit;
-        }
-        echo json_encode(['status' => 0]);
-        exit;
     }
 
     public function projectsInfo()
     {
         $project = \Model\Projects::where('id', $_GET['id'])->first();
+        if(!\Bootstrap::checkUserPro()){
+            $project->phone = null;
+            $project->email = null;
+        }
         $arr = Array(
             'title' => $project->title,
             'content' => $project->text,
@@ -80,31 +97,6 @@ class Index extends \Core\Controller
         echo json_encode($arr);
         exit;
     }
-
-    public function projectOfferAdd()
-    {
-        $user = \Model\Users::where('id', \App::session('user')->id)->first();
-        $arr = explode(',', $user->projects);
-
-        if(!array_search($_GET['id'], $arr)){
-            array_push($arr, $_GET['id']);
-            $result = implode(',', $arr);
-            \Model\Users::where('id', \App::session('user')->id)->update(array('projects' => $result));
-            echo 'Проект добавлен';
-        } else{
-            echo 'У вас уже имеется данный проект';
-        }
-
-        exit;
-    }
-
-    public function search()
-    {
-        \App::view('hideServices', true);
-
-
-    }
-
 
 }
 

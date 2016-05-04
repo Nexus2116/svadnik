@@ -88,6 +88,16 @@ class Projects extends Articles
         }
     }
 
+    public function publish($id)
+    {
+        $item = $this->route->id;
+        $project = \Model\Projects::find($item);
+        $project->published = $project->published >= 1 ? 0 : 1;
+        $project->save();
+
+        \Core\Response::json(array('valid' => true));
+    }
+
 
 }
 

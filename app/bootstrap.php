@@ -103,7 +103,7 @@ class Bootstrap
         for($i = 1; $i <= ceil(5 - $num / $count); $i++){
             ?>
             <div class="star"></div>
-        <?
+            <?
         }
     }
 
@@ -119,6 +119,23 @@ class Bootstrap
                 'lastname' => htmlspecialchars($item['lastname'])
             );
         return $userResultArr;
+    }
+
+    public function checkUserPro()
+    {
+        $user_id = \App::session('user')->id;
+        $user = \Model\Users::find($user_id);
+        if($user->date_end_pro >= Date("Y-m-d"))
+            return true;
+        else
+            return false;
+    }
+
+    public function userGetRole()
+    {
+        $user_id = \App::session('user')->id;
+        $user = \Model\Users::find($user_id);
+        return $user->role;
     }
 
 

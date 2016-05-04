@@ -4,33 +4,19 @@
             Лента заказов
         </div>
         <div id="order-nav">
-
         </div>
         <div id="order-items">
             <div id="order-line">
-
-                <?foreach($this->projects as $item){
-                    if($item->visible != 1){?>
-                        <div class="order-item" data-id="<?=$item['id']?>">
-                            <div class="order-date"><?=$item['created_at']?></div>
-                            <div class="order-info"><?=htmlspecialchars($item['title'])?></div>
-                            <? if($item->visible != 3){ ?>
-                            <a href="mailto:<?=htmlspecialchars($item['email'])?>" class="order-mail"><?=htmlspecialchars($item['email'])?></a>
-                            <div class="order-phone"><?=htmlspecialchars($item['phone'])?></div>
-                            <?}?>
-                        </div>
-                    <?}elseif(isset(\App::session('user')->role) && \App::session('user')->role == 0 && $item->visible == 1){?>
-                        <div class="order-item" data-id="<?=$item['id']?>">
-                            <div class="order-date"><?=$item['created_at']?></div>
-                            <div class="order-info"><?=htmlspecialchars($item['title'])?></div>
-                            <? if($item->visible != 3){ ?>
-                            <a href="mailto:<?=$item['email']?>" class="order-mail"><?=htmlspecialchars($item['email'])?></a>
-                            <div class="order-phone"><?=htmlspecialchars($item['phone'])?></div>
-                            <?}?>
-                        </div>
-                <?}
-                }?>
-
+                <? foreach($this->projects as $item){ ?>
+                    <div class="order-item" data-id="<?= $item['id'] ?>">
+                        <div class="order-date"><?= $item['created_at'] ?></div>
+                        <div class="order-info"><?= $item['title'] ?></div>
+                        <? if(Bootstrap::checkUserPro()){ ?>
+                            <a href="mailto:<?= $item['email'] ?>" class="order-mail"><?= $item['email'] ?></a>
+                            <div class="order-phone"><?= $item['phone'] ?></div>
+                        <? } ?>
+                    </div>
+                <? } ?>
             </div>
         </div>
     </div>

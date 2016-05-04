@@ -1,0 +1,93 @@
+<?
+if(count($this->users))
+    foreach($this->users as $user){
+        $userServiceData = [];
+        foreach($user->userService as $item){
+            $userServiceData[$item->service_id] = $item;
+        }
+        $user->userService = $userServiceData;
+        ?>
+        <div class="performer-block">
+            <div class="performer-first">
+                <div class="performer">
+                    <div class="photo-block" style="background: url(/public/upload/big/<?= $user->avatar ?>) 50% 50%; background-size: cover"></div>
+                    <div class="performer-wrap">
+                        <div class="performer-name"><?= $user->firstname ?></div>
+                        <div class="performer-status">Свободен</div>
+                    </div>
+                </div>
+                <a href="#" class="performer-busy">
+                    Посмотреть свободные / занятые дни ?
+                    <input type="text" id="1" data-busy="06 03 2015,20 03 2015,19 03 2015,11 03 2015,25 03 2015" readonly="readonly">
+                </a>
+                <? if(Bootstrap::checkUserPro()){ ?>
+                    <div class="performer-contact">
+                        <label>Телефон:</label><?= $user->phone ?></div>
+                    <div class="performer-contact">
+                        <label>E-mail:</label><a href="mailto:<?= $user->email ?>"><?= $user->email ?></a>
+                    </div>
+                    <div class="performer-contact">
+                        <label>Skype:</label><a href="skype:<?= $user->skype ?>"><?= $user->skype ?></a>
+                    </div>
+                <? } ?>
+            </div>
+            <div class="performer-second">
+                <div class="performer-contact">
+                    <label>Опыт работы:</label><?= $user->experience ?>
+                </div>
+                <div class="performer-contact">
+                    <label>Цена за час:</label><?= $user->userService[$this->service->id]->price_h ?> руб.
+                </div>
+                <div class="performer-contact">
+                    <label>Цена за проект:</label><?= $user->userService[$this->service->id]->price_project ?> руб.
+                </div>
+                <div class="performer-contact">
+                    <label>Рейтинг: ?</label>
+                    <div class="star active"></div>
+                    <div class="star active"></div>
+                    <div class="star active"></div>
+                    <div class="star active"></div>
+                    <div class="star"></div>
+                </div>
+                <div class="extra-services">
+                    <div class="extra-services-title">
+                        Дополнительные услуги:
+                    </div>
+                    <? foreach($user->userService as $item){
+                        // hide this service
+                        if($this->service->id != $item->service_id){ ?>
+                            <a href="/service/<?= $this->services[$item->service_id]->url ?>" class="extra-service" title="Оформление">
+                                <div class="cat-icon" style="background:url(/public/upload/big/<?= $this->services[$item->service_id]->image ?>) no-repeat 50% 50%; background-size: cover;"></div>
+                            </a>
+                        <? }
+                    } ?>
+                </div>
+            </div>
+            <div class="performer-photos">
+                <?
+                $photo_count = 0;
+                if(count($user->userPhotos))
+                    foreach($user->userPhotos as $photo){
+                        $photo_count++ ?>
+                        <div class="photo-block <?= $photo_count == 3 ? 'disabled' : '' ?>" style="background: url(/public/upload/big/<?= $photo->image ?>) 50% 50%; background-size: cover" big="/public/upload/blur/<?= $photo->image ?>"></div>
+                    <? } ?>
+                <a class="morephoto" href="#"><span>ещё</span></a>
+            </div>
+            <div class="performer-about">
+                <div class="performer-about-title">О себе:</div>
+                <div class="performer-about-text">
+                    <?= $user->info ?>
+                </div>
+                <div class="performer-line">
+                    <a class="performer-comment" href="#" data-id="1">Отзывы: 13</a>
+                </div>
+                <a href="#" class="lightblue-button reserve">Забронировать исполнителя ?</a>
+                <a href="/executor/<?= $user->id ?>" class="lightblue-button">Портфолио</a>
+                <br>
+                <br>
+                <? if(Bootstrap::checkUserPro() && Bootstrap::userGetRole() == 1){ ?>
+                    <a href="#" class="lightblue-button btnchat" data-id="1">Чат ?</a>
+                <? } ?>
+            </div>
+        </div>
+    <? } ?>

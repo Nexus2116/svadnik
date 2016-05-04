@@ -1,0 +1,12 @@
+<div class="top-performer-service">
+    <div class="top-service" data-id="photo" data-cat-id="<?= $this->service->id ?>">
+        <span> <?= $this->service->name ?> </span>
+        <div class="remove"></div>
+    </div>
+    <div class="top-input">
+        <input id="performer-price-<?= $this->service->id ?>" name="[<?= $this->service->id ?>]price_h" type="text" placeholder="Цена за час (рублей)" value="">
+    </div>
+    <div class="top-input">
+        <input id="performer-projprice-<?= $this->service->id ?>" name="[<?= $this->service->id ?>]price_project" type="text" placeholder="Цена за проект (рублей)" value="">
+    </div>
+</div>

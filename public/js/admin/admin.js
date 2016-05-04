@@ -246,6 +246,13 @@ Controller.Radio = {
       });
    },
 
+   project_publish: function (object){
+      var id = object.data('itemid');
+      $.get('/admin/projects/publish/id/' + id, null, function (){
+         Controller.Radio.check(object);
+      });
+   },
+
    image_publish: function (object){
       var id = object.data('itemid');
       $.get('/admin/image/publish/id/' + id, null, function (){

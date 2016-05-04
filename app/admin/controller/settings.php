@@ -22,6 +22,7 @@ namespace Admin\Controller;
 				'ok' => 'Ok ссылка',
 				'tw' => 'Twiter ссылка',
 				'instagram' => 'Instagram ссылка',
+				'pro_account' => 'Про аккаунт на {n} месяцев',
 			);
 		}
 

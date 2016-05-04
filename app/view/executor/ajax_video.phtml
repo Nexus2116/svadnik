@@ -1,0 +1,8 @@
+<? foreach($this->video as $item){ ?>
+    <div id="<?= $item->id ?>" class="portfolio-block-wrap video-item">
+        <div class="portfolio-del">
+            <div class="portfolio-del-button"></div>
+        </div>
+        <a href="#" class="portfolio-block" style="background: url(/public/upload/big/<?= $item->image ?>) 50% 50%; background-size: cover" big="" video_link='<?= $item->video_code ?>'></a>
+    </div>
+<? } ?>

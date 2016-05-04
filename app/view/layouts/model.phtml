@@ -142,7 +142,11 @@
                     <div class="order-modal-mail"><a href="mailto:fora@mail.ru">fora@mail.ru</a></div>
                     <div class="order-modal-phone">+7 (916) 543-76-45</div>
                 </div>
-                <a class="blue-button" href="#">Откликнуться</a>
+                <?
+                //если исполнитель то отображаем
+                if(\App::session('user')->role == 0){ ?>
+                    <a class="blue-button" href="#">Откликнуться</a>
+                <? } ?>
             </div>
 
         </div>
@@ -189,18 +193,17 @@
                 <div class="reserve-form-wrap">
                     <div class="modal-line">
                         <div class="grey-input">
-                            <input type="text" id="eventname" name="eventname" onblur="if(this.value==''){this.value='Название события*';}" onfocus="if(this.value=='Название события*'){this.value='';}" value="Название события*">
+                            <input type="text" id="eventname" name="eventname" placeholder="Название события*" value="">
                         </div>
                     </div>
                     <div class="modal-line">
                         <div class="grey-area">
-                            <textarea name="eventdescr" id="eventdescr" onblur="if(this.value==''){this.value='Описание события*';}" onfocus="if(this.value=='Описание события*'){this.value='';}">Описание
-                                события*</textarea>
+                            <textarea name="eventdescr" id="eventdescr" placeholder="Описание события*"></textarea>
                         </div>
                     </div>
                     <div class="modal-line">
                         <div class="grey-input">
-                            <input type="text" id="budget" name="budget" onblur="if(this.value==''){this.value='Примерный бюджет (руб.)';}" onfocus="if(this.value=='Примерный бюджет (руб.)'){this.value='';}" value="Примерный бюджет (руб.)">
+                            <input type="text" id="budget" name="budget" placeholder="Примерный бюджет (руб.)" value="">
                         </div>
                     </div>
                     <input type="hidden" id="performer-reserve" name="performer-reserve">
@@ -364,10 +367,10 @@
         <div class="photo-slider">
             <img src="" alt="">
         </div>
-        <div class="image-share">
-            <div class="share-icon vk"></div>
-            <div class="share-icon fb"></div>
-        </div>
+        <!--        <div class="image-share">-->
+        <!--            <div class="share-icon vk"></div>-->
+        <!--            <div class="share-icon fb"></div>-->
+        <!--        </div>-->
         <a href="#" class="close-modal"></a>
         <div class="photo-prev"></div>
         <div class="photo-next"></div>
@@ -420,33 +423,36 @@
                 <label class="all-services">Выбрать все</label>
             </div>
             <div id="modal-service-items">
-
-
                 <?
-                foreach($this->catalog as $item){ ?>
+                $UserServiceIds = [];
+                if(isset($this->user->UserService))
+                    foreach($this->user->UserService as $item)
+                        array_unshift($UserServiceIds, $item->service_id);
 
-                    <div class="chb-block">
-                        <div class="chb
-                    <?
-                        if(isset($this->servicesUser[0]))
-                            foreach($this->servicesUser as $value)
-                                if($item->id == $value['tagid'])
-                                    echo 'active';
-
-                        if(isset($this->catalog_index[0]))
-                            foreach($this->catalog_index as $value)
-                                if($item->id == $value->id)
-                                    echo 'active';
-                        ?>"> <!-- active -->
-                            <div class="check"></div>
+                if(count($this->services))
+                    foreach($this->services as $service){
+                        if(empty($UserServiceIds))
+                            array_unshift($UserServiceIds, $service->id);
+                        ?>
+                        <div class="chb-block">
+                            <div class="chb <?= in_array($service->id, $UserServiceIds) ? 'active' : '' ?>">
+                                <div class="check"></div>
+                            </div>
+                            <label class="<?= $service->url ?>"
+                                   data-cat-id="<?= $service->id ?>"
+                                   data-min-price="1"
+                                   data-max-price="5000"
+                                   data-min-hour-price="1"
+                                   data-max-hour-price="1000"
+                                   data-hour-users="<?= count($this->serviceUsers[$service->id]) ?>"
+                                   data-link-users="/executors/<?= $service->url ?>?price_start=1&amp;price_end=1000&amp;type_price=hour"
+                                   data-icon="/public/upload/projects_info/<?= $service->image ?>"
+                                   data-id="<?= $service->url ?>"
+                                   data-user_ids="<?= !empty($this->serviceUsers[$service->id]) ? join(',', $this->serviceUsers[$service->id]) : '' ?>">
+                                <?= $service->name ?>
+                            </label>
                         </div>
-                        <label class="<?= $item->url ?>" data-cat-id="<?= $item->id ?>" data-min-price="1" data-max-price="5000" data-min-hour-price="1" data-max-hour-price="1000" data-hour-users="<?= $this->serviceUserCount[$item->id] ?>" data-link-users="/freelancers/<?= $item->url ?>?price_start=1&amp;price_end=1000&amp;hour=1" data-icon="/public/upload/projects_info/<?= $item->image ?>" data-id="<?= $item->url ?>">
-                            <?= htmlspecialchars($item->name) ?>
-                        </label>
-                    </div>
-
-                <? } ?>
-
+                    <? } ?>
             </div>
             <div class="bottom-block-modal">
                 <button type="submit" class="blue-button">Принять</button>
@@ -581,13 +587,10 @@
                 <div style="font-size:12px;">Пример: <span style="color: rgb(152, 152, 152);">www.youtube.com/watch?</span><span style="color:green">v=2vjPBrBU-TM</span>
                 </div>
             </div>
-            <form id="addvideo upload_video" action="/edit/uploadfile" enctype="multipart/form-data" method="post">
+            <form id="addvideo" action="/executor/upload_video" enctype="multipart/form-data" method="post" target="upload_video">
                 <div class="grey-area">
-                    <textarea name="newvideo" id="newvideo" onblur="if(this.value==''){this.value='Код видео:';}" onfocus="if(this.value=='Код видео:'){this.value='';}">Код
-                        видео:</textarea>
-                    <input type="hidden" name="type" value="video">
+                    <textarea name="video_code" id="video_code" placeholder="Код видео:"></textarea>
                     <input id="video-upload" type="file" name="userfiles" accept="image" style="display:none;">
-
                 </div>
                 <div class="modal-text">
                     Загрузить обложку для видео.
@@ -597,12 +600,12 @@
                         <div class="input-file-button video">Выберите файл</div>
                         <label>Загрузить скриншот</label>
                     </div>
-                    <input type="file" id="add-screenshot" name="add-screenshot" class="uploadfile" style="display: none">
                 </div>
                 <div class="bottom-block-modal">
                     <button type="submit" class="blue-button">Добавить</button>
                 </div>
             </form>
+            <iframe name="upload_video" id="upload_video" src="#" style="display:none"></iframe>
         </div>
         <a class="close-modal" href="#"></a>
     </div>
@@ -613,15 +616,14 @@
             <div class="modal-text">
                 Загрузите вашу презентацию в формате (doc, ppt, pptx, docx, xls)
             </div>
-            <form id="addpresent" name="addpresent" action="/edit/uploadfile" method="post" enctype="multipart/form-data">
+            <form id="addpresent" name="addpresent" action="/executor/upload_presentation" method="post" enctype="multipart/form-data" target="upload_present">
                 <div class="form-line">
                     <div class="input-file">
                         <div class="input-file-button present_one">Выберите файл</div>
                         <label>Загрузить файл</label>
                     </div>
-                    <input type="hidden" name="type" value="present">
-                    <input type="file" id="add-present" name="userfiles[]" class="uploadfile" style="display: none">
-                    <input type="file" id="add-cover" name="userfiles[]" class="uploadfile" style="display: none" accept="image">
+                    <input type="file" id="add-present" name="doc" class="uploadfile" style="display: none">
+                    <input type="file" id="add-cover" name="userfiles" class="uploadfile" style="display: none" accept="image">
                 </div>
                 <div class="modal-text">
                     Загрузить обложку для презентации(формат: jpeg, png)
@@ -636,7 +638,9 @@
                 <div class="bottom-block-modal">
                     <button type="submit" class="blue-button">Добавить</button>
                 </div>
+                <input type="hidden" name="present">
             </form>
+
         </div>
         <a class="close-modal" href="#"></a>
     </div>
@@ -648,9 +652,6 @@
         </div>
         <div class="close-modal"></div>
     </div>
-
-
-    <!-- <iframe name="iframe_loadfile" id="iframe_loadfile" src="#" style="display:none"></iframe> -->
 
 </div>
 <!-- model end -->

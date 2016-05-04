@@ -1,0 +1,9 @@
+<? foreach($this->photos as $photo){ ?>
+    <div id="<?= $photo->id ?>" class="photo-block-wrap">
+        <div class="photo-del">
+            <div class="photo-del-button"></div>
+        </div>
+        <a href="#" class="photo-block" style="background: url(/public/upload/big/<?= $photo->image ?>) 50% 50%; background-size: cover"
+           big="/public/upload/blur/<?= $photo->image ?>"></a>
+    </div>
+<? } ?>

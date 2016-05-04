@@ -81,14 +81,14 @@
                     <a class="bm-sort-link" href="<?= HTML::url('/projects/index/order/title') ?>" data-ctrl="Page" data-act="sort">Заголовок</a>
                 </div>
             </div>
-            <!-- 	        <div class="bm-page-cell lang">
-    <div class="bm-cell-elem">
-    	<a class="bm-sort-link" href="<?= HTML::url('/projects/index/order/type') ?>" data-ctrl="Page" data-act="sort">Тип</a>
-    </div>
-</div> -->
             <div class="bm-page-cell create">
                 <div class="bm-cell-elem">
                     <a class="bm-sort-link" href="<?= HTML::url('/projects/index/order/created_at') ?>" data-ctrl="Page" data-act="sort">Дата создания</a>
+                </div>
+            </div>
+            <div class="bm-page-cell online">
+                <div class="bm-cell-elem">
+                    <a class="bm-sort-link" href="<?= HTML::url('/projects/index/order/published') ?>" data-ctrl="Page" data-act="sort">online</a>
                 </div>
             </div>
 
@@ -115,12 +115,14 @@
                         <?= $article->title ?>
                     </div>
                 </div>
-                <!-- <div class="bm-page-cell lang">
-		            <div class="bm-cell-elem"><?= \App::config()->pages[$article->type] ?></div>
-		        </div> -->
                 <div class="bm-page-cell create">
                     <div class="bm-cell-elem">
                         <?= date_format($article->created_at, 'd/m/Y'); ?>
+                    </div>
+                </div>
+                <div class="bm-page-cell online">
+                    <div class="bm-cell-elem">
+                        <? HTML::radio($article, 'project_publish'); ?>
                     </div>
                 </div>
 

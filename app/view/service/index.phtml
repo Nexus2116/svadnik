@@ -1,0 +1,45 @@
+<form action="/service/photo" method="post">
+    <div id="performers-page">
+        <div class="container">
+            <div class="big-title blue" data-cat-id="<?= $this->service->id ?>"><?= $this->service->name ?></div>
+            <div id="service-top-block" data-url="<?=$this->service->url?>">
+                <div class="price-slider-wrap">
+                    <div class="price-slider-chb">
+                        <div data-max="1000" data-min="1" class="chb active">
+                            <div class="check"></div>
+                        </div>
+                        <label>Стоимость в час</label>
+                    </div>
+                    <div class="price-slider-chb">
+                        <div data-max="5000" data-min="1" class="chb">
+                            <div class="check"></div>
+                        </div>
+                        <label>Стоимость за мероприятие / услугу</label>
+                    </div>
+                    <div class="price-slider-line" data-minprice="1" data-maxprice="1000">
+                        <div class="price-slider-fill"></div>
+                        <div class="price-slide left"><span>1</span></div>
+                        <div class="price-slide right"><span>1000</span></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</form>
+
+<div id="performers-filter">
+    <div class="container">
+        <div id="filter-title">Найдено исполнителей:</div>
+        <div id="filter-count"><?= count($this->users) ?></div>
+    </div>
+</div>
+</div>
+
+<div id="performers">
+    <div class="container">
+
+        <span id="block_executors">
+            <? include('list_executors.phtml') ?>
+        </span>
+    </div>

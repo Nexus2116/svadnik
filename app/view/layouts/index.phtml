@@ -32,11 +32,9 @@
 
                 <? if(\Bootstrap::userSession()){ ?>
                     <div id="header-login">
-                        <a href="/edit"><?= htmlspecialchars(\Bootstrap::userSession()->firstname) ?></a>
+                        <a href="/<?= \Bootstrap::userSession()->role == 1 ? 'customer' : 'executor' ?>"><?= \Bootstrap::userSession()->firstname ?></a>
                         &nbsp;
                         <a href="/logout">Выйти</a>
-                        &nbsp;
-                        <a href="#" class="open-chat">Чат</a>
                     </div>
                 <? } else{ ?>
                     <div id="header-login">
@@ -54,7 +52,7 @@
                 <div id="header-search">
                     <div class="input-search">
                         <form action="/search">
-                            <input id="search-top" name="search" type="text" onblur="if(this.value==''){this.value='Поиск';}" onfocus="if(this.value=='Поиск'){this.value='';}" value="Поиск">
+                            <input id="search-top" name="email" type="text" onblur="if(this.value==''){this.value='Поиск'}" onfocus="if(this.value=='Поиск'){this.value=''}" value="Поиск">
                         </form>
                     </div>
                 </div>
@@ -94,39 +92,39 @@
 <? include('model.phtml'); ?>
 
 <!-- Yandex.Metrika counter -->
-<script type="text/javascript">
-    (function (d, w, c){
-        (w[c] = w[c] || []).push(function (){
-            try{
-                w.yaCounter36010180 = new Ya.Metrika({
-                    id: 36010180,
-                    clickmap: true,
-                    trackLinks: true,
-                    accurateTrackBounce: true
-                });
-            } catch (e){
-            }
-        });
-
-        var n = d.getElementsByTagName("script")[0],
-            s = d.createElement("script"),
-            f = function (){
-                n.parentNode.insertBefore(s, n);
-            };
-        s.type = "text/javascript";
-        s.async = true;
-        s.src = "https://mc.yandex.ru/metrika/watch.js";
-
-        if(w.opera == "[object Opera]"){
-            d.addEventListener("DOMContentLoaded", f, false);
-        } else{
-            f();
-        }
-    })(document, window, "yandex_metrika_callbacks");
-</script>
-<noscript>
-    <div><img src="https://mc.yandex.ru/watch/36010180" style="position:absolute; left:-9999px;" alt=""/></div>
-</noscript>
+<!--<script type="text/javascript">-->
+<!--    (function (d, w, c){-->
+<!--        (w[c] = w[c] || []).push(function (){-->
+<!--            try{-->
+<!--                w.yaCounter36010180 = new Ya.Metrika({-->
+<!--                    id: 36010180,-->
+<!--                    clickmap: true,-->
+<!--                    trackLinks: true,-->
+<!--                    accurateTrackBounce: true-->
+<!--                });-->
+<!--            } catch (e){-->
+<!--            }-->
+<!--        });-->
+<!---->
+<!--        var n = d.getElementsByTagName("script")[0],-->
+<!--            s = d.createElement("script"),-->
+<!--            f = function (){-->
+<!--                n.parentNode.insertBefore(s, n);-->
+<!--            };-->
+<!--        s.type = "text/javascript";-->
+<!--        s.async = true;-->
+<!--        s.src = "https://mc.yandex.ru/metrika/watch.js";-->
+<!---->
+<!--        if(w.opera == "[object Opera]"){-->
+<!--            d.addEventListener("DOMContentLoaded", f, false);-->
+<!--        } else{-->
+<!--            f();-->
+<!--        }-->
+<!--    })(document, window, "yandex_metrika_callbacks");-->
+<!--</script>-->
+<!--<noscript>-->
+<!--    <div><img src="https://mc.yandex.ru/watch/36010180" style="position:absolute; left:-9999px;" alt=""/></div>-->
+<!--</noscript>-->
 <!-- /Yandex.Metrika counter -->
 
 </body>

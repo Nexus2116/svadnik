@@ -40,15 +40,17 @@ class Signup extends \Core\Controller
         }
 
         $user = new \Model\Users;
-        $user->email = $_POST['email'];
+        $user->email = strip_tags($_POST['email']);
         $user->password = md5($_POST['password']);
-        $user->role = $_POST['role'];
-        $user->firstname = $_POST['firstname'];
-        $user->city = $_POST['city'];
-        $user->lastname = $_POST['lastname'];
-        $user->newsletter = $_POST['newsletter'];
-        $user->info = $_POST['info'];
-        $user->date_end_pro = date('Y-m-d', strtotime('+3 months'));
+        $user->role = strip_tags($_POST['role']);
+        $user->firstname = strip_tags($_POST['firstname']);
+        $user->city = strip_tags($_POST['city']);
+        $user->lastname = strip_tags($_POST['lastname']);
+        $user->newsletter = strip_tags($_POST['newsletter']);
+        $user->info = strip_tags($_POST['info']);
+
+        $months = \App::config('pro_account');
+        $user->date_end_pro = date('Y-m-d', strtotime('+' . $months . ' months'));
 
         if(!empty($_FILES['userfiles']['size'])){
             $upload = new \Service\Upload;
@@ -61,38 +63,22 @@ class Signup extends \Core\Controller
         $user->save();
 
         $auth = \Model\Users::where('email', $_POST['email'])->first();
-        $obj = (object)array();
-        $obj->id = $auth->id;
-        $obj->role = $auth->role;
-        $obj->firstname = $auth->firstname;
-        \App::session('user', $obj);
+        \App::session('user', $auth);
 
-        \Core\Response::navigate('/edit');
+        if($auth->role == 1)
+            \Core\Response::navigate('/customer');
+        else
+            \Core\Response::navigate('/executor');
+
     }
 
     public function login_post()
     {
-
-        if(preg_match('/@/', $_POST['login'])){
-            $login = 'email';
-        } else{
-            $login = 'login';
+        $user = \Model\Users::where('email', $_POST['login'])->where('password', md5($_POST['pass']))->first();
+        if($user != null){
+            \App::session('user', $user);
         }
-        $this->sess(\Model\Users::where($login, $_POST['login'])->where('password', md5($_POST['password']))->first());
-        exit;
-    }
-
-    protected function sess($login)
-    {
-        if(!empty($login)){
-            $obj = (object)array();
-            $obj->id = $login->id;
-            $obj->role = $login->role;
-            $obj->firstname = $login->firstname;
-            \App::session('user', $obj);
-            echo json_encode(['stats' => 1]);
-        } else
-            echo json_encode(['stats' => 0]);
+        \Core\Response::navigate($_SERVER["HTTP_REFERER"]);
     }
 
     public function logout()

@@ -1,0 +1,82 @@
+<div class="container">
+    <div class="big-title blue">
+        <div id="user-photo" style="background: url(/public/upload/big/<?= $this->user->avatar ?>) 50% 50%; background-size: cover"></div>
+        <span class="user-name"><?= $this->user->firstname ?></span>
+    </div>
+</div>
+<div id="performer-profile">
+    <div class="container">
+        <div class="performer-line">
+            <label>Номер телефона:</label>
+            <div class="performer-data"><?= $this->user->phone ?></div>
+        </div>
+        <div class="performer-line">
+            <label>Опыт работы:</label>
+            <div class="performer-data"><?= $this->user->experience ?></div>
+        </div>
+        <div class="performer-line">
+            <label>E-mail:</label>
+            <div class="performer-data"><?= $this->user->email ?></div>
+        </div>
+        <div class="performer-line">
+            <label>Skype:</label>
+            <div class="performer-data"><?= $this->user->skype ?></div>
+        </div>
+        <div class="performer-line">
+            <label>О себе:</label>
+            <div class="performer-data"><?= $this->user->info ?></div>
+        </div>
+        <div class="performer-line">
+            <label>Услуги:</label>
+            <div class="performer-data">
+                <? foreach($this->user->userService as $uService){ ?>
+                    <div class="top-service"><?= $this->services[$uService->service_id]->name ?></div>
+                <? } ?>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+</div>
+
+<div class="container">
+    <div class="big-title">Портфолио</div>
+    <div id="performer-portfolio">
+        <div class="performer-line">
+            <label>Фото:</label>
+            <div class="performer-portfolio-items">
+                <? foreach($this->user->UserPhotos as $photo){ ?>
+                    <div id="7c0904495f997db182dfe4a514a80c4e" class="photo-block-wrap">
+                        <a href="#" class="photo-block" style="background: url(/public/upload/big/<?= $photo->image ?>) 50% 50%; background-size: cover" big="/public/upload/blur/<?= $photo->image ?>"></a>
+                    </div>
+                <? } ?>
+
+            </div>
+        </div>
+        <div class="performer-line">
+            <label>Видео:</label>
+            <div class="performer-portfolio-items">
+                <!-- video items start -->
+                <? foreach($this->user->userVideo as $video){ ?>
+                    <div id="<?= $video->id ?>" class="portfolio-block-wrap video-item">
+                        <a href="#" class="portfolio-block" style="background: url(/public/upload/big/<?= $video->image ?>) 50% 50%; background-size: cover" big="" video_link="http://www.youtube.com/watch?<?= $video->video_code ?>"></a>
+                    </div>
+                <? } ?>
+                <!-- video items end -->
+            </div>
+        </div>
+        <div class="performer-line">
+            <label>Презентации:</label>
+            <div class="performer-portfolio-items">
+                <!-- presentation items start -->
+                <? foreach($this->user->userPresentations as $presentation){ ?>
+                    <div id="<?= $presentation->id ?>" class="portfolio-block-wrap present-item">
+                        <a href="/public/media/files/<?= $presentation->document ?>" target="_blank" class="portfolio-block" style="background: url(/public/upload/big/<?= $presentation->image ?>) 50% 50%; background-size: cover" big=""></a>
+                    </div>
+                <? } ?>
+                <!-- presentation items end -->
+            </div>
+        </div>
+    </div>
+</div>

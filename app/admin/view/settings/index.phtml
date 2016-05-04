@@ -1,67 +1,72 @@
 <script type="text/javascript">
-	Settings = {
-		id : 'settingsForm',
-		type: 'json',
-		fails : function(errors) {
-			Settings.show(error);
-		},
-		success : function (data) {
-			Settings.show(data.message);
-			$('.bm-changes-block').hide();
-		},
+    Settings = {
+        id: 'settingsForm',
+        type: 'json',
+        fails: function (errors){
+            Settings.show(error);
+        },
+        success: function (data){
+            Settings.show(data.message);
+            $('.bm-changes-block').hide();
+        },
 
-		show: function(text) {
-			$('.bm-changes-message').text(text);
-			$('.bm-changes-message').show();
-			setInterval(function() {
-				$('.bm-changes-message').hide();
-			}, 5000);
-		}
-	};
-	
-	$(document).ready(function() {
-		formHandler = new Form(Settings);
+        show: function (text){
+            $('.bm-changes-message').text(text);
+            $('.bm-changes-message').show();
+            setInterval(function (){
+                $('.bm-changes-message').hide();
+            }, 5000);
+        }
+    };
 
-		$('input, textarea, .redactor_editor').on('input', function () {
-			$('.bm-changes-block').show();
-		});
-	});
+    $(document).ready(function (){
+        formHandler = new Form(Settings);
+
+        $('input, textarea, .redactor_editor').on('input', function (){
+            $('.bm-changes-block').show();
+        });
+    });
 </script>
 
-	<div class="bm-page-header new">
-	    <h1>
-	        Параметры сайта
-	    </h1>
-	    <div class="bm-changes-message">
-	    	Изменения сохранены
-	    </div>
-	    <div class="bm-changes-block">
-	        <div class="bm-changes-block-title">Были внесены изменения</div>
-	        <div class="bm-buttons">
-	            <button class="bm-button cancel">Отменить</button>
-	            <button type="submit" class="bm-button" data-ctrl="Articles" data-act="savesettings">Сохранить</button>
-	        </div>
-	    </div>
-	</div>
+<div class="bm-page-header new">
+    <h1>
+        Параметры сайта
+    </h1>
+    <div class="bm-changes-message">
+        Изменения сохранены
+    </div>
+    <div class="bm-changes-block">
+        <div class="bm-changes-block-title">Были внесены изменения</div>
+        <div class="bm-buttons">
+            <button class="bm-button cancel">Отменить</button>
+            <button type="submit" class="bm-button" data-ctrl="Articles" data-act="savesettings">Сохранить</button>
+        </div>
+    </div>
+</div>
 
-	<form action="<?=HTML::url("/settings/save")?>" method="POST" id="settingsForm">
-		<input type="submit" class="sendForm" style="position:absolute; visibility:hidden;">
-		<div class="bm-page-content-editor"><br>
-		    <div class="bm-page-content-editor-top">
-		    	<?foreach ($this->settings as $key => $value) {?>
+<form action="<?= HTML::url("/settings/save") ?>" method="POST" id="settingsForm">
+    <input type="submit" class="sendForm" style="position:absolute; visibility:hidden;">
+    <div class="bm-page-content-editor"><br>
+        <div class="bm-page-content-editor-top">
+            <? foreach($this->settings as $key => $value){ ?>
 
-		    		<?if($key == 'fields') {?>
-		    		<label><?=$value?></label>
-		            <div class="bm-textarea">
-		                <textarea name="<?=$key?>" id="<?=$key?>"><?=@$this->values[$key]?></textarea>
-		            </div>
-		            <?} else {?>
-				        <label><?=$value?></label>
-				        <div class="bm-input fullwidth">
-				            <input type="text" id="<?=$key?>" name="<?=$key?>" value="<?=@$this->values[$key]?>">
-			        	</div>
-			        <?}?>
-			    <?}?>
-		    </div>
-		</div>
-	</form>
+                <? if($key == 'fields'){ ?>
+                    <label><?= $value ?></label>
+                    <div class="bm-textarea">
+                        <textarea name="<?= $key ?>" id="<?= $key ?>"><?= @$this->values[$key] ?></textarea>
+                    </div>
+                <? } elseif($key == 'pro_account'){ ?>
+                    <label><?= $value ?></label>
+                    <div class="bm-input fullwidth">
+                        <input type="number" id="<?= $key ?>" name="<?= $key ?>" value="<?= @$this->values[$key] ?>" min="0">
+                    </div>
+                <? } else{ ?>
+                    <label><?= $value ?></label>
+                    <div class="bm-input fullwidth">
+                        <input type="text" id="<?= $key ?>" name="<?= $key ?>" value="<?= @$this->values[$key] ?>">
+                    </div>
+                <? } ?>
+            <? } ?>
+        </div>
+    </div>
+</form>

@@ -72,14 +72,14 @@ class Users extends \Core\Controller
         $usersModel = \Model\Users::orderBy('id', 'ASC');
 
         if($_GET['executor'] == 'true'){
-            $usersModel->orWhere('role', 0);
+            $usersModel->where('role', 0);
         }
 
         $this->view->params = $_GET;
 
-        if($_GET['customer'] == 'true'){
-            $usersModel->orWhere('role', 1);
-        }
+//        if($_GET['customer'] == 'true'){
+//            $usersModel->where('role', 1);
+//        }
 
         $this->view->users = $usersModel->get();
         $this->view->mails = \Model\Mail::all();
@@ -90,65 +90,29 @@ class Users extends \Core\Controller
         $file = $this->route->change;
         if($file == '')
             $file = 'params';
-        $this->view->file = $file;
+        \App::view('file', $file);
 
-        $this->view->currentUser = \Model\Users::find($this->route->id);
+        $this->view->currentUser = \Model\Users::where('id', $this->route->id)->
+        with(['userService', 'userPhotos', 'userPresentations', 'userVideo'])->
+        first();
 
-        $servicesUser = \Model\Service::where('userid', $this->route->id)->where('typeserv', 'service')->where('deleted', null)->get();
-        foreach($servicesUser as $item)
-            $tagids[] = $item->tagid;
-        if(isset($tagids)){
-            $NameServices = \Model\Articles::whereIn('id', $tagids)->get();
-            $this->view->NameServices = $NameServices;
-        }
-
-        $ServicesCat = \Model\Articles::where('url', 'services-catalog')->first();
-        $Services = \Model\Articles::where('parent_id', $ServicesCat->id)->get();
-        $this->view->services = $Services;
-        $this->view->servicesUser = $servicesUser;
-
-        if($file == 'access'){
-            $tService = new \Admin\Service\Tree;
-            \App::view('tree', $tService->getTree());
-        }
+        $catalogService = \Model\Articles::where('url', 'services-catalog')->first();
+        $services = \Model\Articles::where('parent_id', $catalogService->id)->where('deleted_at', null)->get();
+        \App::view('services', $services);
     }
 
 
     public function save_post()
     {
-        $getService = \Model\Service::where('userid', $this->route->id)->where('typeserv', 'service')->get();
-
-        foreach($_POST['services'] as $key => $item){
-            $service = \Model\Service::where('userid', $this->route->id)->where('tagid', $item)->where('typeserv', 'service')->first();
-            if(empty($service)){
-                $serviceAdd = new \Model\Service;
-                $serviceAdd->userid = $this->route->id;
-                $serviceAdd->tagid = $item;
-                $serviceAdd->typeserv = 'service';
-                $serviceAdd->save();
-            }
+        $model = \Model\Users::where('id', $this->route->id)->first();
+        foreach($_POST as $key => $item){
+            $model->{$key} = $item;
         }
-
-        foreach($getService as $item){
-            $ids[] = $item->userid;
-            \Model\Service::whereIn('userid', $ids)->where('typeserv', 'service')->update(array('deleted' => 1));
-
-        }
-        foreach($_POST['services'] as $item){
-            \Model\Service::where('tagid', $item)->where('typeserv', 'service')->update(array('deleted' => null));
-        }
-
-        array_pop($_POST);
-
-        $user = \Model\Users::find($this->route->id);
-        foreach($_POST as $key => $value)
-            $user->$key = $value;
-        $user->save();
+        $model->save();
 
         \Core\Response::json(array(
             'valid' => true,
             'message' => 'Успешно сохранено',
-            'login' => $user->name
         ));
     }
 
@@ -189,7 +153,7 @@ class Users extends \Core\Controller
     public function send_mail_post()
     {
 
-        include_once(MODPATH . '/PHPMailer/class.phpmailer.php');
+        include_once(MODPATH . '/phpmailer/class.phpmailer.php');
 
         $maildata = \Model\Mail::where('id', $_POST['mail_id'])->first();
         $users = \Model\Users::whereIn('id', $_POST['user_ids'])->get();
