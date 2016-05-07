@@ -1,34 +1,34 @@
 <div class="bm-page-header">
-   <h1>Все страницы</h1>
-   <div class="bm-changes-message">Изменения сохранены</div>
-   <div class="bm-changes-block">
-      <div class="bm-changes-block-title">Были внесены изменения</div>
-      <div class="bm-buttons">
-         <button class="bm-button cancel">Отменить</button>
-         <button type="submit" class="bm-button">Сохранить</button>
+    <h1>Все страницы</h1>
+    <div class="bm-changes-message">Изменения сохранены</div>
+    <div class="bm-changes-block">
+        <div class="bm-changes-block-title">Были внесены изменения</div>
+        <div class="bm-buttons">
+            <button class="bm-button cancel">Отменить</button>
+            <button type="submit" class="bm-button">Сохранить</button>
 
-      </div>
-   </div>
+        </div>
+    </div>
 </div>
 <div id="bm-systemactive">
-   <div id="bm-top-menu">
-      <div class="bm-create-button" href="<?= HTML::url('/news/options'); ?>" data-ctrl="Articles" data-act="create">
-         Создать
-         <div class="bm-create-button-ico"></div>
-      </div>
-      <div class="bm-circle-button check" data-ctrl="Articles" data-act="publish_all"></div>
-      <div class="bm-circle-button close" data-ctrl="Articles" data-act="unpublish_all"></div>
-      <div class="bm-circle-button del" data-ctrl="Articles" data-act="delete_all"></div>
-      <div id="bm-month-filter">
-         <!--            <div class="bm-period-select">
+    <div id="bm-top-menu">
+        <div class="bm-create-button" href="<?= HTML::url('/news/options'); ?>" data-ctrl="Articles" data-act="create">
+            Создать
+            <div class="bm-create-button-ico"></div>
+        </div>
+        <div class="bm-circle-button check" data-ctrl="Articles" data-act="publish_all"></div>
+        <div class="bm-circle-button close" data-ctrl="Articles" data-act="unpublish_all"></div>
+        <div class="bm-circle-button del" data-ctrl="Articles" data-act="delete_all" data-url="/admin/news/delete/id/"></div>
+        <div id="bm-month-filter">
+            <!--            <div class="bm-period-select">
      <label>Смотреть</label>
      <div class="bm-select-list-wrap">
      	<? $dateRanges = array(
-               'За год',
-               'За месяц',
-               'За неделю',
-               'За сутки'
-         ); ?>
+                'За год',
+                'За месяц',
+                'За неделю',
+                'За сутки'
+            ); ?>
          <div class="bm-select-title" data-ctrl="Selector">
          	<?= $dateRanges[$this->period]; ?>
          </div>
@@ -40,123 +40,123 @@
          </div>
      </div>
  </div> -->
-         <div class="bm-period-select hide">
-            <label>С</label>
-            <div class="bm-input date">
-               <input type="text" name="date-from" id="date-from"/>
+            <div class="bm-period-select hide">
+                <label>С</label>
+                <div class="bm-input date">
+                    <input type="text" name="date-from" id="date-from"/>
+                </div>
+                <label>по</label>
+                <div class="bm-input date">
+                    <input type="text" name="date-to" id="date-to"/>
+                </div>
+                <div class="bm-close-button" data-ctrl="Helper" data-act="period_close"></div>
             </div>
-            <label>по</label>
-            <div class="bm-input date">
-               <input type="text" name="date-to" id="date-to"/>
-            </div>
-            <div class="bm-close-button" data-ctrl="Helper" data-act="period_close"></div>
-         </div>
-      </div>
-   </div>
+        </div>
+    </div>
 </div>
 
 <? if(!$this->articles->isEmpty()){ ?>
-   <div class="bm-page-table all-pages">
+    <div class="bm-page-table all-pages">
 
-      <div class="bm-page-row header">
-         <div class="bm-page-cell checkbox">
-            <div class="bm-cell-elem">
-               <div class="bm-checkbox" data-ctrl="Checkbox" data-act="all">
-                  <div class="bm-checkbox-choice"></div>
-               </div>
+        <div class="bm-page-row header">
+            <div class="bm-page-cell checkbox">
+                <div class="bm-cell-elem">
+                    <div class="bm-checkbox" data-ctrl="Checkbox" data-act="all">
+                        <div class="bm-checkbox-choice"></div>
+                    </div>
+                </div>
             </div>
-         </div>
-         <div class="bm-page-cell id">
-            <div class="bm-cell-elem">
-               <a class="bm-sort-link" href="<?= HTML::url('/articles/index/order/id') ?>" data-ctrl="Page" data-act="sort">#</a>
+            <div class="bm-page-cell id">
+                <div class="bm-cell-elem">
+                    <a class="bm-sort-link" href="<?= HTML::url('/articles/index/order/id') ?>" data-ctrl="Page" data-act="sort">#</a>
+                </div>
             </div>
-         </div>
-         <div class="bm-page-cell id">
-            <div class="bm-cell-elem">
-               <a class="bm-sort-link" data-ctrl="Page">Настройки</a>
+            <div class="bm-page-cell id">
+                <div class="bm-cell-elem">
+                    <a class="bm-sort-link" data-ctrl="Page">Настройки</a>
+                </div>
             </div>
-         </div>
-         <div class="bm-page-cell name">
-            <div class="bm-cell-elem">
-               <a class="bm-sort-link" href="<?= HTML::url('/articles/index/order/name') ?>" data-ctrl="Page" data-act="sort">название/url</a>
+            <div class="bm-page-cell name">
+                <div class="bm-cell-elem">
+                    <a class="bm-sort-link" href="<?= HTML::url('/articles/index/order/name') ?>" data-ctrl="Page" data-act="sort">название/url</a>
+                </div>
             </div>
-         </div>
-         <!-- 	        <div class="bm-page-cell lang">
+            <!-- 	        <div class="bm-page-cell lang">
     <div class="bm-cell-elem">
     	<a class="bm-sort-link" href="<?= HTML::url('/articles/index/order/type') ?>" data-ctrl="Page" data-act="sort">Тип</a>
     </div>
 </div> -->
-         <div class="bm-page-cell create">
-            <div class="bm-cell-elem">
-               <a class="bm-sort-link" href="<?= HTML::url('/articles/index/order/created_at') ?>" data-ctrl="Page" data-act="sort">Дата создания</a>
-            </div>
-         </div>
-         <div class="bm-page-cell create">
-            <div class="bm-cell-elem">
-               <a class="bm-sort-link" href="<?= HTML::url('/articles/index/order/date') ?>" data-ctrl="Page" data-act="sort">Дата публикации</a>
-            </div>
-         </div>
-         <div class="bm-page-cell author">
-            <div class="bm-cell-elem">
-               <a class="bm-sort-link" href="<?= HTML::url('/articles/index/order/author') ?>" data-ctrl="Page" data-act="sort">Автор</a>
-            </div>
-         </div>
-         <div class="bm-page-cell online">
-            <div class="bm-cell-elem">
-               <a class="bm-sort-link" href="<?= HTML::url('/articles/index/order/published') ?>" data-ctrl="Page" data-act="sort">online</a>
-            </div>
-         </div>
-      </div>
-
-      <? foreach($this->articles as $article){ ?>
-         <div class="bm-page-row" data-id="<?= $article->id ?>">
-            <div class="bm-page-cell checkbox">
-               <div class="bm-cell-elem">
-                  <? HTML::checkbox($article->id); ?>
-               </div>
-            </div>
-
-            <div class="bm-page-cell id">
-               <div class="bm-cell-elem"><?= $article->id ?></div>
-            </div>
-
-            <div class="bm-page-cell">
-               <div data-ctrl="Articles" data-act="options" url="/admin/articles/options/id/<?= $article->id ?>" class="content-item-settings" style="display: block;margin-top: 22px;"></div>
-            </div>
-
-            <div class="bm-page-cell name">
-               <div class="bm-cell-elem">
-                  <a href="<?= HTML::url('/' . $article->type . '/edit/id/' . $article->id) ?>" data-ctrl="Page">
-                     <?= $article->name ?> <span class="bm-path-link">/<?= $article->url ?></span>
-                  </a>
-               </div>
-            </div>
-            <!-- <div class="bm-page-cell lang">
-		            <div class="bm-cell-elem"><?= \App::config()->pages[$article->type] ?></div>
-		        </div> -->
             <div class="bm-page-cell create">
-               <div class="bm-cell-elem">
-                  <?= date_format($article->created_at, 'd/m/Y'); ?>
-               </div>
+                <div class="bm-cell-elem">
+                    <a class="bm-sort-link" href="<?= HTML::url('/articles/index/order/created_at') ?>" data-ctrl="Page" data-act="sort">Дата создания</a>
+                </div>
             </div>
             <div class="bm-page-cell create">
-               <div class="bm-cell-elem">
-                  <?= $article->date; ?>
-               </div>
+                <div class="bm-cell-elem">
+                    <a class="bm-sort-link" href="<?= HTML::url('/articles/index/order/date') ?>" data-ctrl="Page" data-act="sort">Дата публикации</a>
+                </div>
             </div>
             <div class="bm-page-cell author">
-               <div class="bm-cell-elem"><?= $this->users[$article->author]->login ?></div>
+                <div class="bm-cell-elem">
+                    <a class="bm-sort-link" href="<?= HTML::url('/articles/index/order/author') ?>" data-ctrl="Page" data-act="sort">Автор</a>
+                </div>
             </div>
             <div class="bm-page-cell online">
-               <div class="bm-cell-elem">
-                  <? HTML::radio($this->content[$article->id], 'content_publish', null) ?>
-               </div>
+                <div class="bm-cell-elem">
+                    <a class="bm-sort-link" href="<?= HTML::url('/articles/index/order/published') ?>" data-ctrl="Page" data-act="sort">online</a>
+                </div>
             </div>
-         </div>
+        </div>
 
-      <? } ?>
+        <? foreach($this->articles as $article){ ?>
+            <div class="bm-page-row" data-id="<?= $article->id ?>">
+                <div class="bm-page-cell checkbox">
+                    <div class="bm-cell-elem">
+                        <? HTML::checkbox($article->id); ?>
+                    </div>
+                </div>
 
-   </div>
+                <div class="bm-page-cell id">
+                    <div class="bm-cell-elem"><?= $article->id ?></div>
+                </div>
+
+                <div class="bm-page-cell">
+                    <div data-ctrl="Articles" data-act="options" url="/admin/articles/options/id/<?= $article->id ?>" class="content-item-settings" style="display: block;margin-top: 22px;"></div>
+                </div>
+
+                <div class="bm-page-cell name">
+                    <div class="bm-cell-elem">
+                        <a href="<?= HTML::url('/' . $article->type . '/edit/id/' . $article->id) ?>" data-ctrl="Page">
+                            <?= $article->name ?> <span class="bm-path-link">/<?= $article->url ?></span>
+                        </a>
+                    </div>
+                </div>
+                <!-- <div class="bm-page-cell lang">
+		            <div class="bm-cell-elem"><?= \App::config()->pages[$article->type] ?></div>
+		        </div> -->
+                <div class="bm-page-cell create">
+                    <div class="bm-cell-elem">
+                        <?= date_format($article->created_at, 'd/m/Y'); ?>
+                    </div>
+                </div>
+                <div class="bm-page-cell create">
+                    <div class="bm-cell-elem">
+                        <?= $article->date; ?>
+                    </div>
+                </div>
+                <div class="bm-page-cell author">
+                    <div class="bm-cell-elem"><?= $this->users[$article->author]->login ?></div>
+                </div>
+                <div class="bm-page-cell online">
+                    <div class="bm-cell-elem">
+                        <? HTML::radio($this->content[$article->id], 'content_publish', null) ?>
+                    </div>
+                </div>
+            </div>
+
+        <? } ?>
+
+    </div>
 <? } else{ ?>
-   <h3 style="margin-left:23px;">Список материалов пуст</h3>
+    <h3 style="margin-left:23px;">Список материалов пуст</h3>
 <? } ?>

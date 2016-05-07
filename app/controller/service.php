@@ -85,7 +85,7 @@ class Service extends \Core\Controller
                 array_unshift($user_ids, $id->user_id);
 
             $users = \Model\Users::whereIn('id', $user_ids)->
-            with(['userPhotos', 'userService'])->
+            with(['userPhotos', 'userService', 'userCalendarReserve'])->
             orderBy('id', 'DESC')->
             get();
 

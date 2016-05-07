@@ -1,0 +1,9 @@
+<? foreach($this->articles as $article){
+    $date = new DateTime($article->created_at);
+    $data = $date->format('Y-m-d');
+    ?>
+    <a href="/allabout/<?= $article->id ?>" class="news-item">
+        <div class="public-date"><?= $data ?></div>
+        <div class="news-title"><?= $article->title ?></div>
+    </a>
+<? } ?>

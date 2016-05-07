@@ -62,6 +62,7 @@ class Signup extends \Core\Controller
         }
         $user->save();
 
+        $this->addUser_idInProject($user->email, $user->id);
         $auth = \Model\Users::where('email', $_POST['email'])->first();
         \App::session('user', $auth);
 
@@ -123,6 +124,15 @@ HTML;
             $mail->send();
         }
         header("Location: {$_SERVER['HTTP_REFERER']}");
+    }
+
+    private function addUser_idInProject($email, $user_id)
+    {
+        $project = \Model\Projects::where('email', $email)->first();
+        if($project != null){
+            $project->user_id = $user_id;
+            $project->save();
+        }
     }
 
 

@@ -100,7 +100,8 @@ Controller.Articles = {
          return false;
 
       if(confirm("Удалить выделенный материал вместе с подстраницами?")){
-         url = '/admin/projects/delete/id/';
+         url = object.data('url');
+         //url = '/admin/projects/delete/id/';
 
          for(var i in ids){
             $.get(url + ids[i]);
@@ -249,6 +250,13 @@ Controller.Radio = {
    project_publish: function (object){
       var id = object.data('itemid');
       $.get('/admin/projects/publish/id/' + id, null, function (){
+         Controller.Radio.check(object);
+      });
+   },
+
+   about_wedding_publish: function (object){
+      var id = object.data('itemid');
+      $.get('/admin/about_wedding/publish/id/' + id, null, function (){
          Controller.Radio.check(object);
       });
    },

@@ -138,6 +138,15 @@ class Bootstrap
         return $user->role;
     }
 
+    public function checkAuthUser()
+    {
+        if(\App::session('user') == null)
+            return false;
+        else
+            return true;
+
+    }
+
 
 }
 

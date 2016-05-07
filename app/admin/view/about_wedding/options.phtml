@@ -1,0 +1,64 @@
+<script type="text/javascript">
+    $(document).ready(function (){
+        $('.date-form').Zebra_DatePicker({
+            'days': ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
+            'months': ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
+            'lang_clear_date': 'Очистить дату',
+            'show_icon': false,
+            'offset': [-308, 260],
+            header_captions: {
+                'days': 'F Y',
+                'months': 'Y',
+                'years': 'Y1 - Y2'
+            },
+            header_navigation: ['', '']
+        });
+
+        $('.bm-input.date').click(function (){
+            $('.bm-input.date input').show();
+        });
+
+        $('#name').keyup(function (){
+            var result = Controller.Articles.translit($(this).val());
+            $('#bm-page-url').attr({'value': result});
+        });
+    });
+</script>
+
+<div class="bm-modal-title">
+    <div class="bm-modal-title-ico"></div>
+    Параметры страницы
+</div>
+<form action="<?= HTML::url('/about_wedding/save') ?>" method="POST" id="createArticle" data-ctrl="Articles">
+    <? if($this->article != null){ ?>
+        <input type="hidden" name="id" value="<?= $this->article->id ?>">
+    <? } ?>
+    <div id="form-content">
+
+        <label>
+            Заголовок
+            <div class="bm-form-error" id="bm-sort-error"></div>
+        </label>
+        <div class="bm-input-wrap">
+            <input type="text" name="title" id="title" value="<?= @$this->article->title ?>"/>
+        </div>
+
+        <label>
+            Текст
+            <div class="bm-form-error" id="bm-sort-error"></div>
+        </label>
+        <div class="bm-page-editor-left">
+            <div class="bm-textarea" style="width: 360px;">
+                <textarea name="text" id="text"><?= @$this->article->text ?></textarea>
+            </div>
+        </div>
+
+        <div class="bm-buttons">
+            <button type="submit" class="bm-button">Сохранить</button>
+            <button class="bm-button cancel">Отмена</button>
+        </div>
+        <div class="bm-buttons del hide">
+            <button type="submit" class="bm-button">Удалить</button>
+            <button class="bm-button cancel">Нет, спасибо</button>
+        </div>
+</form>

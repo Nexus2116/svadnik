@@ -54,8 +54,9 @@
                         <div class="input-error">Неправильно введен E-mail</div>
                     </div>
                     <div class="grey-area">
-                        <textarea name="info" id="reginfo" onblur="if(this.value==''){this.value='О вас:';}" onfocus="if(this.value=='О вас:'){this.value='';}">О
-                            вас:</textarea>
+                        <textarea name="info"
+                                  id="reginfo"
+                                  onblur="if(this.value==''){this.value='О вас:';}" onfocus="if(this.value=='О вас:'){this.value='';}">О вас:</textarea>
                     </div>
                     <div class="rules">
                         <div class="chb-block">
@@ -142,9 +143,7 @@
                     <div class="order-modal-mail"><a href="mailto:fora@mail.ru">fora@mail.ru</a></div>
                     <div class="order-modal-phone">+7 (916) 543-76-45</div>
                 </div>
-                <?
-                //если исполнитель то отображаем
-                if(\App::session('user')->role == 0){ ?>
+                <? if(\App::session('user')->role == 0 && !isset($this->user->UserMessagesInfo)){ ?>
                     <a class="blue-button" href="#">Откликнуться</a>
                 <? } ?>
             </div>
@@ -173,12 +172,14 @@
         </div>
         <a href="#" class="close-modal"></a>
     </div>
+
+
     <div class="modal-window reserve">
         <div id="reserve">
             <div class="big-title">
                 Бронирование исполнителя
             </div>
-            <form id="reserve-form" name="reserve-form" action="" method="post">
+            <form id="reserve-form" name="reserve-form" action="/executor/reserve" method="post">
                 <div class="calendar-block">
                     <input type="hidden" id="calendar-reserve">
                     <div class="reserve-check">
@@ -193,12 +194,12 @@
                 <div class="reserve-form-wrap">
                     <div class="modal-line">
                         <div class="grey-input">
-                            <input type="text" id="eventname" name="eventname" placeholder="Название события*" value="">
+                            <input type="text" id="eventname" name="title" placeholder="Название события*" value="">
                         </div>
                     </div>
                     <div class="modal-line">
                         <div class="grey-area">
-                            <textarea name="eventdescr" id="eventdescr" placeholder="Описание события*"></textarea>
+                            <textarea name="description" id="eventdescr" placeholder="Описание события*"></textarea>
                         </div>
                     </div>
                     <div class="modal-line">
@@ -206,8 +207,8 @@
                             <input type="text" id="budget" name="budget" placeholder="Примерный бюджет (руб.)" value="">
                         </div>
                     </div>
-                    <input type="hidden" id="performer-reserve" name="performer-reserve">
-                    <input type="hidden" id="performer-new-reserve" name="performer-new-reserve">
+                    <input type="hidden" id="performer-reserve" name="executor_id">
+                    <input type="hidden" id="performer-new-reserve" name="date">
                 </div>
                 <div class="bottom-block-modal">
                     <div class="reg-required">* Обязательные поля</div>
@@ -217,6 +218,58 @@
         </div>
         <a href="#" class="close-modal"></a>
     </div>
+
+
+    <div class="modal-window customer_chat">
+        <div id="reserve">
+            <div class="big-title">
+                Отправить сообщение
+            </div>
+            <form id="customer_chat" name="reserve-form" action="/customer/send_message" method="post">
+                <input type="hidden" name="executor_id" id="executor_id">
+                <div class="reserve-form-wrap">
+                    <div class="modal-line">
+                        <div class="grey-area" style="width: 500px;">
+                            <textarea name="description" id="eventdescr" placeholder="Текст"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="bottom-block-modal">
+                    <button type="submit" class="blue-button">Отправить</button>
+                </div>
+            </form>
+        </div>
+        <a href="#" class="close-modal"></a>
+    </div>
+
+
+    <div class="modal-window allabout_add_article">
+        <div id="reserve">
+            <div class="big-title">
+                Отправить сообщение
+            </div>
+            <form id="customer_chat" name="reserve-form" action="/allabout/create_article" method="post">
+                <div class="reserve-form-wrap">
+                    <div class="modal-line">
+                        <div class="grey-input" style="width: 500px;">
+                            <input type="text" id="eventname" name="title" placeholder="Заголовок">
+                        </div>
+                    </div>
+                    <div class="modal-line">
+                        <div class="grey-area" style="width: 500px;">
+                            <textarea name="text" id="eventdescr" placeholder="Текст"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="bottom-block-modal">
+                    <button type="submit" class="blue-button">Отправить</button>
+                </div>
+            </form>
+        </div>
+        <a href="#" class="close-modal"></a>
+    </div>
+
+
     <div class="modal-window comment-modal">
         <div class="big-title">Отзывы</div>
         <div class="modal-comments">
@@ -537,44 +590,7 @@
             Пользовательское соглашение
         </div>
         <div class="modal-text">
-            <p>Данные правила действуют на все настоящие и будущие разделы сайта. В отдельных разделах и форумах конференции возможно наличие собственных
-                правил, которые уточняют и детализирует правила поведения в них. При этом данные правила остаются обязательными в любом случае.</p>
-
-            <p>Правила вводятся для создания комфортной и конструктивной атмосферы общения. Если Вас не устраивают или не подходят принятые здесь порядки,
-                воздержитесь от регистрации на нашем сайте.</p>
-            <p>I. Регистрация пользователей</p>
-            <p>1. Регистрируясь на сайте пользователь соглашается выполнять данные Правила.</p>
-
-            <p>2. Для регистрации на сайте пользователь должен предоставить действующий адрес электронной почты – именно на него робот пришлет вам ссылку на
-                подтверждение регистрации. Мы гарантируем конфиденциальность указанной информации.</p>
-            <p>3. А также на ваш адрес электронной почты будет высылаться информация касающаяся жизни сайта.</p>
-            <p>3.1 Пользователи с не подтвержденым Еmail-адресом в течении 5 месяцев будут удаляться.</p>
-
-            <p>4. Выбор имени пользователя (nickname) является вашим исключительным правом. Администрация оставляет за собой право принять меры к прекращению
-                использования nickname, если его использование нарушает общепринятые моральные и этические нормы, или является оскорбительным для других
-                пользователей сайта/форума. Запрещается регистрировать бессмысленные никнеймы (вроде 56y39ge45), запрещается использовать в никнейме нецензурные
-                слова, адреса вебсайтов, адреса email и т.п. Запрещена регистрация nickname, схожих с уже существующими до степени, которые могут ввести в
-                заблуждение других пользователей сайта.</p>
-
-            <p>5. Запрещена неоднократная регистрация одним пользователем, вне зависимости от целей, с которыми такая регистрация проводится. Данное нарушение
-                является крайне серьезным и ведет к блокированию всех учетных записей этого пользователя.</p>
-
-            <p>6. Если вы не проявляете активность на форуме или на самом сайте в течение 2-х месяцев, ваша учетная запись будет блокирована а по истечение
-                примерно 1 года удалена безвозвратна. Чтоб вновь активировать вашу регистрацию, пишите на обратную связь.</p>
-
-            <p>II. Отношение между пользователями и администрацией.</p>
-            <p>В своих действиях администрация сайта руководствуется здравым смыслом и внутренними правилами управления сайтом.
-                III.Все ссылки на музыку (видео, программы) и прочий контент, размещенные на интернет-проекте, представлены исключительно для ознакомительного
-                прослушивания и расположены не на нашем сервере. Все файлы лежат на сторонних серверах, к которым сайт не имеет никакого отношения. Наш сайт
-                является лишь информационно-развлекательным порталом, на котором Пользователи выкладывают ссылки на эти файлы, которые доступны публично. После
-                прослушивания Пользователь обязан удалить скачанные файлы и приобрести легальную копию. Регистрируясь Вы подтверждаете то, что ознакомились с
-                правилами.</p>
-
-            <p>Обсуждение действий администрации (администраторов и модераторов сайта) категорически запрещается в любых форумах и темах за исключением
-                специализированного форума предназначенного для обсуждения всех аспектов работы сайта</p>
-
-            <p>Администрация оставляет за собой право изменять правила с последующим уведомлением об этом на сайте,форуме.
-                Все изменения и новации на сайте администрация старается делать с учетом мнений и интересов пользователей.</p>
+            <?= \App::config('terms_use'); ?>
         </div>
         <a href="#" class="close-modal"></a>
     </div>

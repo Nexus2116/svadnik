@@ -2,12 +2,12 @@
 
 namespace Model;
 
-class UserSubscribeProject extends \Core\Model
+class UserToOrder extends \Core\Model
 {
 
     // public $incrementing = false;
     // public $timestamps = true;
-    public $table = 'user_subscribe_project';
+    public $table = 'user_to_order';
     protected $softDelete = true;
 
 }

@@ -24,11 +24,11 @@ class Search extends \Core\Controller
         foreach($_GET as $key => $item){
             if(in_array($key, $columns)){
                 $query = \Model\Users::orderBy('id', 'DESC');
-                if($key == 'id')
+                if($key == 'id'){
                     $query->whereIn($key, explode(',', $item));
-                else
+                } else
                     $query->Where($key, 'like', $item . '%');
-                $users = $query->with(['userPhotos', 'userService'])->
+                $users = $query->with(['userPhotos', 'userService', 'userCalendarReserve'])->
                 get();
             }
         }

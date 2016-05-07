@@ -2,11 +2,12 @@
 
 namespace Model;
 
-class Projects extends \Core\Model
+class AboutWedding extends \Core\Model
 {
 
     // public $incrementing = false;
     // public $timestamps = true;
+    public $table = 'about_wedding';
     protected $softDelete = true;
 
     public static function save_data($id)
@@ -24,7 +25,6 @@ class Projects extends \Core\Model
 
         return true;
     }
-
 }
 
 ?>

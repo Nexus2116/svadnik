@@ -1,13 +1,10 @@
 <div id="new">
     <div class="container">
         <div class="big-title blue">
-            <?= $this->dataItem['title'] ?>
-        </div>
-        <div class="min-title">
-            <?= $this->dataItem['annotation'] ?>
+            <?= $this->article['title'] ?>
         </div>
         <div id="new-text">
-            <?= $this->dataItem['text'] ?>
+            <?= $this->article['text'] ?>
             <br style="clear:both;">
         </div>
     </div>
@@ -30,6 +27,8 @@
             <? } ?>
         </div>
         <a href="#" class="all-articles">Ещё статьи</a>
-        <a href="#" class="allabout_add_articles">Добавить статью</a>
+        <? if(\Bootstrap::checkUserPro() && \Bootstrap::userGetRole() == 0){ ?>
+            <a href="#" class="allabout_add_articles">Добавить статью</a>
+        <? } ?>
     </div>
 </div>

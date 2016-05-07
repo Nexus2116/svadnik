@@ -21,22 +21,37 @@ class Users extends \Core\Model
 
     public function userPhotos()
     {
-        return $this->hasMany('\Model\UserPhotos', 'user_id');
+        return $this->hasMany('\Model\UserPhotos', 'user_id')->orderBy('id', 'DESC');
     }
 
     public function userPresentations()
     {
-        return $this->hasMany('\Model\UserPresentations', 'user_id');
+        return $this->hasMany('\Model\UserPresentations', 'user_id')->orderBy('id', 'DESC');
     }
 
     public function userVideo()
     {
-        return $this->hasMany('\Model\userVideo', 'user_id');
+        return $this->hasMany('\Model\userVideo', 'user_id')->orderBy('id', 'DESC');
     }
 
-    public function userProjects()
+    public function userSubscribeProject()
     {
-        return $this->hasMany('\Model\UserPhotos', 'user_id');
+        return $this->hasMany('\Model\UserSubscribeProject', 'user_id');
+    }
+
+    public function userMessagesInfo()
+    {
+        return $this->hasMany('\Model\UserMessagesInfo', 'user_id')->orderBy('id', 'DESC');
+    }
+
+    public function userToOrder()
+    {
+        return $this->hasMany('\Model\UserToOrder', 'executor_id')->orderBy('id', 'DESC');
+    }
+
+    public function userCalendarReserve()
+    {
+        return $this->hasMany('\Model\UserCalendarReserve', 'user_id');
     }
 
 }

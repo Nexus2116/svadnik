@@ -13,8 +13,14 @@
     <div class="container">
         <div id="filter-title">Найдено исполнителей:</div>
         <div id="filter-count"><?= count($this->users) ?></div>
-        <a href="#" style="border-bottom: none;line-height: 77px;margin-bottom: 0;margin-left: 10px;"><span onclick="print()" id="btnPrint" style="color:white;">Сохранить
-                или распечатать</span></a>
+        <a href="#" style="border-bottom: none;line-height: 77px;margin-bottom: 0;margin-left: 10px;">
+            <span onclick="print()" id="btnPrint" style="color:white;">Сохранить или распечатать</span>
+        </a>
+        <? if(\Bootstrap::userGetRole() == 1){ ?>
+            <a href="#" style="border-bottom: none;line-height: 77px;margin-bottom: 0;margin-left: 10px;">
+                <span id="btnPrint" class="to_order" style="color:white;">Заказать</span>
+            </a>
+        <? } ?>
     </div>
 </div>
 
@@ -30,7 +36,20 @@
                     foreach($user->userService as $item){
                         $userServiceData[$item->service_id] = $item;
                     }
+
                     $user->userService = $userServiceData;
+
+                    $userCalendarReserve = [];
+                    $status = false;
+                    foreach($user->userCalendarReserve as $item){
+                        if(Date('Y-m-d') == $item->date){
+                            $status = true;
+                        }
+                        $date = new DateTime($item->date);
+                        $dateRes = $date->format('d m Y');
+
+                        array_unshift($userCalendarReserve, $dateRes);
+                    }
                     ?>
                     <div class="performer-block">
                         <div class="performer-first">
@@ -38,12 +57,12 @@
                                 <div class="photo-block" style="background: url(/public/upload/big/<?= $user->avatar ?>) 50% 50%; background-size: cover"></div>
                                 <div class="performer-wrap">
                                     <div class="performer-name"><?= $user->firstname ?></div>
-                                    <div class="performer-status"><?= $user->status ?></div>
+                                    <div class="performer-status"><?= $status ? 'Занят' : 'Свободен' ?></div>
                                 </div>
                             </div>
                             <a href="#" class="performer-busy">
                                 Посмотреть свободные / занятые дни ?
-                                <input type="text" id="1" data-busy="06 03 2015,20 03 2015,19 03 2015,11 03 2015,25 03 2015" readonly="readonly">
+                                <input type="text" id="<?= $user->id ?>" data-busy="<?= implode(',', $userCalendarReserve) ?>" readonly="readonly">
                             </a>
                             <? if(Bootstrap::checkUserPro()){ ?>
                                 <div class="performer-contact">
@@ -95,10 +114,12 @@
                             <div class="performer-about-text">
                                 <?= $user->info ?>
                             </div>
-                            <div class="performer-line">
-                                <a class="performer-comment" href="#" data-id="1">Отзывы: 13</a>
-                            </div>
-                            <a href="#" class="lightblue-button reserve">Забронировать исполнителя ?</a>
+                            <!--                            <div class="performer-line">-->
+                            <!--                                <a class="performer-comment" href="#" data-id="1">Отзывы: 13</a>-->
+                            <!--                            </div>-->
+                            <? if(\Bootstrap::userGetRole() == 1){ ?>
+                                <a href="#" class="lightblue-button reserve">Забронировать исполнителя ?</a>
+                            <? } ?>
                             <a href="/executor/<?= $user->id ?>" class="lightblue-button">Портфолио</a>
                             <br>
                             <br>

@@ -922,6 +922,38 @@ form {
     height: 10px;
     background: url(../images/interface/sprite.png) -161px 0;
 }
+
+.all-articles, .all-posts {
+    position: relative;
+    display: inline-block;
+    color: #7f7e7e;
+    padding-left: 22px;
+    font-size: 12px;
+    text-shadow: 0px 1px 0px rgba(255, 255, 255, 1);
+    /*padding-bottom: 30px;*/
+    margin-top: -40px;
+}
+
+.allabout_add_articles, .all-posts {
+    position: relative;
+    display: inline-block;
+    color: #7f7e7e;
+    padding-left: 22px;
+    font-size: 12px;
+    text-shadow: 0px 1px 0px rgba(255, 255, 255, 1);
+    /*padding-bottom: 30px;*/
+    margin-top: -40px;
+}
+.all-articles:before, .all-posts:before {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 0;
+    display: block;
+    width: 11px;
+    height: 10px;
+    background: url(../images/interface/sprite.png) -161px 0;
+}
 #news-items {
     position: relative;
     padding: 40px 0;

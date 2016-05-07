@@ -104,17 +104,46 @@ $(function (){
       modalCenter();
    };
 
+   var parseUrl = function (){
+      var queryString = {};
+      window.location.search.replace(
+          new RegExp("([^?=&]+)(=([^&]*))?", "g"),
+          function ($0, $1, $2, $3){
+             queryString[$1] = $3;
+          }
+      );
+      return queryString;
+   };
 
    var sendForm = function (object){
       var fromData = object.serializeArray();
       var url = object.attr('action');
-      $.post(url, fromData, function (data){
-         if(data.valid){
-            modelWindow(data.message);
-         }
+      $.post(url, fromData, function (response){
+         modelWindow(response.message);
       }, 'json');
       return fromData;
    };
+
+   var fastCloseModel = function (){
+      photo_ch = 0;
+      $('#modal').removeClass('active');
+      $('.modal-window').removeClass('active');
+      $('.modal-window').attr({'style': ''});
+      $('body').css({'overflow': 'hidden', 'height': 'auto'});
+      $('#modal').css({'overflow-y': 'hidden'});
+      $('.photo-slider img').attr({'src': ''});
+      $('.photo-slider img').css({'opacity': '0'});
+      $("#all-content").css({"top": 0, "width": "auto"});
+      $(window).scrollTop(scroll_pos);
+   };
+
+   var reserve_obj = $('#reserve-form');
+   reserve_obj.find('.blue-button').click(function (){
+      fastCloseModel();
+
+      sendForm(reserve_obj);
+      return false;
+   });
 
 
 //geocomplete-----------------------------------------------------------------------------------------------------------
@@ -263,10 +292,8 @@ $(function (){
                 visible: req_chb
              };
 
-             $.post("/projects/add", post_data, function (response){
-                if(response.valid){
-                   modelWindow("СПАСИБО, ЗАЯВКА БУДЕТ<br>ОПУБЛИКОВАНА ПОСЛЕ<br>МОДЕРАЦИИ");
-                }
+             $.post("/projects/add_project", post_data, function (response){
+                modelWindow(response.message);
              }, 'json');
 
           }
@@ -606,13 +633,13 @@ $(function (){
    };
    $('#order-items .order-item').click(function (){
       var attr_id = $(this).attr("data-id");
-      $.get('/projects/info?id=' + attr_id, null, function (data){
+      $.get('/projects/get_information?id=' + attr_id, null, function (data){
          subscribe_project(data, attr_id);
       }, 'json');
    });
    $('#performer-orders .order-item').click(function (){
       var attr_id = $(this).attr("data-id");
-      $.get('/projects/info?id=' + attr_id, null, function (data){
+      $.get('/projects/get_information?id=' + attr_id, null, function (data){
          subscribe_project(data, attr_id);
       }, 'json');
    });
@@ -877,17 +904,6 @@ $(function (){
    $('body').on(up_event, function (){
 
       if(m_down){
-
-         var parseUrl = function (){
-            var queryString = {};
-            window.location.search.replace(
-                new RegExp("([^?=&]+)(=([^&]*))?", "g"),
-                function ($0, $1, $2, $3){
-                   queryString[$1] = $3;
-                }
-            );
-            return queryString;
-         };
 
          m_down = false;
          var minp = slide_item.parent().find(".price-slide.left span").html();
@@ -1269,30 +1285,49 @@ $(function (){
    });
 //zebra init------------------------------------------------------------------------------------------------------------
    if($('#performer-busyday').length > 0){
+      var dates = [];
       performer_busy_days = $('#performer-busyday').attr("data-busy").split(",");
       $('#performer-busyday').Zebra_DatePicker({
          always_visible: $('#performer-calendar'),
-         'show_icon': false,
-         'offset': [-308, 260],
+         show_icon: false,
+         offset: [-308, 260],
          header_captions: {
             'years': 'Y1 - Y2',
             'months': 'Y',
             'days': 'F Y'
          },
-         format: 'd m Y',
+         format: 'Y-m-d',
          header_navigation: ['', ''],
-         disabled_dates: performer_busy_days,
-         // enabled_dates: ['19 03 2015'],
 
-         onSelect: function (date){
-            var calendar = $('#performer-busyday').val();
-            $.get('/edit/calendar?calendar=' + calendar, null, function (data){
-               console.log(data);
-               disabled_dates: data;
+         onSelect: function (date, dateFormat, jsDate, object){
+            var picker_obj = $('.dp_daypicker .dp_selected').find('span');
+            var position = dates.indexOf(date);
+            if(position == -1){
+               dates.push(date);
+               picker_obj.addClass('datepickerReserv');
+            } else{
+               dates.splice(position, 1);
+               picker_obj.removeClass('datepickerReserv');
+            }
+
+            $.post('/executor/calendar_reserve', {dates: dates, a: 1}, function (data){
             }, 'json');
          },
+         onChange: function (view, elements){
 
+            if(view == 'days'){
+               elements.each(function (){
+                  var dataPostition = performer_busy_days.indexOf($(this).data('date'));
+                  if(dataPostition != -1){
+                     if(dates.indexOf($(this).data('date')) == -1){
+                        dates.push($(this).data('date'));
+                     }
+                     $(this).find('span').addClass('datepickerReserv');
+                  }
+               });
+            }
 
+         }
       });
    }
 
@@ -1338,7 +1373,12 @@ $(function (){
 
    for(i = 0; i < $('.performer-busy input').length; i++){
       var perforemer_days_id = $('.performer-busy input').eq(i);
-      busy_days = perforemer_days_id.attr("data-busy").split(",");
+      var parse_busy = perforemer_days_id.attr("data-busy");
+      var busy_days = [];
+      if(parse_busy.length <= 1)
+         busy_days = parse_busy;
+      else
+         busy_days = parse_busy.split(",");
       perforemer_days_id.Zebra_DatePicker({
          'show_icon': false,
          'offset': [-310, 258],
@@ -1523,7 +1563,116 @@ $(function (){
       $.post(url, data, function (response){
          modelWindow(response.message);
       }, 'json');
-   }
+   };
+
+//executor remove project
+   $('.executor_remove_project').click(function (){
+      var object = $(this);
+      var id = object.attr('data-id');
+      if(confirm('Удалить')){
+         object.parent().remove();
+         $.post('/executor/user_remove_project', {id: id}, function (responce){
+            modelWindow(responce.message);
+         }, 'json');
+      }
+
+   });
+
+//to_order
+   $('.to_order').click(function (){
+      $.post('/project/to_order', parseUrl(), function (response){
+         modelWindow(response.message);
+      }, 'json');
+   });
+
+   //userToOrderSelect
+   $('.userToOrderSelect').change(function (){
+      var obj = $(this);
+      var params = {
+         status: obj.val(),
+         id: obj.attr('data-id')
+      };
+
+      if(params.status == 'no'){
+         obj.parents('li').remove();
+      }
+
+      $.post('/executor/change_to_order', params, function (response){
+         modelWindow(response.message);
+      }, 'json');
+   });
+
+
+   //customer send_message
+   var executor_id = false;
+   $('.modal_window_send_message').click(function (){
+
+      $('#modal').addClass('active');
+      scroll_pos = $(window).scrollTop();
+      content_width = $("#all-content").width();
+      $("#all-content").css({"top": -scroll_pos, "width": content_width});
+      $('body').css({'overflow': 'hidden', 'height': '100%'});
+      $('#modal').css({'overflow-y': 'auto'});
+      $('.modal-window.customer_chat').addClass('active');
+      modalCenter();
+
+      executor_id = $(this).attr('data-user_id');
+
+      return false;
+   });
+
+   $('.customer_chat .blue-button').click(function (){
+      fastCloseModel();
+      if(!executor_id){
+         return false;
+      }
+      var form = $(this).parents('form');
+      form.find('input').val(executor_id);
+      sendForm(form);
+
+      return false;
+   });
+
+   //allabout add_article
+
+   $('.allabout_add_articles').click(function (){
+
+      $('#modal').addClass('active');
+      scroll_pos = $(window).scrollTop();
+      content_width = $("#all-content").width();
+      $("#all-content").css({"top": -scroll_pos, "width": content_width});
+      $('body').css({'overflow': 'hidden', 'height': '100%'});
+      $('#modal').css({'overflow-y': 'auto'});
+      $('.modal-window.allabout_add_article').addClass('active');
+      modalCenter();
+
+      return false;
+   });
+
+   $('.allabout_add_article .blue-button').click(function (){
+      fastCloseModel();
+
+      var form = $(this).parents('form');
+      sendForm(form);
+
+      return false;
+   });
+
+   //allabout get_article
+   $('.all-articles').click(function (){
+      var count = $('#articles').attr('data-articles-count');
+      var offset = $('#articles #news-items a').length;
+
+      $.get('/allabout/get_articles/' + offset, null, function (html){
+         $('#articles #news-items').append(html);
+         var countItemNews = $('#articles #news-items a').length;
+         if(parseInt(count) == countItemNews)
+            $('.all-articles').hide();
+      });
+
+      return false;
+   });
+
 
 });
 

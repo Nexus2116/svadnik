@@ -12,24 +12,22 @@ class Customer extends \Core\Controller
 
     public function before()
     {
-        $user_id = \App::session('user')->id;
-        $user = \Model\Users::find($user_id);
-
-        if($user == null || $user->role != 1)
-            throw new \Exception\PageNotFound;
-
+        \App::view('hideServices', true);
     }
 
     public function index()
     {
-        \App::view('hideServices', true);
+
+        $user = \App::session('user');
+
+        if($user == null || $user->role != 1)
+            throw new \Exception\PageNotFound;
 
         $user_id = \App::session('user')->id;
 
         $user = \Model\Users::where('id', $user_id)->
-        with(['userService', 'userPhotos', 'userPresentations', 'userVideo'])->
+        with(['userMessagesInfo'])->
         first();
-
 
         \App::view('user', $user);
 
@@ -37,24 +35,11 @@ class Customer extends \Core\Controller
 
     public function user_profile()
     {
-        //  hide services list and news
-        \App::view('hideServices', true);
-
-        $user_id = $this->route->user_id;
-
-        $user = \Model\Users::find($user_id)->
-        with(['userService', 'userPhotos', 'userPresentations', 'userVideo'])->
-        first();
-
-        $catalogService = \Model\Articles::where('url', 'services-catalog')->first();
-        $services = \Model\Articles::where('parent_id', $catalogService->id)->get();
-        $services_key_id = [];
-        foreach($services as $item){
-            $services_key_id[$item->id] = $item;
-        }
+        $user = \Model\Users::where('id', $this->route->user_id)->where('role', 1)->first();
+        if($user == null)
+            throw new \Exception\PageNotFound;
 
         \App::view('user', $user);
-        \App::view('services', $services_key_id);
 
     }
 
@@ -64,21 +49,24 @@ class Customer extends \Core\Controller
             $user_id = \App::session('user')->id;
             $model = \Model\Users::find($user_id);
             foreach($_POST as $key => $item){
+                if($key == 'phone')
+                    $item = \Html::parsePhone($item);
                 $model->{$key} = strip_tags($item);
             }
             if($model->save()){
+                \App::session('user', $model);
                 \Core\Response::json(array(
-                    'valid' => true,
+                    'status' => true,
                     'message' => 'Успешно сохранено'
                 ));
             }
+
+            throw new \Exception();
+        } catch (\Exception $e){
             \Core\Response::json(array(
-                'valid' => false,
+                'status' => false,
                 'message' => 'Произошла лшибка'
             ));
-
-        } catch (\Exception $e){
-            exit;
         }
     }
 
@@ -88,14 +76,15 @@ class Customer extends \Core\Controller
         $model = \Model\Users::find($user_id);
         $model->password = md5($_POST['password']);
         if($model->save()){
+            \App::session('user', $model);
             \Core\Response::json(array(
-                'valid' => true,
+                'status' => true,
                 'message' => 'Успешно сохранено'
             ));
         }
         \Core\Response::json(array(
-            'valid' => false,
-            'message' => 'Произошла лшибка'
+            'status' => false,
+            'message' => 'Произошла ошибка'
         ));
     }
 
@@ -106,8 +95,8 @@ class Customer extends \Core\Controller
         $user = \Model\Users::where('id', $user_id)->first();
 
         \App::view('user', $user);
-        echo json_encode($user->avatar);
-        exit;
+
+        \Core\Response::json($user->avatar);
     }
 
     public function avatar_upload_post()
@@ -125,6 +114,35 @@ class Customer extends \Core\Controller
         $model->save();
 
         exit;
+    }
+
+    public function send_message_post()
+    {
+        try{
+            $user_obj = \App::session('user');
+            $user_id = $user_obj->id;
+            $order = \Model\UserToOrder::where('customer_id', $user_id)->
+            where('executor_id', $_POST['executor_id'])->
+            where('status', 'yes')->
+            count();
+            if($order == 0)
+                throw new \Exception();
+
+            $message = new \Model\UserMessagesInfo;
+            $message->user_id = $_POST['executor_id'];
+            $message->description = 'Сообщение от  <a target="_blank" href="/customer/' . $user_id . '">' . $user_obj->firstname . '</a> ' . strip_tags($_POST['description']);
+            $message->save();
+            \Core\Response::json(array(
+                'status' => true,
+                'message' => 'Сообщение успешно отправлено'
+            ));
+
+        } catch (\Exception $e){
+            \Core\Response::json(array(
+                'status' => false,
+                'message' => 'Возможно исполнитель откланил заказ'
+            ));
+        }
     }
 
 }

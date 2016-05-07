@@ -10,15 +10,17 @@ class Executor extends \Core\Controller
         parent::__construct();
     }
 
-    public function before()
+    private $message = [
+        0 => 'Успешно сохранено',
+        1 => 'Успешно удалено',
+    ];
+
+    public function index()
     {
         if(\App::session('user')->role != 0){
             throw new \Exception\PageNotFound;
         }
-    }
 
-    public function index()
-    {
         //  hide services list and news
         \App::view('hideServices', true);
 
@@ -29,12 +31,24 @@ class Executor extends \Core\Controller
 
 
         $user = \Model\Users::where('id', $user_id)->
-        with(['userService', 'userPhotos', 'userPresentations', 'userVideo'])->
+        with(['userService',
+            'userPhotos',
+            'userPresentations',
+            'userVideo',
+            'userSubscribeProject',
+            'userMessagesInfo',
+            'userToOrder',
+            'userCalendarReserve'
+        ])->
         first();
 
-        $projects = \Model\UserSubscribeProject::where('user_id', $user_id)->
-        with('project')->
-        get();
+        $userSubscribeProject_ids = [];
+        foreach($user->userSubscribeProject as $item)
+            array_unshift($userSubscribeProject_ids, $item->project_id);
+
+        $projects = [];
+        if(!empty($userSubscribeProject_ids))
+            $projects = \Model\Projects::whereIn('id', $userSubscribeProject_ids)->get();
 
         $catalogService = \Model\Articles::where('url', 'services-catalog')->first();
         $services = \Model\Articles::where('parent_id', $catalogService->id)->where('deleted_at', null)->get();
@@ -43,8 +57,21 @@ class Executor extends \Core\Controller
             $services_key_id[$item->id] = $item;
         }
 
+        $customer_ids = [];
+        foreach($user->userToOrder as $item){
+            array_unshift($customer_ids, $item->customer_id);
+        }
+        $users = [];
+        if(!empty($customer_ids)){
+            $get_users = \Model\Users::select('id', 'firstname', 'lastname')->whereIn('id', $customer_ids)->get();
+            foreach($get_users as $item){
+                $users[$item->id] = $item;
+            }
+        }
+
         \App::view('projects', $projects);
         \App::view('user', $user);
+        \App::view('users', $users);
         \App::view('services', $services_key_id);
 
     }
@@ -55,6 +82,10 @@ class Executor extends \Core\Controller
         \App::view('hideServices', true);
 
         $user_id = $this->route->user_id;
+
+        $checkUser = \Model\Users::where('id', $user_id)->where('role', 0)->count();
+        if($checkUser == 0)
+            throw new \Exception\PageNotFound;
 
         $user = \Model\Users::find($user_id)->
         with(['userService', 'userPhotos', 'userPresentations', 'userVideo'])->
@@ -78,12 +109,16 @@ class Executor extends \Core\Controller
             $user_id = \App::session('user')->id;
             $model = \Model\Users::find($user_id);
             foreach($_POST as $key => $item){
+                if($key == 'phone')
+                    $item = \Html::parsePhone($item);
+
                 $model->{$key} = strip_tags($item);
             }
             if($model->save()){
+                \App::session('user', $model);
                 \Core\Response::json(array(
                     'valid' => true,
-                    'message' => 'Успешно сохранено'
+                    'message' => $this->message[0]
                 ));
             }
             throw new \Exception();
@@ -103,7 +138,7 @@ class Executor extends \Core\Controller
         if($model->save()){
             \Core\Response::json(array(
                 'valid' => true,
-                'message' => 'Успешно сохранено'
+                'message' => $this->message[0]
             ));
         }
         \Core\Response::json(array(
@@ -139,7 +174,7 @@ class Executor extends \Core\Controller
 
         \Core\Response::json(array(
             'valid' => true,
-            'message' => 'Успешно сохранено'
+            'message' => $this->message[0]
         ));
     }
 
@@ -199,7 +234,7 @@ class Executor extends \Core\Controller
             $model->delete();
             \Core\Response::json(array(
                 'valid' => true,
-                'message' => 'Успешно удалено'
+                'message' => $this->message[1]
             ));
         }
     }
@@ -244,7 +279,7 @@ class Executor extends \Core\Controller
         if($result == 1){
             \Core\Response::json(array(
                 'valid' => true,
-                'message' => 'Успешно удалено'
+                'message' => $this->message[1]
             ));
         }
 
@@ -291,7 +326,7 @@ class Executor extends \Core\Controller
         if($model->save()){
             \Core\Response::json(array(
                 'valid' => true,
-                'message' => 'Успешно сохранено'
+                'message' => $this->message[0]
             ));
         }
 
@@ -305,7 +340,7 @@ class Executor extends \Core\Controller
         if($result == 1){
             \Core\Response::json(array(
                 'valid' => true,
-                'message' => 'Успешно удалено'
+                'message' => $this->message[1]
             ));
         }
 
@@ -336,29 +371,92 @@ class Executor extends \Core\Controller
         if($model->save()){
             \Core\Response::json(array(
                 'valid' => true,
-                'message' => 'Успешно сохранено'
+                'message' => $this->message[0]
             ));
         }
 
         exit;
     }
 
-    public function subscribe_project()
+    public function reserve_post()
     {
         $user_id = \App::session('user')->id;
-        $model = \Model\UserProjects::where('user_id', $user_id)->where('project_id', $_GET['id'])->first();
-        if($model == null)
-            $model = new \Model\UserProjects;
-        $model->user_id = $user_id;
-        $model->project_id = intval($_GET['id']);
+        $model = new \Model\UserToOrder;
+        foreach($_POST as $key => $value){
+            $model->{$key} = strip_tags($value);
+        }
+        $model->customer_id = $user_id;
+        if($model->save()){
+            \Core\Response::json(array(
+                'status' => true,
+                'message' => 'Пользователь оповещен'
+            ));
+        }
+        \Core\Response::json(array(
+            'status' => false,
+            'message' => 'Возникала ошибка, повторите попытку'
+        ));
+    }
+
+    public function to_order_status_post()
+    {
+        $user_obj = \App::session('user');
+        $user_id = $user_obj->id;
+        $id = intval($_POST['id']);
+        $status = $_POST['status'];
+        $model = \Model\UserToOrder::where('id', $id)->where('executor_id', $user_id)->first();
+        if($status == 'no'){
+            $model->delete();
+            \Core\Response::json(array(
+                'status' => true,
+                'message' => 'Удалено'
+            ));
+        }
+        $model->status = $_POST['status'];
         $model->save();
+        if($model->status == 'yes')
+            $this->confirm_order_send_message($model, $user_obj->firstname);
 
         \Core\Response::json(array(
-            'valid' => true,
-            'message' => 'Успешно сохранено'
+            'status' => true,
+            'message' => 'Статус сохранен'
         ));
-
     }
+
+
+    public function confirm_order_send_message($model, $firstname)
+    {
+        $message = new \Model\UserMessagesInfo;
+        $message->description = <<<HTML
+Пользователь
+<a class="modal_window_send_message" data-user_id="$model->executor_id" href="#">$firstname</a>
+заинтересован в вашем заказе.
+Вы можете отправить ему сообщение кликнув на его имя.
+HTML;
+
+        $message->user_id = $model->customer_id;
+        return $message->save();
+    }
+
+    public function calendar_reserve_post()
+    {
+        $user_id = \App::session('user')->id;
+        \Model\UserCalendarReserve::where('user_id', $user_id)->delete();
+        foreach($_POST['dates'] as $date){
+            if(Date('Y-m-d') > $date)
+                continue;
+            $model = new \Model\UserCalendarReserve;
+            $model->user_id = $user_id;
+            $model->date = $date;
+            $model->save();
+        }
+
+        \Core\Response::json(array(
+            'status' => true,
+            'message' => 'Данные обновлены'
+        ));
+    }
+
 }
 
 ?>

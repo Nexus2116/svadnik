@@ -23,6 +23,7 @@ namespace Admin\Controller;
 				'tw' => 'Twiter ссылка',
 				'instagram' => 'Instagram ссылка',
 				'pro_account' => 'Про аккаунт на {n} месяцев',
+				'terms_use' => 'Пользовательское соглашение',
 			);
 		}
 

@@ -25,6 +25,13 @@
         $('input, textarea, .redactor_editor').on('input', function (){
             $('.bm-changes-block').show();
         });
+
+        $('.bm-redactor').redactor({
+            lang: 'ru',
+            minHeight: 264,
+            imageUpload: '/admin/upload/redactor',
+            imageGetJson: '/admin/image/media'
+        });
     });
 </script>
 
@@ -59,6 +66,11 @@
                     <label><?= $value ?></label>
                     <div class="bm-input fullwidth">
                         <input type="number" id="<?= $key ?>" name="<?= $key ?>" value="<?= @$this->values[$key] ?>" min="0">
+                    </div>
+                <? } elseif($key == 'terms_use'){ ?>
+                    <label><?= $value ?></label>
+                    <div class="bm-editor">
+                        <textarea class="bm-redactor" name="<?= $key ?>" id="<?= $key ?>"><?= @$this->values[$key] ?></textarea>
                     </div>
                 <? } else{ ?>
                     <label><?= $value ?></label>

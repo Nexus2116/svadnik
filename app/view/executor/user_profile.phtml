@@ -6,22 +6,24 @@
 </div>
 <div id="performer-profile">
     <div class="container">
-        <div class="performer-line">
-            <label>Номер телефона:</label>
-            <div class="performer-data"><?= $this->user->phone ?></div>
-        </div>
-        <div class="performer-line">
-            <label>Опыт работы:</label>
-            <div class="performer-data"><?= $this->user->experience ?></div>
-        </div>
-        <div class="performer-line">
-            <label>E-mail:</label>
-            <div class="performer-data"><?= $this->user->email ?></div>
-        </div>
-        <div class="performer-line">
-            <label>Skype:</label>
-            <div class="performer-data"><?= $this->user->skype ?></div>
-        </div>
+        <? if(\Bootstrap::checkUserPro()){ ?>
+            <div class="performer-line">
+                <label>Номер телефона:</label>
+                <div class="performer-data"><?= $this->user->phone ?></div>
+            </div>
+            <div class="performer-line">
+                <label>Опыт работы:</label>
+                <div class="performer-data"><?= $this->user->experience ?></div>
+            </div>
+            <div class="performer-line">
+                <label>E-mail:</label>
+                <div class="performer-data"><?= $this->user->email ?></div>
+            </div>
+            <div class="performer-line">
+                <label>Skype:</label>
+                <div class="performer-data"><?= $this->user->skype ?></div>
+            </div>
+        <? } ?>
         <div class="performer-line">
             <label>О себе:</label>
             <div class="performer-data"><?= $this->user->info ?></div>

@@ -46,58 +46,6 @@ class Index extends \Core\Controller
         \App::view('offers', $offersGet);
     }
 
-    public function projectAdd_post()
-    {
-        try{
-            $project = new \Model\Projects();
-            $serviceIds = explode(',', $_POST['service']);
-            unset($_POST['service']);
-
-            foreach($_POST as $key => $item)
-                $project->{$key} = strip_tags($item);
-            if($project->save()){
-                if(!empty($serviceIds))
-                    foreach($serviceIds as $id){
-                        $projectService = new \Model\projectsService;
-                        $projectService->service_id = $id;
-                        $projectService->project_id = $project->id;
-                        $projectService->save();
-                    }
-
-                \Core\Response::json(array(
-                    'valid' => true,
-                    'message' => 'Успешно добавлен'
-                ));
-            }
-            throw new Exception();
-
-        } catch (\Exception $e){
-            \Core\Response::json(array(
-                'valid' => false,
-                'message' => 'Не удалось сохранить'
-            ));
-        }
-    }
-
-    public function projectsInfo()
-    {
-        $project = \Model\Projects::where('id', $_GET['id'])->first();
-        if(!\Bootstrap::checkUserPro()){
-            $project->phone = null;
-            $project->email = null;
-        }
-        $arr = Array(
-            'title' => $project->title,
-            'content' => $project->text,
-            'date_add_n' => $project->created_at,
-            'user_phone' => $project->phone,
-            'user_email' => $project->email,
-            'attr_id' => $project->id,
-        );
-        echo json_encode($arr);
-        exit;
-    }
-
 }
 
 ?>

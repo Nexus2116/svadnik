@@ -42,7 +42,7 @@
             </div>
             <div class="bm-page-cell id">
                 <div class="bm-cell-elem">
-                    <a class="bm-sort-link" href="<?= HTML::url('/projects/index/order/id') ?>" data-ctrl="Page" data-act="sort">#</a>
+                    <a class="bm-sort-link" href="<?= HTML::url('/about_wedding/index/order/id') ?>" data-ctrl="Page" data-act="sort">#</a>
                 </div>
             </div>
             <div class="bm-page-cell id">
@@ -52,35 +52,23 @@
             </div>
             <div class="bm-page-cell">
                 <div class="bm-cell-elem">
-                    <a class="bm-sort-link" href="<?= HTML::url('/projects/index/order/title') ?>" data-ctrl="Page" data-act="sort">Заголовок</a>
+                    <a class="bm-sort-link" href="<?= HTML::url('/about_wedding/index/order/title') ?>" data-ctrl="Page" data-act="sort">Заголовок</a>
                 </div>
             </div>
             <div class="bm-page-cell create">
                 <div class="bm-cell-elem">
-                    <a class="bm-sort-link" href="<?= HTML::url('/projects/index/order/visible') ?>" data-ctrl="Page" data-act="sort">Тип заказа</a>
-                </div>
-            </div>
-            <div class="bm-page-cell create">
-                <div class="bm-cell-elem">
-                    <a class="bm-sort-link" href="<?= HTML::url('/projects/index/order/created_at') ?>" data-ctrl="Page" data-act="sort">Дата создания</a>
+                    <a class="bm-sort-link" href="<?= HTML::url('/about_wedding/index/order/created_at') ?>" data-ctrl="Page" data-act="sort">Дата создания</a>
                 </div>
             </div>
             <div class="bm-page-cell online">
                 <div class="bm-cell-elem">
-                    <a class="bm-sort-link" href="<?= HTML::url('/projects/index/order/published') ?>" data-ctrl="Page" data-act="sort">online</a>
+                    <a class="bm-sort-link" href="<?= HTML::url('/about_wedding/index/order/published') ?>" data-ctrl="Page" data-act="sort">online</a>
                 </div>
             </div>
 
         </div>
 
-        <?
-        $typeProject = [
-            1 => 'Специалистам',
-            2 => 'Платное',
-            3 => 'Без контактов'
-        ];
-
-        foreach($this->articles as $article){ ?>
+        <? foreach($this->articles as $article){ ?>
             <div class="bm-page-row" data-id="<?= $article->id ?>">
                 <div class="bm-page-cell checkbox">
                     <div class="bm-cell-elem">
@@ -93,7 +81,7 @@
                 </div>
 
                 <div class="bm-page-cell">
-                    <div data-ctrl="Articles" data-act="options" url="/admin/projects/options/id/<?= $article->id ?>" class="content-item-settings" style="display: block;margin-top: 22px;"></div>
+                    <div data-ctrl="Articles" data-act="options" url="/admin/about_wedding/options/id/<?= $article->id ?>" class="content-item-settings" style="display: block;margin-top: 22px;"></div>
                 </div>
 
                 <div class="bm-page-cell name">
@@ -102,11 +90,6 @@
                     </div>
                 </div>
 
-                <div class="bm-page-cell">
-                    <div class="bm-cell-elem">
-                        <?= $typeProject[$article->visible] ?>
-                    </div>
-                </div>
 
                 <div class="bm-page-cell create">
                     <div class="bm-cell-elem">
@@ -115,7 +98,7 @@
                 </div>
                 <div class="bm-page-cell online">
                     <div class="bm-cell-elem">
-                        <? HTML::radio($article, 'project_publish'); ?>
+                        <? HTML::radio($article, 'about_wedding_publish'); ?>
                     </div>
                 </div>
 

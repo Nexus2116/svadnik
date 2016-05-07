@@ -19,7 +19,6 @@
                 <iframe name="upload_avatar" id="upload_avatar" src="#" style="display:none"></iframe>
 
                 <script type="text/javascript">
-
                     $("#avatar-upload").submit(function (){
                         return false;
                     });
@@ -67,9 +66,12 @@
                         <input id="user-mail" name="email" type="text" placeholder="Email" value="<?= $this->user->email ?>">
                     </div>
 
+                    <? $accaunt = Bootstrap::checkUserPro(); ?>
                     <div class="top-label">Аккаунт:</div>
-                    <div class="top-value">Стандарт</div>
-                    <a href="#" class="top-link-change">Купить PRO</a>
+                    <div class="top-value"><?= $accaunt ? 'Про' : 'Стандарт' ?></div>
+                    <? if(!$accaunt){ ?>
+                        <a href="#" class="top-link-change">Купить PRO</a>
+                    <? } ?>
                     <br><br>
                     <button type="submit" class="green-button">Сохранить</button>
                 </form>
@@ -77,6 +79,7 @@
             </div>
         </div>
     </div>
+
     <div class="tab-page">
         <div class="big-title blue">рассчитайте бюджет мероприятия</div>
         <div class="min-title"><span>экспресс калькулятор (до 3 услуг)</span><a href="#">Полная версия калькулятора</a></div>
@@ -169,28 +172,27 @@
                 <form action="/edit" id="request-form" method="post">
                     <div class="top-line">
                         <div class="top-input">
-                            <input id="req-title" name="req-title" type="text" onblur="if(this.value==''){this.value='Краткий заголовок заявки';}" onfocus="if(this.value=='Краткий заголовок заявки'){this.value='';}" value="Краткий заголовок заявки">
+                            <input id="req-title" name="req-title" type="text" placeholder="Краткий заголовок заявки" value="">
                         </div>
                         <div class="top-input date">
                             <div class="calendar-ico"></div>
-                            <input id="req-date-since" name="req-date-since" type="text" onblur="if(this.value==''){this.value='Дата начала';}" onfocus="if(this.value=='Дата начала'){this.value='';}" value="Дата начала" readonly="readonly">
+                            <input id="req-date-since" name="req-date-since" type="text" placeholder="Дата начала" value="" readonly="readonly">
                         </div>
                         <div class="top-input date">
                             <div class="calendar-ico"></div>
-                            <input id="req-date-to" name="req-date-to" type="text" onblur="if(this.value==''){this.value='Дата завершения';}" onfocus="if(this.value=='Дата завершения'){this.value='';}" value="Дата завершения" readonly="readonly">
+                            <input id="req-date-to" name="req-date-to" type="text" placeholder="Дата завершения" value="" readonly="readonly">
                         </div>
                     </div>
                     <div class="top-line">
                         <div class="top-area">
-                            <textarea name="req-text" id="req-text" onblur="if(this.value==''){this.value='Максимально подробное описание заявки';}" onfocus="if(this.value=='Максимально подробное описание заявки'){this.value='';}">Максимально
-                                подробное описание заявки</textarea>
+                            <textarea name="req-text" id="req-text" placeholder="Максимально подробное описание заявки"></textarea>
                         </div>
                         <div class="top-area min contacts">
                             <div class="top-input">
-                                <input id="req-title" name="req-phone" type="text" onblur="if(this.value==''){this.value='Телефон';}" onfocus="if(this.value=='Телефон'){this.value='';}" value="Телефон">
+                                <input id="req-title" name="req-phone" type="text" placeholder="Телефон" value="">
                             </div>
                             <div class="top-input">
-                                <input id="req-title" name="req-mail" type="text" onblur="if(this.value==''){this.value='E-mail';}" onfocus="if(this.value=='E-mail'){this.value='';}" value="E-mail">
+                                <input id="req-title" name="req-mail" type="text" placeholder="E-mail" value="">
                             </div>
                         </div>
                         <div class="top-check">
@@ -235,4 +237,22 @@
             </div>
         </div>
     </div>
+</div>
+
+
+</div>
+<div class="container">
+    <div id="user-page" class="big-title">
+        Уведомления
+    </div>
+    <ul style="height: 170px;overflow: auto;">
+        <? foreach($this->user->UserMessagesInfo as $item){ ?>
+            <li>
+                <p style="color: rgba(1, 1, 1, 0.44);font-size: 13px;">
+                    <span><?= Date($item->created_at) ?></span> -
+                    <span><?= $item->description ?></span>
+                </p>
+            </li>
+        <? } ?>
+    </ul>
 </div>

@@ -4,6 +4,10 @@
         font-size: 14px;
         padding: 0;
     }
+
+    .datepickerReserv {
+        color: red;
+    }
 </style>
 
 <div id="performer-page">
@@ -85,10 +89,11 @@
                     </div>
 
                     <div class="top-info">
-                        <? if(!Bootstrap::checkUserPro()){ ?>
-                            <div class="top-label">Аккаунт:</div>
-                            <div class="top-value">Стандарт</div>
-                            <a href="#" class="top-link-change"><span style="opacity: .7">Купить PRO</span> В процессе доработки</a>
+                        <? $accaunt = Bootstrap::checkUserPro(); ?>
+                        <div class="top-label">Аккаунт:</div>
+                        <div class="top-value"><?= $accaunt ? 'Про' : 'Стандарт' ?></div>
+                        <? if(!$accaunt){ ?>
+                            <a href="#" class="top-link-change">Купить PRO</a>
                         <? } ?>
 
                         <!--                        <div class="top-label">Статус:</div>-->
@@ -204,31 +209,90 @@
         </div>
     </div>
 </div>
+<iframe name="upload_present" id="upload_present" src="#" style="display:none"></iframe>
 
 </div>
-
 
 <div id="performer-orders-block">
     <div class="container">
         <div id="performer-calendar">
-            <input type="hidden" id="performer-busyday" data-busy="<?= empty($this->calendarStr) ? 0 : $this->calendarStr ?>" readonly="readonly">
+            <?
+            $userCalendarReserve = [];
+            foreach($this->user->userCalendarReserve as $item){
+                array_unshift($userCalendarReserve, $item->date);
+            }
+            ?>
+            <input type="hidden" id="performer-busyday" data-busy="<?= implode(',', $userCalendarReserve) ?>" readonly="readonly">
         </div>
 
         <div id="performer-orders">
             <div class="big-title">Ваши заказы</div>
-            <? foreach($this->projects as $project){
-                $project = $project->project;
-                ?>
-                <div class="order-item" data-id="<?= $project->id ?>">
-                    <div class="order-date"><?= $project->created_at ?></div>
-                    <div class="order-info"><?= $project->title ?></div>
-                    <a href="mailto:<?= $project->email ?>" class="order-mail"><?= $project->email ?></a>
-                    <div class="order-phone"><?= $project->phone ?></div>
-                </div>
+            <? foreach($this->projects as $project){ ?>
+                <span style="display: inline-block;position: relative;">
+                    <div class="executor_remove_project" data-id="<?= $project->id ?>" style="cursor:pointer;width: 14px;position: absolute;right: -10px">
+                        X
+                    </div>
+                    <div class="order-item" data-id="<?= $project->id ?>">
+
+                        <div class="order-date"><?= $project->created_at ?></div>
+                        <div class="order-info"><?= $project->title ?></div>
+                        <? if(Bootstrap::checkUserPro()){ ?>
+                            <a href="mailto:<?= $project->email ?>" class="order-mail"><?= $project->email ?></a>
+                            <div class="order-phone"><?= $project->phone ?></div>
+                        <? } ?>
+                    </div>
+                </span>
             <? } ?>
         </div>
+
+        <div id="user-page" class="big-title">
+            Уведомления
+        </div>
+        <ul style="height: 170px;overflow: auto;">
+            <? foreach($this->user->UserMessagesInfo as $item){ ?>
+                <li>
+                    <p style="color: rgba(1, 1, 1, 0.44);font-size: 13px;">
+                        <span><?= Date($item->created_at) ?></span> -
+                        <span><?= $item->description ?></span>
+                    </p>
+                </li>
+            <? } ?>
+        </ul>
+
+        <div id="user-page" class="big-title">
+            Бронь
+        </div>
+        <ul style="overflow: auto;height: 368px;">
+            <? foreach($this->user->userToOrder as $item){ ?>
+                <li style="color: rgba(1, 1, 1, 0.44);font-size: 13px;display: inline-block;width: 220px;">
+                    <p>
+                        <a target="_blank" href="/customer/<?= $item->customer_id ?>"><?= $this->users[$item->customer_id]->firstname ?></a>
+                    </p>
+                    <p>
+                        <span>Заголовок:</span>
+                        <?= $item->title ?>
+                    </p>
+                    <p>
+                        <span>Описание:</span>
+                        <?= $item->description ?>
+                    </p>
+                    <p>
+                        <span>Дата:</span>
+                        <?= $item->date ?>
+                    </p>
+                    <p>
+                        <span>Бюджет:</span>
+                        <?= $item->budget ?>
+                    </p>
+                    <p>
+                        <select name="status" class="userToOrderSelect" data-id="<?= $item->id ?>">
+                            <option value="yes" <?= 'yes' == $item->status ? 'selected' : '' ?>>Приступить</option>
+                            <option value="sleep" <?= 'sleep' == $item->status ? 'selected' : '' ?>>Ожидание</option>
+                            <option value="no" <?= 'no' == $item->status ? 'selected' : '' ?>>Отказаться и удалить</option>
+                        </select>
+                    </p>
+                </li>
+            <? } ?>
+        </ul>
     </div>
 </div>
-
-
-<iframe name="upload_present" id="upload_present" src="#" style="display:none"></iframe>
