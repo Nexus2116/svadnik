@@ -1393,17 +1393,21 @@ $(function (){
    }
 
    // NEWS ------
-   var countNews = $('#lastnews-block').attr('countnews');
+   var countAllNews = $('#lastnews-block').attr('countnews');
+
    var numNews = 1;
    $(document).on("click", ".all-news", function (e){
       e.preventDefault();
 
-      var newsItem = $('.news-item').length;
-      if(numNews == Math.ceil(countNews / 4) - 1)
-         $('.all-news').hide();
+      var countNews = $('#lastnews-block .news-item').length;
 
-      $.get('/getnews/' + $(".news-item").length, null, function (data){
-         $("#news-items").append(data);
+      $.get('/getnews/' + countNews, null, function (data){
+         $("#lastnews-block #news-items").append(data);
+         var countNews = $('#lastnews-block .news-item').length;
+         if(countAllNews == countNews){
+            $('.all-news').hide();
+         }
+
       }, 'html');
 
       numNews++;
@@ -1503,26 +1507,29 @@ $(function (){
    $('.itemUserChat input').change(function (){
 
       $('.itemUserChat input').removeClass('chatActive');
-      $(this).addClass('chatActive');
+      var object = $(this);
+      object.addClass('chatActive');
 
-      $('.chat-items.chatItemss').html('');
-      $.post('/chat', {id: $(this).attr('data-userId')}, function (data){
-         var usersChat = data[0];
-         var data = data.slice(1);
-         for(i in data)
-            $('.chat-items.chatItemss').append('<div class="comments-item"><div id="user-photo" style="vertical-align: top;margin: 0px 14px 0px 0px;background: url(/public/upload/big/' + usersChat[data[i].id].avatar + ') 50% 50%; background-size: cover;"></div> <div class="comment-text"><div class="comment-public-date">' + usersChat[data[i].id].firstname + ' ' + usersChat[data[i].id].lastname + '</div> <div class="comment-public-date">' + data[i].date.date + '</div>' + data[i].text + '</div></div>');
-      }, 'json');
+      var getMessages = function (object){
+         $('.chat-items.chatItemss').html('');
+         var user_id = object.attr('data-user-id');
+         $('#accomplice').val(user_id);
+         $.get('/chat/get_messages/' + user_id, null, function (html){
+            $('.chat-items.chatItemss').append(html);
+         });
+      };
+      getMessages(object);
 
    });
 
    $('.modal-window.chat-modal .blue-button').click(function (){
-      var chatSendText = $(this).parent().parent().find('#comment-text').val();
-      $(this).parent().parent().find('#comment-text').val('');
-      var chatUserId = $('.chatActive').attr('data-userId');
-      $.post('/chat/send', {text: chatSendText, id: chatUserId}, function (){
-         $('.close-modal').click();
-      });
+      fastCloseModel();
+      var form = $(this).parents('form');
+      sendForm(form);
+
+      return false;
    });
+
 
    $('#btnlistFrilance').click(function (){
       var serviceLink = $('.calc-service .calc-count a');
@@ -1572,6 +1579,19 @@ $(function (){
       if(confirm('Удалить')){
          object.parent().remove();
          $.post('/executor/user_remove_project', {id: id}, function (responce){
+            modelWindow(responce.message);
+         }, 'json');
+      }
+
+   });
+
+   //customer remove project
+   $('.customer_remove_project').click(function (){
+      var object = $(this);
+      var id = object.attr('data-id');
+      if(confirm('Удалить')){
+         object.parent().remove();
+         $.post('/customer/user_remove_project', {id: id}, function (responce){
             modelWindow(responce.message);
          }, 'json');
       }

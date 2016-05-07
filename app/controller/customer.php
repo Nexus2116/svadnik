@@ -26,7 +26,7 @@ class Customer extends \Core\Controller
         $user_id = \App::session('user')->id;
 
         $user = \Model\Users::where('id', $user_id)->
-        with(['userMessagesInfo'])->
+        with(['userMessagesInfo', 'userProjects'])->
         first();
 
         \App::view('user', $user);
@@ -143,6 +143,37 @@ class Customer extends \Core\Controller
                 'message' => 'Возможно исполнитель откланил заказ'
             ));
         }
+    }
+
+    public function user_remove_project_post()
+    {
+        $user_obj = \App::session('user');
+        $user_id = $user_obj->id;
+        $project_id = $_POST['id'];
+        $project = \Model\Projects::find($project_id);
+        $res = \Model\Projects::where('id', $project_id)->where('user_id', $user_id)->delete();
+        if($res == 0)
+            \Core\Response::json(array(
+                'status' => false,
+                'message' => 'Не удалось удалить'
+            ));
+
+        $get_subscribe = \Model\UserSubscribeProject::where('project_id', $project_id)->get();
+        \Model\UserSubscribeProject::where('project_id', $project_id)->delete();
+
+        foreach($get_subscribe as $item){
+            $message = new \Model\UserMessagesInfo;
+            $message->description = 'Пользователь <a target="_blank" href="/customer/' . $user_id . '">' . $user_obj->firstname . '</a> удалил заказ #' . $project->id . '.';
+            $message->user_id = $item->user_id;
+            $message->save();
+        }
+
+
+        \Core\Response::json(array(
+            'status' => true,
+            'message' => 'Успешно удален'
+        ));
+
     }
 
 }

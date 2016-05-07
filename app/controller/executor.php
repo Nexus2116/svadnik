@@ -354,8 +354,7 @@ class Executor extends \Core\Controller
     {
         $user_id = \App::session('user')->id;
         $user = \Model\Users::where('id', $user_id)->first();
-        echo json_encode($user->avatar);
-        exit;
+        \Core\Response::json($user->avatar);
     }
 
     public function upload_avatar_post()
@@ -369,6 +368,7 @@ class Executor extends \Core\Controller
         $model = \Model\Users::where('id', $user_id)->first();
         $model->avatar = $this->view->image['newname'];
         if($model->save()){
+            \App::session('user', $model);
             \Core\Response::json(array(
                 'valid' => true,
                 'message' => $this->message[0]

@@ -8,3 +8,4 @@ debug.log
 vendor
 crontab
 public/media/
+commands/dbConfig.php

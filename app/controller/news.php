@@ -14,7 +14,6 @@ class News extends \Core\Controller
 
     public function index()
     {
-
         $dataItem = Articles::getPage('url', $this->route->news)->first();
         \App::view('dataItem', $dataItem);
 
@@ -23,12 +22,16 @@ class News extends \Core\Controller
     public function getlastNews()
     {
         $news = Articles::where('url', 'news')->first();
-        $allNews = Articles::getPageSortNews('parent_id', $news->id)->skip($this->route->number)->take(4)->get();
-        if($this->route->number >= 12){
+
+        if($this->route->number >= 12)
             $allNews = Articles::getPageSortNews('parent_id', $news->id)->skip(8)->take(4)->get();
-        }
+        else
+            $allNews = Articles::getPageSortNews('parent_id', $news->id)->skip($this->route->number)->take(4)->get();
+
         \App::view('news', $allNews);
+
         $this->view->render('getlastnews');
+
         exit;
     }
 

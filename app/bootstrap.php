@@ -109,16 +109,30 @@ class Bootstrap
 
     public function listChatUser()
     {
-        $user = \Model\Users::where('id', \App::session('user')->id)->first();
-        $arrUser = explode(',', $user->chat_list_usersid);
-        $users = \Model\Users::whereIn('id', $arrUser)->get();
-        foreach($users as $item)
-            $userResultArr[] = Array(
-                'id' => htmlspecialchars($item['id']),
-                'firstname' => htmlspecialchars($item['firstname']),
-                'lastname' => htmlspecialchars($item['lastname'])
-            );
-        return $userResultArr;
+        $user_obj = \App::session('user');
+        $user_id = $user_obj->id;
+        $column = $user_obj->role == 0 ? 'executor_id' : 'customer_id';
+        $column2 = $user_obj->role == 1 ? 'executor_id' : 'customer_id';
+
+        $messages = \Model\Message::where($column, $user_id)->groupBy($column2)->get();
+
+        $user_ids = [];
+        foreach($messages as $message){
+            array_unshift($user_ids, $message->{$column2});
+
+        }
+
+        $get_users = \Model\Users::select('firstname', 'id')->whereIn('id', $user_ids)->get();
+        $users = [];
+        foreach($get_users as $user){
+            $users[$user->id] = $user;
+        }
+
+        return [
+            'messages' => $messages,
+            'column' => $column2,
+            'users' => $users
+        ];
     }
 
     public function checkUserPro()

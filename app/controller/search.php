@@ -2,6 +2,8 @@
 
 namespace Controller;
 
+use Model\Articles;
+
 class Search extends \Core\Controller
 {
 
@@ -10,16 +12,46 @@ class Search extends \Core\Controller
         parent::__construct();
     }
 
-    public function index()
+    public function before()
     {
         \App::view('hideServices', true);
         \App::view('indexPage', false);
+    }
 
-        $this->view->layout = 'index';
+    public function index()
+    {
         $this->seo('Главная страница', 'Цитадель', 'Цитадель');
 
-        $columns = ['id', 'email'];
+        $services = [];
+        $allNews = [];
+        $weddingArticles = [];
 
+        if(!empty($_GET['value'])){
+            $news = Articles::where('url', 'news')->first();
+            $allNews = Articles::where('parent_id', $news->id)->
+            where('deleted_at', null)->
+            where('name', 'like', '%' . $_GET['value'] . '%')->
+            get();
+
+            $service = Articles::where('url', 'services-catalog')->first();
+            $services = Articles::where('parent_id', $service->id)->
+            where('deleted_at', null)->
+            where('name', 'like', '%' . $_GET['value'] . '%')->
+            get();
+
+            $weddingArticles = \Model\AboutWedding::where('title', 'like', '%' . $_GET['value'] . '%')->get();
+        }
+
+        \App::view('services', $services);
+        \App::view('news', $allNews);
+        \App::view('articles', $weddingArticles);
+
+    }
+
+    public function users()
+    {
+        $this->seo('Главная страница', 'Цитадель', 'Цитадель');
+        $columns = ['id', 'email'];
         $users = [];
         foreach($_GET as $key => $item){
             if(in_array($key, $columns)){
@@ -44,8 +76,6 @@ class Search extends \Core\Controller
         }
 
         \App::view('services', $services_key_id);
-
-
     }
 
 

@@ -1,45 +1,38 @@
-    <div id="catalog-block">
-        <div class="catalog-shadow"></div>
-        <div class="container">
-            <div class="big-title">
-                каталог услуг
-            </div>
-            <div id="catalog-items">
-
-                <?foreach(\Bootstrap::services() as $item){?>
-
-                <a href="/service/<?=$item->url?>" class="cat-item ">
+<div id="catalog-block">
+    <div class="catalog-shadow"></div>
+    <div class="container">
+        <div class="big-title">
+            каталог услуг
+        </div>
+        <div id="catalog-items">
+            <? foreach(\Bootstrap::services() as $item){ ?>
+                <a href="/service/<?= $item->url ?>" class="cat-item ">
                     <div class="cat-img">
-                        <div class="cat-icon" style="background:url(/public/upload/projects_info/<?=$item->image?>) no-repeat 50% 50%; background-size: cover;"></div>
+                        <div class="cat-icon" style="background:url(/public/upload/projects_info/<?= $item->image ?>) no-repeat 50% 50%; background-size: cover;"></div>
                     </div>
-                    <span><?=htmlspecialchars($item->name)?></span>
+                    <span><?= htmlspecialchars($item->name) ?></span>
                 </a>
-
-                <?}?>
-
-
-                <!-- <a href="#" class="cat-full"><span>полный каталог услуг</span></a> -->
-            </div>
-
+            <? } ?>
         </div>
     </div>
+</div>
 
-    <div id="lastnews-block" countnews="<?=\Bootstrap::CountNews()?>">
-        <div class="container">
-            <div class="big-title">Новости</div>
-            <div id="news-items">
+<div id="lastnews-block" countnews="<?= \Bootstrap::CountNews() ?>">
+    <div class="container">
+        <div class="big-title">Новости</div>
+        <div id="news-items">
 
-                <?foreach(\Bootstrap::news() as $item){?>
-                    <a href="/news/<?=$item['url']?>" class="news-item">
-                        <div class="public-date"><?=$item['date']?></div>
-                        <div class="news-title"><?=htmlspecialchars($item['title'])?></div>
-                            <?=htmlspecialchars($item['annotation'])?>
-                    </a>
-                <?}?>
+            <? foreach(\Bootstrap::news() as $item){ ?>
+                <a href="/news/<?= $item['url'] ?>" class="news-item">
+                    <div class="public-date"><?= $item['date'] ?></div>
+                    <div class="news-title"><?= htmlspecialchars($item['title']) ?></div>
+                    <?= htmlspecialchars($item['annotation']) ?>
+                </a>
+            <? } ?>
 
-            </div>
-            <a  href="#" class="all-news">Ещё новости</a>
         </div>
+        <a href="#" class="all-news">Ещё новости</a>
     </div>
+</div>
 		
 

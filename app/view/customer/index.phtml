@@ -256,3 +256,23 @@
         <? } ?>
     </ul>
 </div>
+
+
+<div class="container">
+    <div id="performer-orders" style="width: 100%;">
+        <div class="big-title">Ваши заказы</div>
+        <?
+        $this->projects = [];
+        foreach($this->user->userProjects as $project){ ?>
+            <span style="display: inline-block;position: relative;">
+                <div class="customer_remove_project" data-id="<?= $project->id ?>" style="cursor:pointer;width: 14px;position: absolute;right: -10px">X</div>
+                <div class="order-item" data-id="<?= $project->id ?>">
+                    <div class="order-date"><?= $project->created_at ?></div>
+                    <div class="order-info"><?= $project->title ?></div>
+                    <a href="mailto:<?= $project->email ?>" class="order-mail"><?= $project->email ?></a>
+                    <div class="order-phone"><?= $project->phone ?></div>
+                </div>
+            </span>
+        <? } ?>
+    </div>
+</div>

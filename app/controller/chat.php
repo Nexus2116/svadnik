@@ -1,78 +1,89 @@
 <?php
 
 namespace Controller;
-	
-	class Chat extends \Core\Controller {
 
-		public function __construct() {
-			parent::__construct();
-			if(!isset(\App::session('user')->id))
-				exit;
-		}
+class Chat extends \Core\Controller
+{
 
-		public function index() {
-			$this->view->layout = 'index';
-			$this->seo('Главная страница', 'Цитадель', 'Цитадель');
-			\App::view('hideServices', true);
+    public function __construct()
+    {
+        parent::__construct();
+        if(!isset(\App::session('user')->id))
+            exit;
+    }
 
-			exit;
-		}
+    public function index()
+    {
+        $this->view->layout = 'index';
+        $this->seo('Главная страница', 'Цитадель', 'Цитадель');
+        \App::view('hideServices', true);
 
-		public function index_post() {
-			exit;
-		}
+        exit;
+    }
 
-		public function sendMessage_post() {
-				if(isset($_POST['text'])){
-					$message = new \Model\Message;
-					$message->userid = \App::session('user')->id;
-					$message->touserid = $_POST['id'];
-					$message->text = $_POST['text'];
-					$message->save();
-				}
-			exit;
-		}
+    public function get_messages()
+    {
+        $user_id = \App::session('user')->id;
+        $user_obj = \Model\Users::find($user_id);
+        $user_id = $user_obj->id;
 
-		public function messages_post() {
-			$getMessage = \Model\Message::
-			where('userid', \App::session('user')->id)
-			->where('touserid', $_POST['id'])
-			->orWhere('userid', $_POST['id'])
-			->where('touserid', \App::session('user')->id)
-			->get();
-			$userids = Array(
-				$getMessage[0]['userid'],
-				$getMessage[0]['touserid'],
-				);
-			$users = \Model\Users::whereIn('id', $userids)->get();
-			foreach($users as $item){
-				$usersArr[$item->id] = Array(
-						'id'=>htmlspecialchars($item->id),
-						'firstname'=>htmlspecialchars($item->firstname),
-						'lastname'=>htmlspecialchars($item->lastname),
-						'avatar'=>htmlspecialchars($item->avatar)
-					);
-			}
-			foreach($getMessage as $item){
-				$arr[] = array(
-					'id'=>htmlspecialchars($item['userid']),
-					'text'=>htmlspecialchars($item['text']),
-					'date'=>$item['created_at']
-					);
-			}
-			if(isset($arr[0]['text'])){
-				array_unshift($arr, $usersArr);
-				echo json_encode($arr);
-			}
-			exit;
-		}
+        $column = $user_obj->role == 0 ? 'executor_id' : 'customer_id';
+        $column2 = $user_obj->role == 1 ? 'executor_id' : 'customer_id';
+
+        $messages = [];
+        $user_interlocutor = [];
+
+        if(\Bootstrap::checkUserPro()){
+            $messages = \Model\Message::where($column, $user_id)->where($column2, $this->route->id)->orderBy('id', 'DESC')->get();
+            $user_interlocutor = \Model\Users::find($this->route->id);
+        }
+
+        \App::view('this_user', $user_obj);
+        \App::view('user_interlocutor', $user_interlocutor);
+        \App::view('messages', $messages);
+        $this->view->render('ajax_get_messages');
+
+        exit;
+    }
+
+    public function send_message_post()
+    {
+        $user_obj = \App::session('user');
+        $user_id = $user_obj->id;
+
+        $column = $user_obj->role == 0 ? 'executor' : 'customer';
+        $column2 = $user_obj->role == 1 ? 'executor' : 'customer';
+
+        if(empty($_POST['text']))
+            \Core\Response::json(array(
+                'status' => false,
+                'message' => 'Сообщение не должно быть пустым'
+            ));
+
+        try{
+            $model = new\Model\Message;
+            $model->sender_user_id = $user_id;
+            $model->{$column . '_id'} = $user_id;
+            $model->{$column2 . '_id'} = $_POST['user_id'];
+            $model->text = strip_tags($_POST['text']);
+            $model->{$column . '_read'} = 'yes';
+            if($model->save()){
+                \Core\Response::json(array(
+                    'status' => true,
+                    'message' => 'Сообщение успешно отправлено'
+                ));
+            }
+
+            throw new \Exception();
+        } catch (\Exception $e){
+            \Core\Response::json(array(
+                'status' => false,
+                'message' => 'Не удалось отправить сообщение'
+            ));
+        }
+    }
 
 
-
-
-
-
-
-	}
+}
 
 ?>

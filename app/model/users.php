@@ -54,6 +54,11 @@ class Users extends \Core\Model
         return $this->hasMany('\Model\UserCalendarReserve', 'user_id');
     }
 
+    public function userProjects()
+    {
+        return $this->hasMany('\Model\Projects', 'user_id');
+    }
+
 }
 
 ?>

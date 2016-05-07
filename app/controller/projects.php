@@ -134,7 +134,7 @@ class Projects extends \Core\Controller
 
                 \Core\Response::json(array(
                     'status' => true,
-                    'message' => $this->message[0]
+                    'message' => $this->message[1]
                 ));
             }
             throw new \Exception();

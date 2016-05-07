@@ -17,16 +17,12 @@ $Router->addRoute('/contacts', 'Contacts', 'index');
 $Router->addRoute('/help', 'Help', 'index');
 $Router->addRoute('/spec', 'Spec', 'index');
 $Router->addRoute('/sitemap', 'Sitemap', 'index');
-$Router->addRoute('/news/:url', array('news'), 'News', 'index');
-$Router->addRoute('/getnews/:id', array('number'), 'News', 'getlastNews');
 $Router->addRoute('/freelancers/:url', array('service'), 'Freelancers', 'index');
 $Router->addRoute('/listfreelancers', 'ListFreelancers', 'index');
 $Router->addRoute('/calc', 'Calc', 'index');
 $Router->addRoute('/reviews', 'Freelancers', 'reviews');
 $Router->addRoute('/reviews/add', 'Freelancers', 'reviewsAdd');
-$Router->addRoute('/search', 'Search', 'index');
-$Router->addRoute('/chat', 'Chat', 'messages');
-$Router->addRoute('/chat/send', 'Chat', 'sendMessage');
+
 
 $Router->addRoute('/respassword', 'signup', 'respassword');
 
@@ -72,6 +68,7 @@ $Router->addRoute('/customer/change_profile', 'Customer', 'change_profile');
 $Router->addRoute('/customer/avatar_upload', 'Customer', 'avatar_upload');
 $Router->addRoute('/customer/:id', ['user_id'], 'Customer', 'user_profile');
 $Router->addRoute('/customer/send_message', 'Customer', 'send_message');
+$Router->addRoute('/customer/user_remove_project', 'Customer', 'user_remove_project');
 
 $Router->addRoute('/projects/subscribe-project', 'Projects', 'subscribe_project');
 $Router->addRoute('/executor/user_remove_project', 'Projects', 'user_remove_project');
@@ -83,6 +80,15 @@ $Router->addRoute('/allabout', 'Allabout', 'index');
 $Router->addRoute('/allabout/create_article', 'Allabout', 'create_article');
 $Router->addRoute('/allabout/:id', ['id'], 'Allabout', 'page_article');
 $Router->addRoute('/allabout/get_articles/:id', ['offset'], 'Allabout', 'get_articles');
+
+$Router->addRoute('/search', 'Search', 'index');
+$Router->addRoute('/search/users', 'Search', 'users');
+
+$Router->addRoute('/news/:url', ['news'], 'News', 'index');
+$Router->addRoute('/getnews/:id', ['number'], 'News', 'getlastNews');
+
+$Router->addRoute('/chat/get_messages/:id', ['id'], 'Chat', 'get_messages');
+$Router->addRoute('/chat/send_message', 'Chat', 'send_message');
 
 
 $clazz = \App::$state->app . '\Exception\PageNotFound';

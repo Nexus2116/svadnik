@@ -1,0 +1,16 @@
+<? foreach($this->messages as $message){
+    $date = new DateTime($message->created_at);
+    $data = $date->format('Y-m-d h:m:s');
+    $author = $this->this_user;
+    if($message->sender_user_id == $this->user_interlocutor->id){
+        $author = $this->user_interlocutor;
+    } ?>
+    <div class="comments-item">
+        <div id="user-photo" style="vertical-align: top;margin: 0px 14px 0px 0px;background: url(/public/upload/big/<?= $author->avatar ?>) 50% 50%; background-size: cover;"></div>
+        <div class="comment-text">
+            <div class="comment-public-date"><?= $author->firstname ?> <?= $author->lastname ?></div>
+            <div class="comment-public-date"><?= $data ?></div>
+            <?= $message->text ?>
+        </div>
+    </div>
+<? } ?>

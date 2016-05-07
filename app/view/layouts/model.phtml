@@ -343,7 +343,7 @@
                 <div id="comment-form">
                     <div style="width:100%;margin-bottom: 10px;">
                         <div class="grey-area" style="width:100%;">
-                            <textarea name="comment-text" id="comment-text" onblur="if(this.value==''){this.value='Текст :';}" onfocus="if(this.value=='Текст :'){this.value='';}"></textarea>
+                            <textarea name="comment-text" id="comment-text" placeholder="Текст :"></textarea>
                         </div>
                     </div>
                     <div class="bottom-block-modal">
@@ -377,37 +377,49 @@
             font-size: 11px;
             font-style: italic;
         }
+
+        .chatUserRm {
+            position: absolute;
+            right: -4px;
+            top: -5px;
+            color: red;
+            cursor: pointer;
+        }
     </style>
     <div class="modal-window chat-modal">
         <div class="modal-chat">
-
-            <?
-            $chatData = Bootstrap::listChatUser();
-            if(!empty($chatData))
-                foreach(Bootstrap::listChatUser() as $item){ ?>
-                    <div class="chatUserlist">
-                        <div class="itemUserChat">
-                            <label for="itemuser<?= $item['id'] ?>"><?= htmlspecialchars($item['firstname']) . ' ' . htmlspecialchars($item['lastname']) ?></label>
-                            <input type="radio" name="itemuser" id="itemuser<?= $item['id'] ?>" data-userId="<?= $item['id'] ?>">
-                        </div>
+            <? $data = \Bootstrap::listChatUser();
+            foreach($data['messages'] as $item){
+                $user = $data['users'][$item->{$data['column']}];
+                if(empty($user)) continue; ?>
+                <div class="chatUserlist" style="position: relative;">
+                    <div class="itemUserChat">
+                        <input type="radio" name="itemuser" id="itemuser<?= $item['id'] ?>" data-user-id="<?= $user->id ?>">
+                        <label for="itemuser<?= $item['id'] ?>"><?= $user->firstname ?></label>
+                        <div class="chatUserRm">X</div>
                     </div>
-                <? } ?>
+                </div>
+            <? } ?>
             <div class="chat-head">
                 <div class="comment-rate"><!-- Текст --></div>
             </div>
             <div class="chat-all-data-d">
-                <div class="chat-items chatItemss">
+                <div class="chat-items chatItemss" style="overflow: auto;max-height: 300px">
+
 
                 </div>
                 <div id="comment-form">
-                    <div style="width:100%;margin-bottom: 10px;">
-                        <div class="grey-area" style="width:100%;">
-                            <textarea name="comment-text" id="comment-text" onblur="if(this.value==''){this.value='Текст :';}" onfocus="if(this.value=='Текст :'){this.value='';}"></textarea>
+                    <form action="/chat/send_message" method="post">
+                        <input type="hidden" name="user_id" id="accomplice">
+                        <div style="width:100%;margin-bottom: 10px;">
+                            <div class="grey-area" style="width:100%;">
+                                <textarea name="text" id="comment-text" placeholder="Текст :"></textarea>
+                            </div>
                         </div>
-                    </div>
-                    <div class="bottom-block-modal">
-                        <button type="submit" class="blue-button">Отправить</button>
-                    </div>
+                        <div class="bottom-block-modal">
+                            <button type="submit" class="blue-button">Отправить</button>
+                        </div>
+                    </form>
                 </div>
             </div>
 
