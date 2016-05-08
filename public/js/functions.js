@@ -660,14 +660,11 @@ $(function (){
 
    $(document).on('click', '.lightblue-button.btnchat', function (e){
       e.preventDefault();
-      $('.modal-window.item-chat-modal').attr('data-id', $(this).attr('data-id'));
+      var user_id = $(this).attr('data-id');
+      $('#accomplice_user_id').val(user_id);
+      var form = $(this).parents('form');
+      sendForm(form);
       $('.comments-items.chatItems').html('');
-      $.post('/chat', {id: $(this).attr('data-id')}, function (data){
-         var usersChat = data[0];
-         var data = data.slice(1);
-         for(i in data)
-            $('.comments-items.chatItems').append('<div class="comments-item"><div id="user-photo" style="vertical-align: top;margin: 0px 14px 0px 0px;background: url(/public/upload/big/' + usersChat[data[i].id].avatar + ') 50% 50%; background-size: cover;"></div> <div class="comment-text"><div class="comment-public-date">' + usersChat[data[i].id].firstname + ' ' + usersChat[data[i].id].lastname + '</div> <div class="comment-public-date">' + data[i].date.date + '</div>' + data[i].text + '</div></div>');
-      }, 'json');
 
       $('#modal').addClass('active');
       scroll_pos = $(window).scrollTop();
@@ -677,15 +674,6 @@ $(function (){
       $('#modal').css({'overflow-y': 'auto'});
       $('.modal-window.item-chat-modal').addClass('active');
       modalCenter();
-   });
-
-   $('.modal-window.item-chat-modal .blue-button').click(function (){
-      var chatSendText = $(this).parent().parent().find('#comment-text').val();
-      $(this).parent().parent().find('#comment-text').val('');
-      var chatUserId = $('.modal-window.item-chat-modal').attr('data-id');
-      $.post('/chat/send', {text: chatSendText, id: chatUserId}, function (){
-         $('.close-modal').click();
-      });
    });
 
    $(document).on('click', '.performer-block .lightblue-button.reserve', function (){
@@ -729,17 +717,7 @@ $(function (){
       $('.modal-window.login').addClass('active');
       modalCenter();
    });
-   //$("#loginform button").click(function (e){
-   //   e.preventDefault();
-   //   $.post('/login', {login: $("#login").val(), password: $("#pass").val()}, function (data){
-   //      if(data == "0"){
-   //         $("#loginform .grey-input").css({"border-color": "red"});
-   //      } else{
-   //         document.location.href = "/edit";
-   //      }
-   //
-   //   });
-   //});
+
    $('.forget').click(function (){
       $('.modal-window.login').removeClass('active');
       scroll_pos = $(window).scrollTop();
@@ -1522,12 +1500,24 @@ $(function (){
 
    });
 
-   $('.modal-window.chat-modal .blue-button').click(function (){
+   $('.chat-modal .blue-button').click(function (){
       fastCloseModel();
       var form = $(this).parents('form');
       sendForm(form);
 
       return false;
+   });
+
+   $('.chatUserRm').click(function (){
+      var obj = $(this).parents('.chatUserlist');
+      var user_id = obj.find('input').attr('data-user-id');
+      if(confirm('Удалить')){
+         obj.remove();
+         $('.chat-items.chatItemss').html('');
+         $.post('/chat/close_chat', {id: user_id}, function (){
+         });
+      }
+
    });
 
 
@@ -1542,7 +1532,7 @@ $(function (){
          }
       }
 
-      document.location = '/search?id=' + ids.join(',');
+      document.location = '/search/users?id=' + ids.join(',');
    });
 
 

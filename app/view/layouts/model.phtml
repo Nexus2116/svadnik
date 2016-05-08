@@ -331,24 +331,21 @@
 
 
     <div class="modal-window item-chat-modal">
-        <div class="big-title">Чат</div>
+        <div class="big-title"></div>
         <div class="modal-comments">
-            <div class="comments-head">
-                <div class="comment-rate"><!-- Текст --></div>
-            </div>
             <div class="comments-all-data-d">
-                <div class="comments-items chatItems">
-
-                </div>
                 <div id="comment-form">
-                    <div style="width:100%;margin-bottom: 10px;">
-                        <div class="grey-area" style="width:100%;">
-                            <textarea name="comment-text" id="comment-text" placeholder="Текст :"></textarea>
+                    <form action="/chat/send_message" method="post">
+                        <input type="hidden" name="user_id" id="accomplice_user_id">
+                        <div style="width:100%;margin-bottom: 10px;">
+                            <div class="grey-area" style="width:100%;">
+                                <textarea name="text" id="comment-text" placeholder="Текст :"></textarea>
+                            </div>
                         </div>
-                    </div>
-                    <div class="bottom-block-modal">
-                        <button type="submit" class="blue-button">Отправить</button>
-                    </div>
+                        <div class="bottom-block-modal chat-modal">
+                            <button type="submit" class="blue-button">Отправить</button>
+                        </div>
+                    </form>
                 </div>
             </div>
 
@@ -396,18 +393,13 @@
                     <div class="itemUserChat">
                         <input type="radio" name="itemuser" id="itemuser<?= $item['id'] ?>" data-user-id="<?= $user->id ?>">
                         <label for="itemuser<?= $item['id'] ?>"><?= $user->firstname ?></label>
-                        <div class="chatUserRm">X</div>
+                        <div class="chatUserRm" title="Удалить чат">X</div>
                     </div>
                 </div>
             <? } ?>
-            <div class="chat-head">
-                <div class="comment-rate"><!-- Текст --></div>
-            </div>
+            <?= !count($data['messages']) ? 'У вас нет открытых чатов' : '' ?>
             <div class="chat-all-data-d">
-                <div class="chat-items chatItemss" style="overflow: auto;max-height: 300px">
-
-
-                </div>
+                <div class="chat-items chatItemss" style="overflow: auto;max-height: 300px"></div>
                 <div id="comment-form">
                     <form action="/chat/send_message" method="post">
                         <input type="hidden" name="user_id" id="accomplice">
@@ -432,10 +424,6 @@
         <div class="photo-slider">
             <img src="" alt="">
         </div>
-        <!--        <div class="image-share">-->
-        <!--            <div class="share-icon vk"></div>-->
-        <!--            <div class="share-icon fb"></div>-->
-        <!--        </div>-->
         <a href="#" class="close-modal"></a>
         <div class="photo-prev"></div>
         <div class="photo-next"></div>

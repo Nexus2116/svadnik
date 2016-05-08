@@ -89,6 +89,7 @@ $Router->addRoute('/getnews/:id', ['number'], 'News', 'getlastNews');
 
 $Router->addRoute('/chat/get_messages/:id', ['id'], 'Chat', 'get_messages');
 $Router->addRoute('/chat/send_message', 'Chat', 'send_message');
+$Router->addRoute('/chat/close_chat', 'Chat', 'close_chat');
 
 
 $clazz = \App::$state->app . '\Exception\PageNotFound';

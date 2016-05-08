@@ -103,7 +103,7 @@ if(count($this->users))
                 <br>
                 <br>
                 <? if(Bootstrap::checkUserPro() && Bootstrap::userGetRole() == 1){ ?>
-                    <a href="#" class="lightblue-button btnchat" data-id="1">Чат ?</a>
+                    <a href="#" class="lightblue-button btnchat" data-id="<?= $user->id ?>">Чат</a>
                 <? } ?>
             </div>
         </div>

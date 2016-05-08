@@ -121,8 +121,9 @@ class Bootstrap
             array_unshift($user_ids, $message->{$column2});
 
         }
-
-        $get_users = \Model\Users::select('firstname', 'id')->whereIn('id', $user_ids)->get();
+        $get_users = [];
+        if(!empty($user_ids))
+            $get_users = \Model\Users::select('firstname', 'id')->whereIn('id', $user_ids)->get();
         $users = [];
         foreach($get_users as $user){
             $users[$user->id] = $user;

@@ -34,9 +34,7 @@
                     <div id="header-login">
                         <a href="/<?= \Bootstrap::userSession()->role == 1 ? 'customer' : 'executor' ?>"><?= \Bootstrap::userSession()->firstname ?></a>
                         &nbsp;
-                        <? if(\Bootstrap::checkUserPro()){ ?>
-                            <a href="#" class="open-chat">Чат</a>
-                        <? } ?>
+                        <a href="#" class="open-chat">Чат</a>
                         &nbsp;
                         <a href="/logout">Выйти</a>
                     </div>
