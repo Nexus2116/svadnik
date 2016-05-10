@@ -1,0 +1,14 @@
+<div class="container">
+    <div class="big-title">Новости</div>
+    <div id="news-items">
+        <? foreach($this->offers as $item){ ?>
+            <a href="/news/<?= $item['url'] ?>" class="news-item" style="text-shadow:none;width: 210px;">
+                <div class="public-date" style="color:white;"><?= $item['date'] ?></div>
+                <div class="news-title" style="color: #333333;"><?= strip_tags($item['title']) ?></div>
+                <span style="color:white;">
+                    <?= strip_tags($item['annotation']) ?>
+                </span>
+            </a>
+        <? } ?>
+    </div>
+</div>

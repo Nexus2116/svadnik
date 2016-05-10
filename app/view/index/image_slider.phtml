@@ -1,0 +1,29 @@
+<div id="image-slider">
+    <div id="image-line">
+        <? foreach($this->offers as $item){ ?>
+            <div class="image-item">
+                <img src="/public/upload/blur/<?= $item['image'] ?>" alt="">
+            </div>
+        <? } ?>
+    </div>
+</div>
+<div id="text-slider">
+
+    <? $right = '';
+    foreach($this->offers as $item){ ?>
+        <div class="text-item <?= $right ?>">
+            <div class="biggest-text"><?= $item['caption'] ?></div>
+            <div class="text-slider-title"><?= $item['title'] ?></div>
+            <div class="text-slider-info"><?= $item['annotation'] ?></div>
+        </div>
+        <? $right = 'right';
+    } ?>
+
+</div>
+<div id="action-nav">
+    <? $active = 'active';
+    foreach($this->offers as $item){ ?>
+        <div class="dot <?= $active ?>"></div>
+        <? $active = '';
+    } ?>
+</div>

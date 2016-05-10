@@ -166,7 +166,7 @@ class Bootstrap
         if(empty($city))
             $city = 'moscow';
 
-        return \Model\Articles::getPage('url', $city)->first();
+        return \Model\Articles::getPageCity('url', $city)->first();
 
     }
 

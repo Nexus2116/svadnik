@@ -40,9 +40,18 @@ class Index extends \Core\Controller
         $projects = \Model\Projects::take(16)->where('published', 1)->orderBy('id', 'DESC')->get();
         \App::view('projects', $projects);
 
-        $offers = \Model\Articles::where('url', 'special-offers')->where('deleted_at', null)->first();
-        $offersGet = \Model\Articles::getPage('parent_id', $offers->id)->get();
-        \App::view('offers', $offersGet);
+        $obj_city = \Bootstrap::get_city();
+        \App::view('obj_city', $obj_city);
+
+        if($obj_city['visible'] == 'news'){
+            $get_news = \Model\Articles::getPageCityNews('parent_id', $obj_city['id'])->first();
+            $news_ids = explode(',', $get_news['news']);
+            $offers = \Model\Articles::getPageIn('id', $news_ids)->get();
+        } else{
+            $offers = \Model\Articles::getPageCityBanner('parent_id', $obj_city['id'])->get();
+        }
+
+        \App::view('offers', $offers);
     }
 
 }

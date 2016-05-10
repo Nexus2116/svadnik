@@ -1,0 +1,94 @@
+<script type="text/javascript">
+    Controller.Articles.content<?=$this->tabLanguage?> = {
+        id: 'content_<?=$this->tabLanguage?>',
+        type: 'json',
+        fails: function (errors){
+            Controller.Articles.content<?=$this->tabLanguage?>.show(error);
+        },
+        success: function (data){
+            Controller.Articles.content<?=$this->tabLanguage?>.show(data.message);
+            $('.bm-changes-block').hide();
+        },
+
+        show: function (text){
+            $('.bm-changes-message').text(text);
+            $('.bm-changes-message').show();
+            setInterval(function (){
+                $('.bm-changes-message').hide();
+            }, 5000);
+        }
+    };
+
+    $(document).ready(function (){
+        $('#bm-redactor-<?=$this->tabLanguage?>').redactor({
+            lang: 'ru',
+            minHeight: 264,
+            imageUpload: '/admin/upload/redactor',
+            imageGetJson: '/admin/image/media'
+        });
+        formHandler = new Form(Controller.Articles.content<?=$this->tabLanguage?>);
+
+        $('.bm-dragndrop').click(function (){
+            val = $(this).find('input').val();
+            $('#fileUpload .image-field').attr({'value': val});
+            $('.fileUploadButton').click();
+        });
+
+        $('.fileUploadButton').change(function (){
+            $('#fileUpload').submit();
+        });
+
+        $('input, textarea, .redactor_editor').on('input', function (){
+            $('.bm-changes-block').show();
+        })
+
+    });
+</script>
+<? $content = $this->content; ?>
+
+<form action="<?= HTML::url("/" . $this->article->type . "/edit/id/" . $this->article->id) ?>" method="POST" id="content_<?= $this->tabLanguage ?>" class="articleEditForm" data-form="main">
+    <input type="submit" class="sendForm" style="position:absolute; visibility:hidden;">
+    <input type="hidden" name="id" value="<?= $this->article->id ?>">
+    <input type="hidden" name="lang" value="<?= $this->tabLanguage ?>">
+    <div class="bm-page-content-editor">
+        <div class="bm-page-content-title">
+            <?= \App::config()->langVariables[$this->tabLanguage] ?> версия
+        </div>
+        <div class="bm-page-content-editor-top">
+            <label>Название</label>
+            <div class="bm-input fullwidth">
+                <input type="text" id="caption" name="caption" value="<?= @$content->caption ?>">
+            </div>
+            <label>Заголовок</label>
+            <div class="bm-input fullwidth">
+                <input type="text" id="ttle" name="title" value="<?= @$content->title ?>">
+            </div>
+
+            <div class="bm-page-editor-left">
+                <label>Краткое описание</label>
+                <div class="bm-textarea">
+                    <textarea name="annotation" id="annotation"><?= @$content->annotation ?></textarea>
+                </div>
+            </div>
+            <div class="bm-page-editor-right">
+                <label>Превью</label>
+                <? HTML::image($this->article); ?>
+            </div>
+            <div style="clear:both;"></div>
+            <br><br>
+
+            <label>Основной текст блока</label>
+            <div class="bm-editor">
+                <textarea name="text" id="bm-redactor-<?= $this->tabLanguage ?>"><?= @$content->text ?></textarea>
+            </div>
+            <br>
+
+        </div>
+    </div>
+</form>
+
+<div style="display:none;">
+    <? $this->multi = false;
+    $this->scale = 'articles';
+    $this->renderFile('/upload/image'); ?>
+</div>

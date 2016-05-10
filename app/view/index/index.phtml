@@ -187,41 +187,13 @@
     </div>
     <div class="tab-page">
         <div id="actions">
-            <div id="image-slider">
-                <div id="image-line">
-                    <? foreach($this->offers as $item){ ?>
-                        <div class="image-item">
-                            <img src="/public/upload/blur/<?= $item['image'] ?>" alt="">
-                        </div>
-                    <? } ?>
-                </div>
-            </div>
-            <div id="text-slider">
 
-                <? $right = '';
-                foreach($this->offers as $item){
-                    ?>
-                    <div class="text-item <?= $right ?>">
-                        <div class="biggest-text"><?= $item['caption'] ?></div>
-                        <div class="text-slider-title"><?= $item['title'] ?></div>
-                        <div class="text-slider-info"><?= $item['annotation'] ?></div>
-                        <a href="#" class="green-button">Узнать больше</a>
-                    </div>
-                    <?
-                    $right = 'right';
-                } ?>
+            <? if($this->obj_city['visible'] == 'news'){
+                include 'news.phtml';
+            } else{
+                include 'image_slider.phtml';
+            } ?>
 
-            </div>
-            <div id="action-nav">
-                <?
-                $active = 'active';
-                foreach($this->offers as $item){
-                    ?>
-                    <div class="dot <?= $active ?>"></div>
-                    <?
-                    $active = '';
-                } ?>
-            </div>
         </div>
     </div>
 </div>

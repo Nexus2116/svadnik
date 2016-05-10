@@ -1,5 +1,5 @@
 <?php
-	
+
 namespace Model;
 
 	class Articles extends \Core\Model {
@@ -49,10 +49,39 @@ namespace Model;
 			return \Capsule\Db::table('articles')
             ->join('articles_content', 'articles.id', '=', 'articles_content.articles_id')
             ->where($field, $op, $value)
-            //->where('articles.published', 1)
             ->where('deleted_at', null)
             ->where('lang', \App::$state->lang)
             ->where('articles_content.published', 1)
+            ->orderBy('sort', 'ASC');
+		}
+
+		protected function getPageCity($field, $value, $op = '=') {
+			return \Capsule\Db::table('articles')
+            ->join('articles_content_city', 'articles.id', '=', 'articles_content_city.articles_id')
+            ->where($field, $op, $value)
+            ->where('deleted_at', null)
+            ->where('lang', \App::$state->lang)
+            ->where('articles_content_city.published', 1)
+            ->orderBy('sort', 'ASC');
+		}
+
+		protected function getPageCityBanner($field, $value, $op = '=') {
+			return \Capsule\Db::table('articles')
+            ->join('city_banners', 'articles.id', '=', 'city_banners.articles_id')
+            ->where($field, $op, $value)
+            ->where('deleted_at', null)
+            ->where('lang', \App::$state->lang)
+            ->where('city_banners.published', 1)
+            ->orderBy('sort', 'ASC');
+		}
+
+		protected function getPageCityNews($field, $value, $op = '=') {
+			return \Capsule\Db::table('articles')
+            ->join('city_news', 'articles.id', '=', 'city_news.articles_id')
+            ->where($field, $op, $value)
+            ->where('deleted_at', null)
+            ->where('lang', \App::$state->lang)
+            ->where('city_news.published', 1)
             ->orderBy('sort', 'ASC');
 		}
 
@@ -60,7 +89,6 @@ namespace Model;
 			return \Capsule\Db::table('articles')
             ->join('articles_content', 'articles.id', '=', 'articles_content.articles_id')
             ->where($field, $op, $value)
-            //->where('articles.published', 1)
             ->where('deleted_at', null)
             ->where('lang', \App::$state->lang)
             ->where('articles_content.published', 1)

@@ -7,5 +7,7 @@ composer.lock
 debug.log
 vendor
 crontab
-public/media/
+public/media/files/*
+public/media/audio/*
+public/media/images/*
 commands/dbConfig.php
