@@ -2,7 +2,6 @@
 
 namespace Controller;
 
-use Symfony\Component\Config\Definition\Exception\Exception;
 
 class Index extends \Core\Controller
 {

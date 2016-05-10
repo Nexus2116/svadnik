@@ -159,7 +159,11 @@ class Bootstrap
             return false;
         else
             return true;
+    }
 
+    public function get_city()
+    {
+        return \Model\Articles::getPage('url', $_GET['city'])->first();
     }
 
 

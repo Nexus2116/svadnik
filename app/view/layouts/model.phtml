@@ -7,7 +7,7 @@
                 <? foreach(Bootstrap::city() as $item){ ?>
                     <div class="city-section">
                         <div class="city-letter">К</div>
-                        <a href="http://<?= $item->url ?>.svadnik.ru" class="city"><?= htmlspecialchars($item->name) ?></a></div>
+                        <a href="http://<?= $item->url ?>.<?= $_SERVER['SERVER_NAME'] ?>" class="city"><?= $item->name ?></a></div>
                 <? } ?>
             </div>
             <div class="city-row">

@@ -27,9 +27,8 @@
                     <img src="/public/images/interface/logo.png" alt=""/>
                 </a>
                 <div id="header-city">
-                    Выберите город: <a href="#" class="select-city">Москва</a>
+                    Выберите город: <a href="#" class="select-city"><?= \Bootstrap::get_city()['title'] ?></a>
                 </div>
-
                 <? if(\Bootstrap::userSession()){ ?>
                     <div id="header-login">
                         <a href="/<?= \Bootstrap::userSession()->role == 1 ? 'customer' : 'executor' ?>"><?= \Bootstrap::userSession()->firstname ?></a>
@@ -49,7 +48,12 @@
                     <?= \Bootstrap::Menu('top-menu'); ?>
                 </div>
                 <div id="header-phone">
-                    <?= \App::config('phone'); ?>
+                    <?
+                    $phone = \Bootstrap::get_city()['caption'];
+                    if(empty($phone))
+                        $phone = \App::config('phone');
+                    echo $phone;
+                    ?>
                 </div>
                 <div id="header-search">
                     <div class="input-search">

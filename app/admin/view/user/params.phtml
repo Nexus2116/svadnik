@@ -1,42 +1,49 @@
 <script type="text/javascript">
-	$(document).ready(function() {
-		$('input, textarea, .redactor_editor').on('input', function () {
-			$('.bm-changes-block').show();
-		});
+    $(document).ready(function (){
+        $('input, textarea, .redactor_editor').on('input', function (){
+            $('.bm-changes-block').show();
+        });
 
-		$('.bm-button.send').click(function() {
-			$('form#' + Controller.User.change.id).submit();
-		});
-	});
+        $('.bm-button.send').click(function (){
+            $('form#' + Controller.User.change.id).submit();
+        });
+    });
 </script>
 <br>
-<form action="<?=HTML::url('/user/save/id/'.$this->currentUser->id)?>" method="POST" id="params">
-	<div class="bm-page-content-editor">
-	    <div class="bm-page-content-editor-top">
-	        <label>
-	        	Имя пользователя
-	        	<div class="bm-form-error" style="position:relative; float:right;" id="error-name"></div>
-	        </label>
-	        <div class="bm-input fullwidth">
-	            <input type="text" id="name" name="name" value="<?=$this->currentUser->name?>">
-	        </div>
+<form action="<?= HTML::url('/user/save/id/' . $this->currentUser->id) ?>" method="POST" id="params">
+    <div class="bm-page-content-editor">
+        <div class="bm-page-content-editor-top">
+            <label>
+                Имя пользователя
+                <div class="bm-form-error" style="position:relative; float:right;" id="error-name"></div>
+            </label>
+            <div class="bm-input fullwidth">
+                <input type="text" id="name" name="name" value="<?= $this->currentUser->name ?>">
+            </div>
 
-	        <label>
-	        	Логин пользователя
-	        	<div class="bm-form-error" style="position:relative; float:right;" id="error-login"></div>
-	        </label>
-	        <div class="bm-input fullwidth">
-	            <input type="text" id="login" name="login" value="<?=$this->currentUser->login?>">
-	        </div>
+            <label>
+                Логин пользователя
+                <div class="bm-form-error" style="position:relative; float:right;" id="error-login"></div>
+            </label>
+            <div class="bm-input fullwidth">
+                <input type="text" id="login" name="login" value="<?= $this->currentUser->login ?>">
+            </div>
 
-	        <label>
-	        	Email пользователя
-	        	<div class="bm-form-error" style="position:relative; float:right;" id="error-email"></div>
-	        </label>
-	        <div class="bm-input fullwidth">
-	            <input type="text" id="email" name="email" value="<?=$this->currentUser->email?>">
-	        </div>
-	    </div>
-	</div>
-	<input type="submit" style="visibility:hidden;">
+            <label>
+                Email пользователя
+                <div class="bm-form-error" style="position:relative; float:right;" id="error-email"></div>
+            </label>
+            <div class="bm-input fullwidth">
+                <input type="text" id="email" name="email" value="<?= $this->currentUser->email ?>">
+            </div>
+
+            <select name="city" id="city">
+                <? foreach($this->list_city as $city){ ?>
+                    <option value="<?= $city['url'] ?>" <?= $city['url'] == $this->currentUser->city ? 'selected' : '' ?>><?= $city['title'] ?></option>
+                <? } ?>
+            </select>
+
+        </div>
+    </div>
+    <input type="submit" style="visibility:hidden;">
 </form>
