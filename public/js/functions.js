@@ -795,10 +795,14 @@ $(function (){
    });
 //select city-----------------------------------------------------------------------------------------------------------
    $('a.city').click(function (){
-      city = $(this).html();
+      var object = $(this);
+      city = object.html();
       $('.close-modal').click();
       $('a.select-city').html(city);
+      var get_city = object.attr('data-city_url');
+      document.cookie = 'city=' + get_city;
    });
+
 //price slider----------------------------------------------------------------------------------------------------------
    $(document).on(press_event, '.price-slider-line', function (e){
       var page_x = e.pageX;

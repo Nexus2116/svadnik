@@ -72,8 +72,7 @@ class Bootstrap
     public function city()
     {
         $city = \Model\Articles::where('url', 'city')->first();
-        $allcity = \Model\Articles::where('parent_id', $city->id)->where('deleted_at', null)->get();
-        return $allcity;
+        return \Model\Articles::where('parent_id', $city->id)->where('deleted_at', null)->get();
     }
 
     public function reserveDay($day)
@@ -163,7 +162,12 @@ class Bootstrap
 
     public function get_city()
     {
-        return \Model\Articles::getPage('url', $_GET['city'])->first();
+        $city = $_COOKIE['city'];
+        if(empty($city))
+            $city = 'moscow';
+
+        return \Model\Articles::getPage('url', $city)->first();
+
     }
 
 
